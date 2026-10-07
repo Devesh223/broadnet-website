@@ -155,7 +155,7 @@ export default function LocationChecker() {
             <Wifi size={14} className="animate-pulse" />
             100+ KM Optical Fiber Network Reach
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4 font-display">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4 font-display">
             Check Internet Availability{" "}
             <span className="text-gradient">in Your Area</span>
           </h2>

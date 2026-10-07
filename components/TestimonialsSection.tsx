@@ -88,7 +88,7 @@ export default function TestimonialsSection() {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <SectionLabel>Authentic Social Proof</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#16143E] tracking-tight mt-2 mb-4 font-display">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight mt-2 mb-4 font-display">
             Trusted by Avadi's <span className="text-gradient">Community</span>
           </h2>
           <p className="text-[#16143E]/60 text-base md:text-lg leading-relaxed font-body">

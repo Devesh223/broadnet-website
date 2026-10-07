@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
 import CertificatesSection from "@/components/CertificatesSection";
-import { Users, Award, MapPin, Clock, TrendingUp, Heart, BadgeCheck } from "lucide-react";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { Users, Award, MapPin, Clock, TrendingUp, Heart, BadgeCheck, ArrowRight, Shield, Wifi } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Broadnet | Avadi's Leading Fiber ISP & Security Partner Since 2014",
@@ -50,6 +52,14 @@ export default function AboutPage() {
           <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-5"
             style={{ background: "radial-gradient(circle, #4E0DBA 0%, transparent 70%)", transform: "translate(30%, -30%)" }} />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+            {/* Breadcrumb Navigation */}
+            <div className="mb-6">
+              <Breadcrumbs
+                items={[{ label: "About Broadnet" }]}
+                variant="light"
+              />
+            </div>
+
             <div className="max-w-3xl">
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-4">
                 <span className="w-4 h-px bg-[#4E0DBA]" /> Our Story
@@ -133,6 +143,55 @@ export default function AboutPage() {
         </section>
 
         <CertificatesSection />
+
+        {/* Explore Services Link Strip */}
+        <section className="py-14 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-8">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4E0DBA] font-display">
+                Engineered In Avadi
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#16143E] mt-1 font-display">
+                Ready to Upgrade Your Connectivity or Security?
+              </h2>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              <Link
+                href="/internet"
+                className="p-6 rounded-2xl bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/40 shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center flex-shrink-0 group-hover:bg-[#4E0DBA] group-hover:text-white transition-colors">
+                    <Wifi size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[#16143E] font-display">Fiber Internet</h3>
+                    <p className="text-xs text-[#16143E]/60">FTTH plans from ₹499/mo</p>
+                  </div>
+                </div>
+                <ArrowRight size={16} className="text-[#4E0DBA] group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href="/security"
+                className="p-6 rounded-2xl bg-white border border-[#16143E]/10 hover:border-[#EF1313]/40 shadow-sm hover:shadow-md transition-all flex items-center justify-between group"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center flex-shrink-0 group-hover:bg-[#EF1313] group-hover:text-white transition-colors">
+                    <Shield size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[#16143E] font-display">Security Solutions</h3>
+                    <p className="text-xs text-[#16143E]/60">CCTV, VDP & Biometrics</p>
+                  </div>
+                </div>
+                <ArrowRight size={16} className="text-[#EF1313] group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <EnquirySection />
       </main>
       <Footer />

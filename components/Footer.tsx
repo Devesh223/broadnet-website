@@ -5,32 +5,24 @@ import { Phone, MapPin, Mail, ArrowUpRight, Navigation, Clock, ShieldCheck } fro
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
 
 const QUICK_LINKS = [
-  { label: "Security Solutions", href: "/security" },
-  { label: "Internet Services", href: "/internet" },
+  { label: "Home Overview", href: "/" },
+  { label: "Security Solutions Hub", href: "/security" },
+  { label: "Security Solution Advisor", href: "/security#solution-finder" },
+  { label: "Fiber Internet Plans", href: "/internet" },
   { label: "About Broadnet", href: "/about" },
-  { label: "Get in Touch", href: "/contact" },
+  { label: "Contact & Dispatch", href: "/contact" },
 ];
 
 const SERVICES = [
-  "Broadnet FTTH Plans",
-  "Railwire FTTH & OTT",
-  "CCTV Installation & Services",
-  "BSNL Bharat Fibre",
-  "Dual Band Gigabit ONT",
-  "CP PLUS & Hikvision Security",
+  { label: "HD & 4K CCTV Cameras", href: "/security/cameras" },
+  { label: "Smart Video Door Phones", href: "/security/door-phones" },
+  { label: "Biometric Access Control", href: "/security/access-control" },
+  { label: "Perimeter Intrusion Alarms", href: "/security/intrusion-alarms" },
+  { label: "Broadnet FTTH Fiber", href: "/internet" },
+  { label: "Railwire OTT Entertainment", href: "/internet" },
 ];
 
 export default function Footer() {
-  const handleServiceClick = (e: React.MouseEvent, serviceName: string) => {
-    const enquiryEl = document.getElementById("enquiry");
-    if (enquiryEl) {
-      e.preventDefault();
-      window.dispatchEvent(
-        new CustomEvent("broadnet:select-service", { detail: { service: serviceName } })
-      );
-      scrollToWithPhysics("enquiry");
-    }
-  };
 
   return (
     <footer className="bg-[#16143E] text-white relative overflow-hidden pb-12 pt-16">
@@ -92,15 +84,14 @@ export default function Footer() {
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-5">Services</h3>
             <ul className="space-y-1">
               {SERVICES.map((s) => (
-                <li key={s}>
+                <li key={s.label}>
                   <Link
-                    href={`/contact?service=${encodeURIComponent(s)}`}
-                    onClick={(e) => handleServiceClick(e, s)}
+                    href={s.href}
                     className="text-sm text-white/60 hover:text-white inline-flex items-center gap-2 transition-all duration-200 group cursor-pointer py-1.5"
-                    title={`Enquire about ${s}`}
+                    title={`Explore ${s.label}`}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#EF1313] group-hover:scale-125 transition-transform" />
-                    <span className="group-hover:translate-x-1 transition-transform">{s}</span>
+                    <span className="group-hover:translate-x-1 transition-transform">{s.label}</span>
                   </Link>
                 </li>
               ))}

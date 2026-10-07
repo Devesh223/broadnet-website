@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { Wifi, Shield, ArrowRight, CheckCircle2, Tv, Camera, Zap, Clock } from "lucide-react";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
@@ -23,7 +24,7 @@ export default function ServiceChoiceSection() {
             Direct Service Portals
             <span className="w-3 h-px bg-[#4E0DBA]" />
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#16143E] tracking-tight font-display mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
             How Can Broadnet Serve You Today?
           </h2>
           <p className="text-[#16143E]/70 text-base sm:text-lg leading-relaxed font-body">
@@ -52,7 +53,7 @@ export default function ServiceChoiceSection() {
                 <div className="w-13 h-13 rounded-2xl bg-[#4E0DBA]/10 border border-[#4E0DBA]/20 flex items-center justify-center text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white transition-all duration-300">
                   <Wifi size={24} />
                 </div>
-                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/20">
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/20">
                   Free ONT & Setup
                 </span>
               </div>
@@ -88,14 +89,13 @@ export default function ServiceChoiceSection() {
             </div>
 
             <div className="pt-6 border-t border-[#16143E]/8 space-y-3">
-              <button
-                type="button"
-                onClick={() => scrollToWithPhysics("internet")}
+              <Link
+                href="/internet"
                 className="w-full min-h-[46px] px-6 py-3 rounded-xl bg-[#4E0DBA] hover:bg-[#3d0999] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-[#4E0DBA]/25 transition-all group-hover:shadow-lg"
               >
-                <span>View Internet & OTT Plans</span>
+                <span>View Fiber Internet Plans</span>
                 <ArrowRight size={15} />
-              </button>
+              </Link>
               <button
                 type="button"
                 onClick={() => scrollToWithPhysics("coverage")}
@@ -125,7 +125,7 @@ export default function ServiceChoiceSection() {
                 <div className="w-13 h-13 rounded-2xl bg-[#EF1313]/10 border border-[#EF1313]/20 flex items-center justify-center text-[#EF1313] group-hover:bg-[#EF1313] group-hover:text-white transition-all duration-300">
                   <Shield size={24} />
                 </div>
-                <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-[#EF1313]/10 text-[#EF1313] border border-[#EF1313]/20">
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#EF1313]/10 text-[#EF1313] border border-[#EF1313]/20">
                   Official CP PLUS Partner
                 </span>
               </div>
@@ -161,21 +161,19 @@ export default function ServiceChoiceSection() {
             </div>
 
             <div className="pt-6 border-t border-[#16143E]/8 space-y-3">
-              <button
-                type="button"
-                onClick={() => scrollToWithPhysics("security")}
+              <Link
+                href="/security"
                 className="w-full min-h-[46px] px-6 py-3 rounded-xl bg-[#16143E] hover:bg-[#232057] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-[#16143E]/25 transition-all group-hover:shadow-lg"
               >
-                <span>View Security Solutions</span>
+                <span>View Security Hub & Solution Finder</span>
                 <ArrowRight size={15} />
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollToWithPhysics("enquiry")}
+              </Link>
+              <Link
+                href="/security/cameras"
                 className="w-full text-xs font-semibold text-[#16143E]/60 hover:text-[#EF1313] text-center py-1 transition-colors block"
               >
-                Request a custom site security quote →
-              </button>
+                Browse CCTV Camera Kits & Packages →
+              </Link>
             </div>
           </motion.div>
         </div>

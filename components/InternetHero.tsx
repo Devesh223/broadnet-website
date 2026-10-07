@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function InternetHero() {
   return (
@@ -13,6 +14,14 @@ export default function InternetHero() {
         }}
       />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-6">
+          <Breadcrumbs
+            items={[{ label: "Fiber Internet" }]}
+            variant="light"
+          />
+        </div>
+
         <div className="max-w-3xl">
           {/* Eyebrow */}
           <motion.div

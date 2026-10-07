@@ -6,6 +6,7 @@ import PlansSection from "@/components/PlansSection";
 import LocationChecker from "@/components/LocationChecker";
 import InternetHero from "@/components/InternetHero";
 import IctSolutions from "@/components/IctSolutions";
+import RelatedSolutions from "@/components/RelatedSolutions";
 
 export const metadata: Metadata = {
   title: "High-Speed Fiber Internet & Broadband Plans in Avadi | From ₹499/mo",
@@ -40,7 +41,8 @@ export default function InternetPage() {
         <PlansSection />
         <LocationChecker />
         <IctSolutions />
-        <EnquirySection />
+        <RelatedSolutions currentKey="internet" />
+        <EnquirySection initialType="internet" />
       </main>
       <Footer />
     </>

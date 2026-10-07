@@ -57,10 +57,15 @@ interface FormErrors {
   message?: string;
 }
 
-export default function EnquirySection() {
+interface EnquirySectionProps {
+  initialService?: string;
+  initialType?: FormType;
+}
+
+export default function EnquirySection({ initialService, initialType }: EnquirySectionProps = {}) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-30px" });
-  const [formType, setFormType] = useState<FormType>("security");
+  const [formType, setFormType] = useState<FormType>(initialType || "security");
   const [status, setStatus] = useState<Status>("idle");
   const [serverErrorMessage, setServerErrorMessage] = useState<string>("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -177,7 +182,9 @@ export default function EnquirySection() {
     window.addEventListener("broadnet:select-service", onCustomEvent);
     window.addEventListener("broadnet:set-location", onLocationEvent);
 
-    if (typeof window !== "undefined") {
+    if (initialService) {
+      handleServiceSelect(initialService);
+    } else if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const serviceParam = params.get("service");
       const locationParam = params.get("location");
@@ -338,27 +345,41 @@ export default function EnquirySection() {
     setPreviewUrl(null);
     const startTime = Date.now();
 
-    const payload = {
-      name: form.name.trim(),
-      phone: form.phone.trim(),
-      email: form.email.trim() || undefined,
-      location: form.location.trim() || undefined,
-      enquiryType: formType === "security" ? "Security & ELV Enquiry" : "Fiber Internet Enquiry",
-      requirements: selected,
-      message: form.message.trim() || undefined,
-    };
+    const enquiryType = formType === "security" ? "Security & ELV Enquiry" : "Fiber Internet Enquiry";
+    // Generate a client-side reference ID (no server needed)
+    const referenceId = `BN-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
     try {
-      const res = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Submission failed. Please try again.");
+      if (!serviceId || !templateId || !publicKey ||
+          serviceId === "YOUR_SERVICE_ID" || templateId === "YOUR_TEMPLATE_ID") {
+        throw new Error(
+          "Email service not configured. Please contact us directly at admin@broadnet.in or call 98843 44075."
+        );
       }
+
+      // Dynamic import keeps initial bundle lean
+      const emailjs = await import("@emailjs/browser");
+
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: form.name.trim(),
+          phone: form.phone.trim(),
+          reply_to: form.email.trim() || "Not provided",
+          location: form.location.trim() || "Not provided",
+          enquiry_type: enquiryType,
+          requirements: selected.join(", ") || "None selected",
+          message: form.message.trim() || "No additional notes.",
+          reference_id: referenceId,
+          to_email: "admin@broadnet.in",
+        },
+        publicKey
+      );
 
       // Smooth motion design window: let the message takeoff animation complete naturally
       const elapsed = Date.now() - startTime;
@@ -373,15 +394,12 @@ export default function EnquirySection() {
       setSubmittedData({
         name: form.name.trim(),
         phone: form.phone.trim(),
-        enquiryType: payload.enquiryType,
+        enquiryType,
         requirements: selected,
-        referenceId: data.referenceId,
+        referenceId,
       });
 
       setStatus("success");
-      if (data.previewUrl) {
-        setPreviewUrl(data.previewUrl);
-      }
     } catch (err: unknown) {
       const errMsg = err instanceof Error ? err.message : "Failed to connect to the enquiry service.";
       setServerErrorMessage(errMsg);
@@ -446,7 +464,7 @@ export default function EnquirySection() {
           <span className="text-[11px] font-bold uppercase tracking-wider text-[#EF1313] font-display">
             Direct Technician Dispatch · Avadi & Chennai
           </span>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-[#16143E] mt-0.5 mb-1 font-display">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#16143E] mt-0.5 mb-1 font-display">
             Quick Enquiry & Site Feasibility
           </h2>
           <p className="text-xs text-[#16143E]/65 max-w-lg mx-auto">

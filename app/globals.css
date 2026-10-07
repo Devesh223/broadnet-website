@@ -52,6 +52,11 @@ h1, h2, h3, h4, h5, h6,
   font-family: var(--font-display);
 }
 
+/* Ensure headings maintain the clean proportional font-weight of the hero section across the entire site */
+.font-extrabold {
+  font-weight: 700 !important;
+}
+
 /* Enable custom cursor only on desktop devices with a precision pointer */
 @media (hover: hover) and (pointer: fine) {
   body, a, button {

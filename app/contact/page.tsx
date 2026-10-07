@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -56,7 +57,7 @@ const CONTACT_INFO = [
 export default function ContactPage() {
   return (
     <>
-      <Header activePage="" />
+      <Header activePage="Contact" />
       <main>
         {/* Hero */}
         <section className="relative pt-32 pb-20 bg-white overflow-hidden">
@@ -67,6 +68,14 @@ export default function ContactPage() {
             }}
           />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center">
+            {/* Breadcrumb Navigation */}
+            <div className="flex justify-center mb-6">
+              <Breadcrumbs
+                items={[{ label: "Contact & Support" }]}
+                variant="light"
+              />
+            </div>
+
             <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-4">
               <span className="w-4 h-px bg-[#4E0DBA]" /> Get In Touch
             </span>

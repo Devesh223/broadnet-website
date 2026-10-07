@@ -283,7 +283,7 @@ export default function PlansSection() {
             </AnimatePresence>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 font-display">
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4 font-display">
             High-Speed FTTH & OTT Plans
           </h2>
           <p className="text-white/60 text-base md:text-lg leading-relaxed font-body">
@@ -380,7 +380,7 @@ export default function PlansSection() {
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-[#EF1313] text-white text-[10px] font-extrabold tracking-wider uppercase shadow-[0_0_20px_rgba(239,19,19,0.8)] z-20 whitespace-nowrap">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-[#EF1313] text-white text-[10px] font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(239,19,19,0.8)] z-20 whitespace-nowrap">
                       ★ POPULAR CHOICE
                     </div>
                   )}
@@ -416,7 +416,7 @@ export default function PlansSection() {
                     {/* Price */}
                     <div className="mb-5 pb-4 border-b border-white/10">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-3xl font-extrabold text-white tracking-tight">
+                        <span className="text-3xl font-bold text-white tracking-tight">
                           {displayPrice}
                         </span>
                         <span className="text-white/50 text-xs font-medium">
@@ -500,7 +500,7 @@ export default function PlansSection() {
                     <span className="text-white font-bold text-sm sm:text-base font-display">
                       FREE Installation & FREE To Use Optical ONT Router
                     </span>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                       100% Free Included
                     </span>
                   </div>
@@ -536,7 +536,7 @@ export default function PlansSection() {
                     <span className="text-white font-bold text-sm sm:text-base font-display">
                       Amazon Prime Video + 20+ Premium OTT Apps & 450+ Live TV
                     </span>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                       Bundled Free
                     </span>
                   </div>
@@ -591,7 +591,7 @@ export default function PlansSection() {
                     {item.title}
                   </h4>
 
-                  <div className="inline-block text-base font-extrabold text-[#EF1313] bg-[#EF1313]/10 border border-[#EF1313]/25 px-2.5 py-0.5 rounded-md mb-3">
+                  <div className="inline-block text-base font-bold text-[#EF1313] bg-[#EF1313]/10 border border-[#EF1313]/25 px-2.5 py-0.5 rounded-md mb-3">
                     {item.price}
                   </div>
 

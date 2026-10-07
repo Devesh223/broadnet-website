@@ -1,13 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Static export for Hostinger shared hosting (PHP/Apache)
+  output: "export",
+  // Trailing slashes so Apache serves /about/ → /about/index.html correctly
+  trailingSlash: true,
   images: {
-    // Add domains here if using next/image with external URLs
-    // e.g. domains: ["res.cloudinary.com"],
-    domains: [],
+    // next/image optimisation requires a Node server — disable for static export
+    unoptimized: true,
   },
-  // Suppress the fs/path warnings from nodemailer on client bundles
-  serverExternalPackages: ["nodemailer"],
 };
 
 export default nextConfig;
