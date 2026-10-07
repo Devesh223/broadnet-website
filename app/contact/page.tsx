@@ -116,6 +116,37 @@ export default function ContactPage() {
           </div>
         </section>
 
+        {/* Google Map Embed */}
+        <section className="py-12 bg-[#FAFAFE] border-y border-[#16143E]/8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="rounded-3xl overflow-hidden border border-[#16143E]/10 shadow-md">
+              <iframe
+                title="BroadNet Office Map - 1093 Fire Station Road TNHB Avadi Chennai"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3885.5562779777974!2d80.09848577508006!3d13.127246987199994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52631555555555%3A0x7d3e4d9c4909a47a!2sFire%20Station%20Rd%2C%20TNHB%20Mig%20V%20Block%2C%20Avadi%2C%20Tamil%20Nadu%20600054!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                width="100%"
+                height="380"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-between text-xs text-[#16143E]/60 gap-2">
+              <span className="font-semibold text-[#16143E]">
+                📍 1093, Fire Station Road, TNHB, Avadi, Chennai – 600 054
+              </span>
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=1093,+Fire+Station+Road,+TNHB,+Avadi,+Chennai,+Tamil+Nadu+600054"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-[#4E0DBA] hover:underline"
+              >
+                Open in Google Maps / Get Directions →
+              </a>
+            </div>
+          </div>
+        </section>
+
         <EnquirySection />
       </main>
       <Footer />

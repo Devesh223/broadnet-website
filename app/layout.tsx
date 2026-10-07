@@ -84,13 +84,16 @@ const jsonLd = {
       "@type": "LocalBusiness",
       "@id": "https://www.broadnet.in/#localbusiness",
       "name": "Broadnet Internet Services",
+      "slogan": "Connecting People. Securing Places. Managing Access.",
       "url": "https://www.broadnet.in",
       "logo": "https://www.broadnet.in/assets/logo.png",
       "image": "https://www.broadnet.in/assets/logo.png",
       "description":
-        "Premier fiber internet provider and certified security & ELV solutions integrator in Avadi, Chennai since 2014.",
+        "Premier CCTV surveillance, biometric time attendance, and technology solutions integrator in Avadi, Chennai since 2014.",
       "telephone": "+91-9884344075",
+      "alternateTelephone": "+91-8681888111",
       "email": "admin@broadnet.in",
+      "supportEmail": "support@broadnet.in",
       "priceRange": "₹₹",
       "address": {
         "@type": "PostalAddress",

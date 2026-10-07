@@ -3,30 +3,31 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
-import CertificatesSection from "@/components/CertificatesSection";
+import MilestonesSection from "@/components/MilestonesSection";
+import BrandPartnersSection from "@/components/BrandPartnersSection";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { Users, Award, MapPin, Clock, TrendingUp, Heart, BadgeCheck, ArrowRight, Shield, Wifi } from "lucide-react";
+import { Users, Award, MapPin, Clock, TrendingUp, Heart, BadgeCheck, ArrowRight, Shield, Wifi, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Broadnet | Avadi's Leading Fiber ISP & Security Partner Since 2014",
+  title: "About Broadnet | Avadi's Leading Security & Network Integrator Since 2014",
   description:
-    "Established in 2014, Broadnet operates 100+ km of private fiber backbone and has completed 2,500+ residential and enterprise security installations across Avadi, Chennai.",
+    "Broadnet Internet Services operates in Avadi, Chennai since 2014 with 10+ certified engineers. 2,500+ installations, 100+ km fiber network, and certified partner for Hikvision, CP PLUS, Grandstream, and eSSL.",
   alternates: {
     canonical: "https://www.broadnet.in/about",
   },
   openGraph: {
-    title: "About Broadnet Internet Services | 10+ Years in Avadi, Chennai",
+    title: "About Broadnet Internet Services | 12 Years in Avadi, Chennai",
     description:
-      "Avadi's home-grown optical fiber and ELV security infrastructure leader. Serving over 2,500 clients with certified engineering excellence.",
+      "Avadi's technology and security systems provider. CCTV, biometrics, enterprise Wi-Fi, and network infrastructure.",
     url: "https://www.broadnet.in/about",
   },
 };
 
 const STATS = [
   { value: "2014", label: "Year Established", icon: Clock },
-  { value: "100+", label: "km Optical Fibre", icon: TrendingUp },
-  { value: "2,500+", label: "Happy Customers", icon: Heart },
-  { value: "10+", label: "Technical Experts", icon: Users },
+  { value: "12+", label: "Years in Operation", icon: Award },
+  { value: "2,500+", label: "Satisfied Clients", icon: Heart },
+  { value: "10+", label: "Technical Staff", icon: Users },
 ];
 
 const VALUES = [
@@ -69,8 +70,11 @@ export default function AboutPage() {
                 <br />
                 <span className="text-gradient">Trusted Across Chennai.</span>
               </h1>
+              <div className="inline-block px-4 py-2 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] font-bold text-sm sm:text-base mb-4">
+                “Connecting People. Securing Places. Managing Access.”
+              </div>
               <p className="text-[#16143E]/60 text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8">
-                Since 2014, Broadnet Internet Services has been the backbone of connectivity and security for thousands of homes and businesses in Avadi, Tamil Nadu. What started as a local ISP has grown into a full-spectrum technology solutions provider.
+                Operating since 2014 from Fire Station Road, TNHB Avadi with a dedicated in-house team of 10+ certified engineers, Broadnet Internet Services delivers integrated technology and security solutions for homes, businesses, institutions, industries, apartments, hotels, and commercial establishments across Chennai.
               </p>
               <div className="flex items-center gap-3">
                 <MapPin size={16} className="text-[#4E0DBA]" />
@@ -97,6 +101,12 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Milestones Timeline */}
+        <MilestonesSection />
+
+        {/* Brand Partners & Certifications */}
+        <BrandPartnersSection />
+
         {/* Values */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -121,28 +131,6 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-
-        {/* Certifications */}
-        <section className="py-16 bg-white border-t border-[#16143E]/8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-2">
-                <Award size={14} /> Certifications
-              </span>
-              <h2 className="text-3xl font-bold text-[#16143E]">Official Partner Status</h2>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              {["Hikvision HCSA Certified", "CP PLUS CSE Certified", "Grandstream Certified Specialist", "eSSL Authorised Partner", "Tactine Firewall Dealer"].map((cert) => (
-                <div key={cert} className="px-6 py-3.5 rounded-xl border border-[#16143E]/10 bg-white shadow-sm hover:border-[#4E0DBA]/30 transition-colors text-sm font-semibold text-[#16143E]/70 flex items-center gap-2">
-                  <BadgeCheck size={16} className="text-[#4E0DBA] flex-shrink-0" />
-                  {cert}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <CertificatesSection />
 
         {/* Explore Services Link Strip */}
         <section className="py-14 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">

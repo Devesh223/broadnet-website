@@ -1,6 +1,6 @@
 "use client";
+
 import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,71 +10,55 @@ import {
   Phone,
   MessageCircle,
   ChevronDown,
-  Shield,
   Camera,
-  Zap,
+  Fingerprint,
+  PhoneCall,
+  Wifi,
+  Network,
+  BellRing,
   Lock,
-  AlertTriangle,
+  Car,
+  Globe,
   Sparkles,
   ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
+import BroadnetLogo from "./BroadnetLogo";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
+import { SERVICES_LIST } from "@/data/services";
 
-const SECURITY_SUB_ITEMS = [
-  {
-    label: "All Security Solutions",
-    href: "/security",
-    subtitle: "Complete ELV facility overview & packages",
-    badge: "Hub",
-    color: "#4E0DBA",
-    icon: Shield,
-  },
-  {
-    label: "HD & 4K CCTV Cameras",
-    href: "/security/cameras",
-    subtitle: "CP PLUS & Hikvision certified surveillance",
-    badge: "From ₹1,399",
-    color: "#EF1313",
-    icon: Camera,
-  },
-  {
-    label: "Smart Video Door Phones",
-    href: "/security/door-phones",
-    subtitle: "Touch intercom & remote gate release",
-    badge: "From ₹3,999",
-    color: "#4E0DBA",
-    icon: Zap,
-  },
-  {
-    label: "Biometric Access Control",
-    href: "/security/access-control",
-    subtitle: "Contactless face scan & attendance logs",
-    badge: "From ₹4,500",
-    color: "#4E0DBA",
-    icon: Lock,
-  },
-  {
-    label: "Perimeter Intrusion Alarms",
-    href: "/security/intrusion-alarms",
-    subtitle: "Laser trip beams & 110dB sirens",
-    badge: "From ₹6,999",
-    color: "#EF1313",
-    icon: AlertTriangle,
-  },
-];
+const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  cctv: Camera,
+  "biometric-attendance": Fingerprint,
+  "door-phones": PhoneCall,
+  "enterprise-wifi": Wifi,
+  networking: Network,
+  "intrusion-alarms": BellRing,
+  "access-control": Lock,
+  "entrance-security": Car,
+  internet: Globe,
+};
 
 export default function Header({ activePage = "" }: { activePage?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileSecurityOpen, setMobileSecurityOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const pathname = usePathname();
   const isHomePage = pathname === "/" || activePage === "Home";
-  const isSecurity = pathname?.startsWith("/security") || activePage === "Security";
-  const isInternet = pathname?.startsWith("/internet") || activePage === "Internet";
+  const isServices =
+    pathname?.startsWith("/security") ||
+    pathname?.startsWith("/services") ||
+    pathname?.startsWith("/cctv") ||
+    pathname?.startsWith("/internet") ||
+    activePage === "Services";
+  const isIndustries = pathname?.startsWith("/industries") || activePage === "Industries";
+  const isProjects = pathname?.startsWith("/projects") || activePage === "Projects";
+  const isServiceAreas = pathname?.startsWith("/service-areas") || activePage === "Service Areas";
   const isAbout = pathname?.startsWith("/about") || activePage === "About Us";
+  const isBlog = pathname?.startsWith("/blog") || activePage === "Blog";
   const isContact = pathname?.startsWith("/contact") || activePage === "Contact";
 
   useEffect(() => {
@@ -82,25 +66,6 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.location.hash) {
-      const hashId = window.location.hash.replace("#", "");
-      const timer = setTimeout(() => {
-        if (document.getElementById(hashId)) {
-          scrollToWithPhysics(hashId);
-        }
-      }, 450);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  // Auto-expand mobile security when browsing security pages
-  useEffect(() => {
-    if (isSecurity) {
-      setMobileSecurityOpen(true);
-    }
-  }, [isSecurity]);
 
   const handleDropdownEnter = () => {
     if (dropdownTimeoutRef.current) {
@@ -112,23 +77,10 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
   const handleDropdownLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setDropdownOpen(false);
-    }, 180);
+    }, 200);
   };
 
-  const handleCoverageClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    setMobileOpen(false);
-    setDropdownOpen(false);
-    if (isHomePage) {
-      const el = document.getElementById("coverage");
-      if (el) {
-        e.preventDefault();
-        window.history.pushState(null, "", "#coverage");
-        scrollToWithPhysics("coverage");
-      }
-    }
-  };
-
-  const handleEnquiryClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleEnquiryClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     setMobileOpen(false);
     setDropdownOpen(false);
     const enquiryEl = document.getElementById("enquiry");
@@ -141,137 +93,123 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
 
   return (
     <>
-      {/* ── Main header bar with Glassmorphism ── */}
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled ? "glass-header-scrolled" : "glass-header"
         }`}
         style={{ overflow: "visible" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6" style={{ overflow: "visible" }}>
-          <div className="flex items-center h-16 gap-3 sm:gap-4" style={{ overflow: "visible" }}>
-
-            {/* Left: Logo */}
-            <div className="flex-shrink-0 cursor-pointer group flex items-center">
-              <Link
-                href="/"
-                onClick={(e) => {
-                  if (isHomePage) {
-                    e.preventDefault();
-                    window.history.pushState(null, "", "/");
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }
-                  setMobileOpen(false);
-                }}
-              >
-                <Image
-                  src="/assets/logo.png"
-                  alt="Broadnet Internet & Security Services Logo"
-                  width={200}
-                  height={82}
-                  className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
-                  priority
-                />
-              </Link>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-18 sm:h-20 gap-3">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <BroadnetLogo />
             </div>
 
-            {/* Spacer */}
-            <div className="flex-1" />
-
-            {/* Center: Nav links */}
-            <nav className="hidden lg:flex items-center gap-1 bg-[#16143E]/[0.03] p-1 rounded-full border border-white/40 backdrop-blur-sm">
-              {/* Home */}
+            {/* Desktop Navigation Links */}
+            <nav className="hidden xl:flex items-center gap-1 bg-[#16143E]/[0.03] p-1 rounded-full border border-[#16143E]/10 backdrop-blur-md">
               <Link
                 href="/"
-                className={`relative px-3.5 py-1.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full group ${
-                  isHomePage && !isSecurity && !isInternet && !isAbout && !isContact
-                    ? "text-[#4E0DBA] bg-white shadow-sm"
-                    : "text-[#16143E]/70 hover:text-[#16143E] hover:bg-white/60"
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
+                  isHomePage && !isServices && !isIndustries && !isProjects && !isServiceAreas && !isAbout && !isBlog && !isContact
+                    ? "text-[#4E0DBA] bg-white shadow-xs"
+                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
                 }`}
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 Home
               </Link>
 
-              {/* Security with Dropdown */}
+              {/* Services Mega Dropdown */}
               <div
                 className="relative"
                 onMouseEnter={handleDropdownEnter}
                 onMouseLeave={handleDropdownLeave}
               >
-                <Link
-                  href="/security"
-                  className={`relative px-3.5 py-1.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full flex items-center gap-1 group ${
-                    isSecurity
-                      ? "text-[#4E0DBA] bg-white shadow-sm"
-                      : "text-[#16143E]/70 hover:text-[#16143E] hover:bg-white/60"
+                <button
+                  type="button"
+                  className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all flex items-center gap-1 cursor-pointer ${
+                    isServices
+                      ? "text-[#4E0DBA] bg-white shadow-xs"
+                      : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
                   }`}
                   style={{ fontFamily: "Syne, sans-serif" }}
                 >
-                  <span>Security</span>
+                  <span>Services</span>
                   <ChevronDown
-                    size={13}
+                    size={12}
                     className={`transition-transform duration-200 ${
-                      dropdownOpen ? "rotate-180 text-[#4E0DBA]" : "text-[#16143E]/40 group-hover:text-[#16143E]"
+                      dropdownOpen ? "rotate-180 text-[#EF1313]" : "text-[#16143E]/50"
                     }`}
                   />
-                  <span
-                    className={`absolute bottom-1 left-3.5 right-3.5 h-0.5 rounded-full bg-[#4E0DBA] transition-transform duration-200 origin-left ${
-                      isSecurity ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                    }`}
-                  />
-                </Link>
+                </button>
 
-                {/* Floating Glassmorphic Dropdown */}
                 <AnimatePresence>
                   {dropdownOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute top-full left-0 mt-2 w-80 rounded-2xl bg-white/95 backdrop-blur-2xl border border-[#16143E]/10 shadow-2xl shadow-[#16143E]/20 p-2 z-50"
-                      style={{
-                        WebkitBackdropFilter: "blur(24px) saturate(180%)",
-                        backdropFilter: "blur(24px) saturate(180%)",
-                      }}
+                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                      transition={{ duration: 0.16 }}
+                      className="absolute top-full -left-20 mt-2 w-[440px] rounded-3xl bg-white/98 backdrop-blur-2xl border border-[#16143E]/12 shadow-2xl p-3 z-50"
                     >
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-[#16143E]/40 px-3 py-1.5 font-display">
-                        Electronic Security Domains
+                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#16143E]/8 mb-1">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-[#16143E]/50">
+                          Services in Priority Order
+                        </span>
+                        <Link
+                          href="/cctv-landing"
+                          onClick={() => setDropdownOpen(false)}
+                          className="text-[10px] font-bold text-[#EF1313] hover:underline"
+                        >
+                          CCTV Landing Page →
+                        </Link>
                       </div>
 
-                      <div className="space-y-1">
-                        {SECURITY_SUB_ITEMS.map((item) => {
-                          const Icon = item.icon;
-                          const isCurrent = pathname === item.href;
+                      <div className="max-h-[380px] overflow-y-auto pr-1 space-y-1">
+                        {SERVICES_LIST.map((srv) => {
+                          const Icon = ICON_MAP[srv.id] || ShieldCheck;
+                          const isLead = srv.isLeadDivision;
                           return (
                             <Link
-                              key={item.href}
-                              href={item.href}
+                              key={srv.id}
+                              href={srv.href}
                               onClick={() => setDropdownOpen(false)}
-                              className={`flex items-start gap-3 p-2.5 rounded-xl transition-all duration-200 group ${
-                                isCurrent
-                                  ? "bg-[#4E0DBA]/10 border border-[#4E0DBA]/20"
+                              className={`flex items-start gap-2.5 p-2 rounded-xl transition-all group ${
+                                isLead
+                                  ? "bg-[#FFF0F0] border border-[#EF1313]/25 hover:bg-[#FFE5E5]"
                                   : "hover:bg-[#16143E]/5"
                               }`}
                             >
                               <div
-                                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-transform group-hover:scale-105"
-                                style={{ background: `${item.color}15`, color: item.color }}
+                                className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                                  isLead
+                                    ? "bg-[#EF1313] text-white"
+                                    : "bg-[#4E0DBA]/10 text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white"
+                                } transition-colors`}
                               >
-                                <Icon size={16} />
+                                <Icon size={14} />
                               </div>
+
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between gap-1">
-                                  <span className="text-xs font-bold text-[#16143E] group-hover:text-[#4E0DBA] transition-colors truncate font-display">
-                                    {item.label}
+                                  <span className="text-xs font-bold text-[#16143E] group-hover:text-[#4E0DBA] truncate" style={{ fontFamily: "Syne, sans-serif" }}>
+                                    #{srv.order}. {srv.shortTitle}
                                   </span>
-                                  <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-[#16143E]/5 text-[#16143E]/70 flex-shrink-0">
-                                    {item.badge}
-                                  </span>
+                                  {srv.badge && (
+                                    <span
+                                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full ${
+                                        isLead
+                                          ? "bg-[#EF1313] text-white"
+                                          : "bg-[#16143E]/5 text-[#16143E]/70"
+                                      }`}
+                                    >
+                                      {srv.badge}
+                                    </span>
+                                  )}
                                 </div>
-                                <p className="text-[11px] text-[#16143E]/55 line-clamp-1 mt-0.5">
-                                  {item.subtitle}
+                                <p className="text-[10.5px] text-[#16143E]/60 truncate mt-0.5">
+                                  {srv.tagline}
                                 </p>
                               </div>
                             </Link>
@@ -279,303 +217,269 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                         })}
                       </div>
 
-                      {/* Bottom Advisor Teaser */}
-                      <div className="mt-2 pt-2 border-t border-[#16143E]/8">
+                      <div className="mt-2 pt-2 border-t border-[#16143E]/8 flex items-center justify-between px-2 text-xs">
                         <Link
                           href="/security#solution-finder"
                           onClick={() => setDropdownOpen(false)}
-                          className="flex items-center justify-between p-2 rounded-xl bg-gradient-to-r from-[#16143E] to-[#252060] text-white hover:opacity-95 transition-all text-xs font-semibold group"
+                          className="text-[11px] font-bold text-[#4E0DBA] hover:underline flex items-center gap-1"
                         >
-                          <div className="flex items-center gap-2">
-                            <Sparkles size={13} className="text-[#EF1313]" />
-                            <span className="text-[11px]">Interactive Solution Advisor</span>
-                          </div>
-                          <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform text-white/80" />
+                          <Sparkles size={11} className="text-[#EF1313]" /> Solution Advisor
                         </Link>
+                        <a
+                          href="tel:+919884344075"
+                          className="text-[11px] font-bold text-[#EF1313] hover:underline"
+                        >
+                          Direct Call: 98843 44075
+                        </a>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              {/* Internet */}
               <Link
-                href="/internet"
-                className={`relative px-3.5 py-1.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full group ${
-                  isInternet
-                    ? "text-[#4E0DBA] bg-white shadow-sm"
-                    : "text-[#16143E]/70 hover:text-[#16143E] hover:bg-white/60"
+                href="/industries"
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
+                  isIndustries
+                    ? "text-[#4E0DBA] bg-white shadow-xs"
+                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
                 }`}
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
-                Internet
-                <span
-                  className={`absolute bottom-1 left-3.5 right-3.5 h-0.5 rounded-full bg-[#4E0DBA] transition-transform duration-200 origin-left ${
-                    isInternet ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
+                Industries
               </Link>
 
-              {/* Coverage */}
               <Link
-                href="/#coverage"
-                onClick={handleCoverageClick}
-                className="relative px-3.5 py-1.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full text-[#16143E]/70 hover:text-[#16143E] hover:bg-white/60 group"
+                href="/projects"
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
+                  isProjects
+                    ? "text-[#4E0DBA] bg-white shadow-xs"
+                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
+                }`}
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
-                Coverage
-                <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 rounded-full bg-[#4E0DBA] transition-transform duration-200 origin-left scale-x-0 group-hover:scale-x-100" />
+                Projects
               </Link>
 
-              {/* About Us */}
+              <Link
+                href="/service-areas"
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
+                  isServiceAreas
+                    ? "text-[#4E0DBA] bg-white shadow-xs"
+                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
+                }`}
+                style={{ fontFamily: "Syne, sans-serif" }}
+              >
+                Service Areas
+              </Link>
+
               <Link
                 href="/about"
-                className={`relative px-3.5 py-1.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full group ${
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
                   isAbout
-                    ? "text-[#4E0DBA] bg-white shadow-sm"
-                    : "text-[#16143E]/70 hover:text-[#16143E] hover:bg-white/60"
+                    ? "text-[#4E0DBA] bg-white shadow-xs"
+                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
                 }`}
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 About Us
-                <span
-                  className={`absolute bottom-1 left-3.5 right-3.5 h-0.5 rounded-full bg-[#4E0DBA] transition-transform duration-200 origin-left ${
-                    isAbout ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
               </Link>
 
-              {/* Contact */}
+              <Link
+                href="/blog"
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
+                  isBlog
+                    ? "text-[#4E0DBA] bg-white shadow-xs"
+                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
+                }`}
+                style={{ fontFamily: "Syne, sans-serif" }}
+              >
+                Blog
+              </Link>
+
               <Link
                 href="/contact"
-                className={`relative px-3.5 py-1.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-full group ${
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
                   isContact
-                    ? "text-[#4E0DBA] bg-white shadow-sm"
-                    : "text-[#16143E]/70 hover:text-[#16143E] hover:bg-white/60"
+                    ? "text-[#4E0DBA] bg-white shadow-xs"
+                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
                 }`}
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 Contact
-                <span
-                  className={`absolute bottom-1 left-3.5 right-3.5 h-0.5 rounded-full bg-[#4E0DBA] transition-transform duration-200 origin-left ${
-                    isContact ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
               </Link>
             </nav>
 
-            {/* CTA */}
-            <div className="hidden lg:flex items-center">
+            {/* Desktop Quick Actions */}
+            <div className="hidden lg:flex items-center gap-2.5">
+              <a
+                href="tel:+919884344075"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-[#16143E] hover:text-[#EF1313] hover:bg-[#16143E]/5 transition-colors"
+                style={{ fontFamily: "Syne, sans-serif" }}
+              >
+                <Phone size={14} className="text-[#EF1313]" />
+                <span>98843 44075</span>
+              </a>
+
+              <a
+                href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20would%20like%20to%20enquire%20about%20your%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] flex items-center justify-center transition-colors"
+                aria-label="WhatsApp Broadnet"
+              >
+                <MessageCircle size={16} />
+              </a>
+
               <Link
                 href="/contact#enquiry"
                 onClick={handleEnquiryClick}
-                className="btn-crimson"
-                style={{ fontFamily: "Syne, sans-serif" }}
+                className="btn-crimson text-xs py-2.5 px-4 shadow-sm"
               >
-                Request Enquiry
+                Free Site Visit
               </Link>
             </div>
 
-            {/* Mobile burger */}
+            {/* Mobile Burger Button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-[#16143E] hover:bg-[#16143E]/5 transition-colors"
-              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-              aria-expanded={mobileOpen}
+              className="xl:hidden p-2.5 rounded-xl text-[#16143E] hover:bg-[#16143E]/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile Navigation Drawer */}
         <AnimatePresence>
           {mobileOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.22 }}
-              className="lg:hidden border-t border-white/50 bg-white/95 backdrop-blur-2xl overflow-y-auto max-h-[85vh] shadow-2xl"
-              style={{
-                WebkitBackdropFilter: "blur(24px) saturate(190%)",
-                backdropFilter: "blur(24px) saturate(190%)",
-              }}
+              className="xl:hidden bg-white/98 backdrop-blur-2xl border-t border-[#16143E]/10 max-h-[85vh] overflow-y-auto px-4 py-4 shadow-2xl"
             >
-              <div className="px-4 py-4 flex flex-col gap-1">
-                {/* Home */}
+              <div className="space-y-1">
                 <Link
                   href="/"
                   onClick={() => setMobileOpen(false)}
-                  className={`min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold transition-colors ${
-                    isHomePage && !isSecurity && !isInternet && !isAbout && !isContact
-                      ? "bg-[#4E0DBA]/8 text-[#4E0DBA]"
-                      : "text-[#16143E]/75 hover:bg-[#16143E]/5"
-                  }`}
-                  style={{ fontFamily: "Syne, sans-serif" }}
+                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
                 >
                   Home
                 </Link>
 
-                {/* Security Accordion in Mobile */}
-                <div className="rounded-2xl border border-[#16143E]/8 overflow-hidden bg-[#16143E]/[0.02]">
+                {/* Mobile Services Accordion */}
+                <div className="rounded-xl border border-[#16143E]/8 overflow-hidden bg-[#FAFAFE]">
                   <div className="flex items-center justify-between pr-2">
-                    <Link
-                      href="/security"
-                      onClick={() => setMobileOpen(false)}
-                      className={`min-h-[44px] flex-1 flex items-center px-4 py-2.5 text-sm font-semibold transition-colors ${
-                        isSecurity ? "text-[#4E0DBA]" : "text-[#16143E]/85"
-                      }`}
-                      style={{ fontFamily: "Syne, sans-serif" }}
-                    >
-                      <Shield size={16} className="mr-2 text-[#4E0DBA]" />
-                      <span>Security Solutions</span>
-                    </Link>
+                    <span className="px-4 py-2.5 text-sm font-bold text-[#16143E] flex items-center gap-2">
+                      <Camera size={16} className="text-[#EF1313]" />
+                      <span>Services (Priority Order)</span>
+                    </span>
                     <button
                       type="button"
-                      onClick={() => setMobileSecurityOpen(!mobileSecurityOpen)}
-                      className="p-2 rounded-xl text-[#16143E]/60 hover:text-[#16143E] hover:bg-[#16143E]/5"
-                      aria-label="Toggle Security Submenu"
+                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                      className="p-2 text-[#16143E]/60"
                     >
                       <ChevronDown
                         size={16}
                         className={`transition-transform duration-200 ${
-                          mobileSecurityOpen ? "rotate-180 text-[#4E0DBA]" : ""
+                          mobileServicesOpen ? "rotate-180 text-[#EF1313]" : ""
                         }`}
                       />
                     </button>
                   </div>
 
-                  <AnimatePresence>
-                    {mobileSecurityOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.18 }}
-                        className="px-3 pb-3 pt-1 space-y-1 bg-white/60 border-t border-[#16143E]/5"
-                      >
-                        {SECURITY_SUB_ITEMS.map((sub) => {
-                          const Icon = sub.icon;
-                          const isSubActive = pathname === sub.href;
-                          return (
-                            <Link
-                              key={sub.href}
-                              href={sub.href}
-                              onClick={() => setMobileOpen(false)}
-                              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                                isSubActive
-                                  ? "bg-[#4E0DBA] text-white"
-                                  : "text-[#16143E]/75 hover:bg-[#16143E]/5"
-                              }`}
-                            >
-                              <div className="flex items-center gap-2">
-                                <Icon size={14} className={isSubActive ? "text-white" : "text-[#4E0DBA]"} />
-                                <span>{sub.label}</span>
-                              </div>
-                              <span
-                                className={`text-[10px] px-1.5 py-0.5 rounded ${
-                                  isSubActive ? "bg-white/20 text-white" : "bg-[#16143E]/5 text-[#16143E]/60"
-                                }`}
-                              >
-                                {sub.badge}
-                              </span>
-                            </Link>
-                          );
-                        })}
+                  {mobileServicesOpen && (
+                    <div className="px-3 pb-3 space-y-1 border-t border-[#16143E]/8 pt-2">
+                      {SERVICES_LIST.map((srv) => (
                         <Link
-                          href="/security#solution-finder"
+                          key={srv.id}
+                          href={srv.href}
                           onClick={() => setMobileOpen(false)}
-                          className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-[#16143E] text-white text-[11px] font-bold mt-2"
+                          className="flex items-center justify-between p-2 rounded-lg text-xs font-semibold text-[#16143E]/85 hover:bg-white"
                         >
-                          <Sparkles size={12} className="text-[#EF1313]" />
-                          <span>Interactive Solution Advisor</span>
+                          <span>#{srv.order}. {srv.title}</span>
+                          <span className="text-[10px] text-[#EF1313] font-bold">→</span>
                         </Link>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                {/* Internet */}
                 <Link
-                  href="/internet"
+                  href="/cctv-landing"
                   onClick={() => setMobileOpen(false)}
-                  className={`min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold transition-colors ${
-                    isInternet
-                      ? "bg-[#4E0DBA]/8 text-[#4E0DBA]"
-                      : "text-[#16143E]/75 hover:bg-[#16143E]/5"
-                  }`}
-                  style={{ fontFamily: "Syne, sans-serif" }}
+                  className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold text-[#EF1313] bg-[#FFF0F0] border border-[#EF1313]/20"
                 >
-                  Internet & Broadband
+                  <span>CCTV Lead Division Page</span>
+                  <span>🔥</span>
                 </Link>
 
-                {/* Coverage */}
                 <Link
-                  href="/#coverage"
-                  onClick={handleCoverageClick}
-                  className="min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold text-[#16143E]/75 hover:bg-[#16143E]/5 transition-colors"
-                  style={{ fontFamily: "Syne, sans-serif" }}
+                  href="/industries"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
                 >
-                  Coverage Area
+                  Industries & Solutions
                 </Link>
 
-                {/* About Us */}
+                <Link
+                  href="/projects"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
+                >
+                  Projects & Gallery
+                </Link>
+
+                <Link
+                  href="/service-areas"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
+                >
+                  Service Areas (Chennai / Avadi)
+                </Link>
+
                 <Link
                   href="/about"
                   onClick={() => setMobileOpen(false)}
-                  className={`min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold transition-colors ${
-                    isAbout
-                      ? "bg-[#4E0DBA]/8 text-[#4E0DBA]"
-                      : "text-[#16143E]/75 hover:bg-[#16143E]/5"
-                  }`}
-                  style={{ fontFamily: "Syne, sans-serif" }}
+                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
                 >
-                  About Broadnet
+                  About Us (12 Yrs / 10+ Staff)
                 </Link>
 
-                {/* Contact */}
+                <Link
+                  href="/blog"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
+                >
+                  Blog & Knowledge Hub
+                </Link>
+
                 <Link
                   href="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className={`min-h-[44px] flex items-center px-4 py-2.5 rounded-2xl text-sm font-semibold transition-colors ${
-                    isContact
-                      ? "bg-[#4E0DBA]/8 text-[#4E0DBA]"
-                      : "text-[#16143E]/75 hover:bg-[#16143E]/5"
-                  }`}
-                  style={{ fontFamily: "Syne, sans-serif" }}
+                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
                 >
-                  Contact & Support
+                  Contact & Dispatch Office
                 </Link>
+              </div>
 
-                {/* CTA & Quick dials */}
-                <div className="pt-2 border-t border-[#16143E]/10 flex flex-col gap-2">
-                  <Link
-                    href="/contact#enquiry"
-                    onClick={handleEnquiryClick}
-                    className="btn-crimson min-h-[44px] justify-center w-full shadow-lg shadow-[#EF1313]/25"
-                  >
-                    Request Enquiry
-                  </Link>
-                  <div className="grid grid-cols-2 gap-2 mt-1">
-                    <a
-                      href="tel:+919884344075"
-                      className="min-h-[44px] flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-[#16143E]/15 text-xs font-semibold text-[#16143E] bg-[#16143E]/4 hover:bg-[#16143E]/8 transition-colors active:scale-98"
-                    >
-                      <Phone size={14} className="text-[#4E0DBA]" />
-                      <span>Call Now</span>
-                    </a>
-                    <a
-                      href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20would%20like%20to%20enquire%20about%20your%20services."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="min-h-[44px] flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-[#25D366]/30 text-xs font-semibold text-[#16143E] bg-[#25D366]/8 hover:bg-[#25D366]/15 transition-colors active:scale-98"
-                    >
-                      <MessageCircle size={14} className="text-[#25D366]" />
-                      <span>WhatsApp</span>
-                    </a>
-                  </div>
-                </div>
+              {/* Mobile CTA Strip */}
+              <div className="pt-4 mt-4 border-t border-[#16143E]/10 flex flex-col gap-2">
+                <a
+                  href="tel:+919884344075"
+                  className="w-full py-2.5 rounded-xl bg-[#16143E] text-white text-xs font-bold flex items-center justify-center gap-2"
+                >
+                  <Phone size={14} className="text-[#EF1313]" /> Call 98843 44075 / 86818 88111
+                </a>
+                <Link
+                  href="/contact#enquiry"
+                  onClick={handleEnquiryClick}
+                  className="w-full btn-crimson text-xs py-2.5 justify-center"
+                >
+                  Claim Free Site Visit
+                </Link>
               </div>
             </motion.div>
           )}
