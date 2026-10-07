@@ -1,0 +1,52 @@
+name: Build & Auto Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build Next.js & Deploy
+
+    steps:
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Static Site (output: export)
+        run: npm run build
+
+      - name: 📤 Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hostinger-public-html
+          path: out/
+          retention-days: 7
+
+      - name: 🚀 Auto Deploy to Hostinger via FTPS
+        if: env.HAS_FTP_SECRET == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        env:
+          HAS_FTP_SECRET: ${{ secrets.FTP_SERVER != '' }}
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_DIR || 'public_html/' }}
+          local-dir: ./out/
+          dangerous-clean-slate: false
