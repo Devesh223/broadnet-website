@@ -162,41 +162,49 @@ export default function HeroSection() {
           <span><strong>100% Free On-Site Inspection:</strong> No obligation quote for homes, apartments & offices across Chennai.</span>
         </motion.div>
 
-        {/* Dynamic Metric Cards */}
+        {/* Dynamic Metric Cards with Pop-Up Hover Animation */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.3 }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-4xl"
         >
-          {COMPANY_NUMBERS.map((m, i) => (
-            <div
+          {[
+            { value: "2014", label: "ESTABLISHED", detail: "10+ Years Trust" },
+            { value: "100+ km", label: "PRIVATE FIBRE", detail: "Zero Reseller Mesh" },
+            { value: "2,500+", label: "DEPLOYMENTS", detail: "Homes & Corporates" },
+            { value: "< 2 Hrs", label: "TECHNICIAN SLA", detail: "Rapid Local Dispatch" },
+          ].map((m) => (
+            <motion.div
               key={m.label}
-              className={`p-4 rounded-2xl border transition-all duration-300 backdrop-blur-sm text-center ${
-                tick === i
-                  ? "border-[#4E0DBA]/40 bg-[#4E0DBA]/[0.05] shadow-md shadow-[#4E0DBA]/5"
-                  : "border-[#16143E]/10 bg-white/90 shadow-2xs"
-              }`}
+              whileHover={{
+                y: -8,
+                scale: 1.04,
+                boxShadow: "0 24px 48px -12px rgba(78, 13, 186, 0.22), 0 0 0 1.5px rgba(78, 13, 186, 0.35)",
+                transition: { type: "spring", stiffness: 450, damping: 20 },
+              }}
+              whileTap={{ scale: 0.97 }}
+              className="relative p-4 sm:p-5 rounded-2xl border border-[#16143E]/10 bg-white/95 backdrop-blur-md shadow-sm text-center cursor-pointer group transition-all duration-200 hover:bg-white select-none"
             >
               <div
-                className="text-2xl sm:text-3xl font-extrabold text-[#16143E] mb-0.5"
+                className="text-2xl sm:text-3xl font-extrabold text-[#16143E] group-hover:text-[#4E0DBA] transition-colors mb-0.5"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 {m.value}
               </div>
               <div
-                className="text-[11px] sm:text-xs text-[#16143E]/80 font-bold uppercase tracking-wider"
+                className="text-[10.5px] sm:text-xs text-[#16143E]/80 font-bold uppercase tracking-wider group-hover:text-[#16143E] transition-colors"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 {m.label}
               </div>
               <div
-                className="text-[10px] sm:text-[11px] text-[#EF1313] font-semibold mt-0.5"
+                className="text-[10px] sm:text-[11px] text-[#4E0DBA] font-semibold mt-1 group-hover:text-[#EF1313] transition-colors"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 {m.detail}
               </div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>
