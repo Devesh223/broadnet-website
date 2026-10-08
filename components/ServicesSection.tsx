@@ -1,315 +1,313 @@
 "use client";
-
-import { motion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import {
+  Shield,
   Camera,
-  Fingerprint,
-  PhoneCall,
-  Wifi,
-  Network,
-  BellRing,
   Lock,
-  Car,
-  Globe,
-  ArrowRight,
-  ShieldCheck,
+  Zap,
+  Radio,
+  BadgeCheck,
   CheckCircle2,
-  Sparkles,
-  Phone,
+  ArrowRight,
   MessageCircle,
+  Network,
+  Sparkles,
+  Server,
 } from "lucide-react";
-import { SERVICES_LIST } from "@/data/services";
-import { scrollToWithPhysics } from "@/lib/scrollPhysics";
 
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  cctv: Camera,
-  "biometric-attendance": Fingerprint,
-  "door-phones": PhoneCall,
-  "enterprise-wifi": Wifi,
-  networking: Network,
-  "intrusion-alarms": BellRing,
-  "access-control": Lock,
-  "entrance-security": Car,
-  internet: Globe,
-};
+interface SecuritySolution {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  title: string;
+  category: "Residential" | "Commercial" | "Both";
+  price?: string;
+  badge?: string;
+  desc: string;
+  features: string[];
+  pageUrl: string;
+  ctaText: string;
+  waText: string;
+}
+
+const SECURITY_SOLUTIONS: SecuritySolution[] = [
+  {
+    icon: Camera,
+    title: "HD & 4K CCTV Surveillance Systems",
+    category: "Both",
+    price: "From ₹1,399",
+    badge: "CP PLUS & Hikvision",
+    desc: "End-to-end IP and HD camera installation for homes, retail stores, and commercial complexes with ColorVu 24/7 color night vision and zero-lag mobile viewing.",
+    features: [
+      "1080p to 4K resolution with color night vision",
+      "Concealed conduit cabling & tamper-free routing",
+      "Surveillance-grade WD Purple / Seagate SkyHawk storage",
+      "Live remote monitoring on iPhone, Android & PC",
+    ],
+    pageUrl: "/security/cameras",
+    ctaText: "Explore Cameras & Packages",
+    waText: "Hi Broadnet, I am looking for CCTV surveillance installation in Avadi. Please provide a quotation.",
+  },
+  {
+    icon: Zap,
+    title: "Smart Video Door Phones (VDP)",
+    category: "Residential",
+    price: "From ₹3,999",
+    badge: "Home Security",
+    desc: "HD touchscreen door intercoms allowing you to screen callers, talk to delivery personnel, and release front gate latches from indoor panels or smartphones.",
+    features: [
+      "7-inch indoor color touchscreen display panel",
+      "Wide-angle infrared night vision doorbell camera",
+      "One-touch electronic gate latch release integration",
+      "Visitor snapshot capture & tamper detection alarm",
+    ],
+    pageUrl: "/security/door-phones",
+    ctaText: "Explore Video Door Phones",
+    waText: "Hi Broadnet, I want to install a Video Door Phone system for my home in Avadi. Please share options and pricing.",
+  },
+  {
+    icon: Lock,
+    title: "Biometric Access Control & Attendance",
+    category: "Commercial",
+    price: "From ₹4,500",
+    badge: "eSSL Authorized Partner",
+    desc: "Contactless facial recognition and optical fingerprint door locks with automated payroll software integration for offices, clinics, and factories.",
+    features: [
+      "Sub-second (0.2s) contactless facial recognition scan",
+      "Heavy-duty 600lbs electromagnetic drop-bolt door latch",
+      "Automated attendance report generation & payroll sync",
+      "Emergency battery backup operation during power outages",
+    ],
+    pageUrl: "/security/access-control",
+    ctaText: "Explore Biometric Systems",
+    waText: "Hi Broadnet, I am interested in Biometric Access Control for our office in Avadi. Please provide details.",
+  },
+  {
+    icon: Shield,
+    title: "Perimeter Alarms & Intrusion Detection",
+    category: "Both",
+    price: "From ₹6,999",
+    badge: "Hikvision Certified",
+    desc: "Active boundary wall defense with infrared photo-beam trip sensors, loud 110dB sirens, and automated GSM phone calls upon verified perimeter breach.",
+    features: [
+      "Laser photo-beam sensors along compound walls & gates",
+      "GSM auto-dialer alerts your mobile phone during intrusion",
+      "Pet-immune motion detectors preventing false triggers",
+      "Seamless integration with existing CCTV camera setups",
+    ],
+    pageUrl: "/security/intrusion-alarms",
+    ctaText: "Explore Intrusion Alarms",
+    waText: "Hi Broadnet, I want to inquire about Perimeter Alarms and Intrusion Detection in Avadi.",
+  },
+];
 
 export default function ServicesSection() {
-  const cctvLead = SERVICES_LIST[0];
-  const otherServices = SERVICES_LIST.slice(1);
+  const [activeFilter, setActiveFilter] = useState<"All" | "Residential" | "Commercial">("All");
+  const [arrived, setArrived] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-30px" });
+
+  useEffect(() => {
+    const handleArrival = (e: Event) => {
+      const customEvent = e as CustomEvent<{ targetId: string }>;
+      if (customEvent.detail?.targetId === "security" || customEvent.detail?.targetId === "services") {
+        setArrived(true);
+        setTimeout(() => setArrived(false), 3800);
+      }
+    };
+    window.addEventListener("broadnet:section-arrived", handleArrival);
+    return () => window.removeEventListener("broadnet:section-arrived", handleArrival);
+  }, []);
+
+  const filteredSolutions = SECURITY_SOLUTIONS.filter((item) => {
+    if (activeFilter === "All") return true;
+    return item.category === activeFilter || item.category === "Both";
+  });
 
   return (
-    <section id="services" className="py-20 sm:py-28 bg-[#FAFAFE] relative overflow-hidden scroll-mt-20">
-      {/* Background accents */}
-      <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{
-          backgroundImage: "linear-gradient(#16143E 1px, transparent 1px), linear-gradient(90deg, #16143E 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
+    <section
+      ref={ref}
+      id="security"
+      className={`py-24 sm:py-28 bg-[#0B091E] relative overflow-hidden transition-all duration-500 ${
+        arrived ? "ring-2 ring-[#EF1313]/30 shadow-2xl shadow-[#EF1313]/15" : ""
+      }`}
+    >
+      <span id="services" className="absolute -top-20" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      {/* Subtle ambient glows */}
+      <div className="absolute top-1/3 right-1/4 w-[600px] h-[500px] bg-[#EF1313]/5 blur-[160px] pointer-events-none rounded-full" />
+      <div className="absolute bottom-10 left-1/4 w-[500px] h-[400px] bg-[#4E0DBA]/10 blur-[140px] pointer-events-none rounded-full" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider mb-3">
-            <Sparkles size={13} />
-            <span>Technology & Security Infrastructure</span>
-          </div>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight mb-4"
-            style={{ fontFamily: "Syne, sans-serif" }}
-          >
-            Our Core Services in Priority Order
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-14"
+        >
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+            <span className="w-3 h-px bg-[#EF1313]" /> Integrated Security & ISP Infrastructure <span className="w-3 h-px bg-[#EF1313]" />
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight font-display mb-4">
+            What An Integrated Security ISP Does For You
           </h2>
-          <p
-            className="text-[#16143E]/70 text-base sm:text-lg leading-relaxed"
-            style={{ fontFamily: "DM Sans, sans-serif" }}
-          >
-            From lead surveillance installations to biometric access, enterprise Wi-Fi, and network cabling across Chennai. Every system is deployed with precision and backed by genuine manufacturer warranties.
+          <p className="text-white/65 text-base sm:text-lg leading-relaxed font-body">
+            By combining a high-bandwidth optical fiber backbone with certified electronic security hardware, Broadnet eliminates vendor finger-pointing. Your cameras stream at full bitrates with guaranteed &lt; 2-hour technician dispatch in Avadi.
           </p>
-        </div>
 
-        {/* 1. LEAD DIVISION: CCTV Surveillance Hero Feature Card */}
-        <div className="mb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="rounded-3xl bg-white border-2 border-[#EF1313]/30 shadow-xl p-7 sm:p-10 relative overflow-hidden group hover:border-[#EF1313] transition-all"
-          >
-            {/* Top decorative badge */}
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-6 border-b border-[#16143E]/8 pb-5">
-              <div className="flex items-center gap-2.5">
-                <span className="w-8 h-8 rounded-xl bg-[#EF1313] text-white flex items-center justify-center font-black text-sm">
-                  #1
-                </span>
-                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#EF1313]">
-                  {cctvLead.badge}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#4E0DBA]/10 text-[#4E0DBA]">
-                  Hikvision & CP PLUS Certified
-                </span>
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700">
-                  {cctvLead.startingPrice}
-                </span>
-              </div>
-            </div>
-
-            <div className="grid lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7">
-                <h3
-                  className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#16143E] mb-2 leading-tight"
-                  style={{ fontFamily: "Syne, sans-serif" }}
-                >
-                  {cctvLead.title}
-                </h3>
-                <div className="text-sm sm:text-base font-semibold text-[#4E0DBA] mb-4">
-                  “{cctvLead.tagline}”
+          {/* Value Props Bar */}
+          <div className="grid sm:grid-cols-3 gap-3 max-w-3xl mx-auto mt-8 text-left">
+            {[
+              {
+                icon: Network,
+                title: "Fiber Backbone For 4K CCTV",
+                desc: "Zero buffering on live feeds or cloud NVR loops",
+              },
+              {
+                icon: Server,
+                title: "Single-Window Accountability",
+                desc: "One number for both internet & surveillance support",
+              },
+              {
+                icon: Shield,
+                title: "< 2-Hour Technician SLA",
+                desc: "Direct local dispatch from Fire Station Road, Avadi",
+              },
+            ].map((prop) => (
+              <div
+                key={prop.title}
+                className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-start gap-3"
+              >
+                <div className="w-8 h-8 rounded-lg bg-[#EF1313]/15 text-[#EF1313] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <prop.icon size={16} />
                 </div>
-                <p
-                  className="text-[#16143E]/75 text-sm sm:text-base leading-relaxed mb-6"
-                  style={{ fontFamily: "DM Sans, sans-serif" }}
-                >
-                  {cctvLead.description}
-                </p>
-
-                {/* Sub-sections bullet grid */}
-                <div className="grid sm:grid-cols-2 gap-2.5 mb-8">
-                  {cctvLead.features.map((feat) => (
-                    <div key={feat} className="flex items-start gap-2 text-xs sm:text-sm text-[#16143E]/80">
-                      <CheckCircle2 size={16} className="text-[#EF1313] mt-0.5 flex-shrink-0" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* CTAs */}
-                <div className="flex flex-wrap items-center gap-3">
-                  <Link
-                    href={cctvLead.href}
-                    className="btn-crimson min-h-[46px] px-6 text-sm justify-center group"
-                  >
-                    <span>Explore CCTV Packages & AMC</span>
-                    <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
-
-                  <button
-                    type="button"
-                    onClick={() => scrollToWithPhysics("enquiry")}
-                    className="px-6 py-2.5 rounded-full border border-[#16143E]/20 hover:border-[#4E0DBA] text-xs sm:text-sm font-semibold text-[#16143E] hover:text-[#4E0DBA] transition-colors min-h-[46px] cursor-pointer"
-                    style={{ fontFamily: "Syne, sans-serif" }}
-                  >
-                    Request Free Site Visit
-                  </button>
-
-                  <a
-                    href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20need%20a%20quotation%20for%20CCTV%20Surveillance%20installation."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2.5 rounded-full bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#16143E] text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors min-h-[46px]"
-                  >
-                    <MessageCircle size={15} className="text-[#25D366]" />
-                    <span>WhatsApp Quote</span>
-                  </a>
-                </div>
-              </div>
-
-              {/* Lead Division Visual Right Column */}
-              <div className="lg:col-span-5 bg-gradient-to-br from-[#16143E] to-[#2B1055] rounded-2xl p-6 sm:p-7 text-white shadow-lg flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs uppercase tracking-widest text-[#EF1313] font-bold">
-                      Direct Surveillance Assurance
-                    </span>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-white/80">
-                      Chennai & Avadi
-                    </span>
-                  </div>
-                  <h4 className="text-xl font-bold mb-3" style={{ fontFamily: "Syne, sans-serif" }}>
-                    Why Choose Our CCTV Division?
-                  </h4>
-                  <ul className="space-y-3 text-xs sm:text-[13px] text-white/80">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#EF1313] font-bold">✓</span>
-                      <span><strong>Genuine Optical Sensors:</strong> Only original Hikvision, CP PLUS, and Dahua cameras with genuine manufacturer serials.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#EF1313] font-bold">✓</span>
-                      <span><strong>Surveillance Hard Drives:</strong> WD Purple & Seagate SkyHawk 24/7 drives that never drop recorded frames.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#EF1313] font-bold">✓</span>
-                      <span><strong>2-Hour Dispatch:</strong> Quick local technicians in Avadi for emergency lens cleaning, cable repair, or NVR setup.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#EF1313] font-bold">✓</span>
-                      <span><strong>Dedicated CCTV Landing Page:</strong> Complete package calculators & camera previews available.</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
-                  <div>
-                    <div className="text-[11px] text-white/60">Lead Division Hotline:</div>
-                    <a href="tel:+919884344075" className="text-sm font-bold text-white hover:text-[#EF1313] transition-colors">
-                      98843 44075 / 86818 88111
-                    </a>
-                  </div>
-                  <Link
-                    href="/cctv-landing"
-                    className="px-3.5 py-1.5 rounded-lg bg-[#EF1313] hover:bg-[#d81010] text-white text-xs font-bold transition-all shadow-md"
-                  >
-                    Quick CCTV Page →
-                  </Link>
+                  <h3 className="text-xs font-bold text-white leading-snug">{prop.title}</h3>
+                  <p className="text-[11px] text-white/55 leading-tight mt-0.5">{prop.desc}</p>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        </div>
+            ))}
+          </div>
 
-        {/* 2 to 9: ALL OTHER SERVICES IN STRICT PRIORITY ORDER */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {otherServices.map((service, index) => {
-            const Icon = ICON_MAP[service.id] || ShieldCheck;
-            const isMinor = service.isMinorOffering;
-
-            return (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: index * 0.05 }}
-                className={`rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1.5 ${
-                  isMinor
-                    ? "bg-[#F3F4F8] border border-[#16143E]/10 hover:border-[#16143E]/30"
-                    : "bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/40 shadow-xs hover:shadow-md"
+          {/* Solution Category Filter */}
+          <div className="flex items-center justify-center gap-2 mt-8">
+            {(["All", "Residential", "Commercial"] as const).map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setActiveFilter(filter)}
+                className={`min-h-[44px] px-5 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center ${
+                  activeFilter === filter
+                    ? "bg-[#EF1313] text-white shadow-md shadow-[#EF1313]/30"
+                    : "bg-white/5 text-white/60 hover:text-white border border-white/10 hover:border-white/20"
                 }`}
               >
+                {filter === "All" ? "All Solutions" : filter === "Residential" ? "Homes & Villas" : "Offices & Commercial"}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Security Solutions Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          {filteredSolutions.map((sol, index) => {
+            const Icon = sol.icon;
+            return (
+              <motion.div
+                key={sol.title}
+                initial={{ opacity: 0, y: 24 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: index * 0.08, duration: 0.5 }}
+                className="bg-[#120F2E] border border-white/10 rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:border-[#EF1313]/40 hover:shadow-xl hover:shadow-[#EF1313]/10 group"
+              >
                 <div>
-                  {/* Service Order Index + Badge */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span
-                      className="w-7 h-7 rounded-lg bg-[#16143E]/5 text-[#16143E] font-black text-xs flex items-center justify-center group-hover:bg-[#4E0DBA] group-hover:text-white transition-colors"
-                      style={{ fontFamily: "Syne, sans-serif" }}
-                    >
-                      #{service.order}
+                  {/* Top Badge & Price */}
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span className="text-[11px] font-bold text-[#A78BFA] uppercase tracking-wider">
+                      {sol.badge}
                     </span>
-                    {service.badge && (
-                      <span
-                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
-                          isMinor
-                            ? "bg-[#16143E]/10 text-[#16143E]/70"
-                            : "bg-[#4E0DBA]/10 text-[#4E0DBA]"
-                        }`}
-                      >
-                        {service.badge}
+                    {sol.price && (
+                      <span className="text-xs font-bold text-[#EF1313] bg-[#EF1313]/12 border border-[#EF1313]/25 px-2.5 py-0.5 rounded-md">
+                        {sol.price}
                       </span>
                     )}
                   </div>
 
-                  {/* Icon */}
-                  <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-105 ${
-                      isMinor
-                        ? "bg-[#16143E]/10 text-[#16143E]"
-                        : "bg-[#4E0DBA]/10 text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white"
-                    }`}
-                  >
-                    <Icon size={24} />
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#EF1313]/20 group-hover:border-[#EF1313]/35 text-[#EF1313] transition-colors">
+                      <Icon size={18} />
+                    </div>
+                    <h3 className="text-base font-bold text-white group-hover:text-[#A78BFA] transition-colors font-display leading-snug">
+                      {sol.title}
+                    </h3>
                   </div>
 
-                  {/* Title & Tagline */}
-                  <h3
-                    className="text-lg font-bold text-[#16143E] mb-1.5 group-hover:text-[#4E0DBA] transition-colors leading-snug"
-                    style={{ fontFamily: "Syne, sans-serif" }}
-                  >
-                    {service.title}
-                  </h3>
-                  <div className="text-xs font-semibold text-[#EF1313] mb-3">
-                    {service.tagline}
-                  </div>
-
-                  <p
-                    className="text-xs sm:text-[13px] text-[#16143E]/70 leading-relaxed mb-4 line-clamp-3"
-                    style={{ fontFamily: "DM Sans, sans-serif" }}
-                  >
-                    {service.description}
+                  <p className="text-white/60 text-xs leading-relaxed mb-4">
+                    {sol.desc}
                   </p>
 
-                  {/* Key Highlights list */}
-                  <div className="space-y-1.5 mb-5 pt-3 border-t border-[#16143E]/8">
-                    {service.features.slice(0, 3).map((f) => (
-                      <div key={f} className="flex items-start gap-1.5 text-xs text-[#16143E]/75">
-                        <span className="text-[#4E0DBA] font-bold">·</span>
-                        <span className="line-clamp-1">{f}</span>
-                      </div>
+                  <ul className="space-y-1.5 mb-5 pt-3 border-t border-white/8">
+                    {sol.features.slice(0, 3).map((feat) => (
+                      <li key={feat} className="flex items-start gap-2 text-[11px] text-white/75 leading-tight">
+                        <CheckCircle2 size={12} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span>{feat}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
 
-                {/* Footer action button */}
-                <div className="pt-3 border-t border-[#16143E]/8 flex items-center justify-between">
+                <div className="space-y-2 pt-3 border-t border-white/10">
                   <Link
-                    href={service.href}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4E0DBA] hover:text-[#EF1313] transition-colors group-hover:translate-x-0.5"
-                    style={{ fontFamily: "Syne, sans-serif" }}
+                    href={sol.pageUrl}
+                    className="w-full min-h-[42px] px-3.5 py-2.5 rounded-xl bg-[#EF1313] hover:bg-[#d60e0e] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                   >
-                    <span>View Details</span>
+                    <span>{sol.ctaText}</span>
                     <ArrowRight size={13} />
                   </Link>
-                  <span className="text-[11px] font-semibold text-[#16143E]/50">
-                    {service.brands[0]}
-                  </span>
+                  <a
+                    href={`https://wa.me/919884344075?text=${encodeURIComponent(sol.waText)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full min-h-[38px] px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/80 hover:text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-white/10 transition-colors"
+                  >
+                    <MessageCircle size={13} className="text-emerald-400" />
+                    <span>WhatsApp Enquiry</span>
+                  </a>
                 </div>
               </motion.div>
             );
           })}
         </div>
+
+        {/* Interactive Solution Finder Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-12 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#16143E] via-[#211b54] to-[#16143E] border border-white/15 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left shadow-xl"
+        >
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/20 border border-[#EF1313]/35 flex items-center justify-center text-[#EF1313] flex-shrink-0 mx-auto sm:mx-0">
+              <Sparkles size={24} />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-white font-display">
+                Not Sure Which Security System Fits Your Property?
+              </h3>
+              <p className="text-xs sm:text-sm text-white/65 mt-1 leading-relaxed">
+                Take our 3-question Interactive Solution Advisor. We will analyze your premises and recommend the ideal package.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/security#solution-finder"
+            className="flex-shrink-0 min-h-[44px] px-6 py-3 rounded-full bg-white text-[#16143E] hover:bg-white/90 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-transform hover:scale-105"
+          >
+            <span>Launch Solution Finder</span>
+            <ArrowRight size={14} />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
