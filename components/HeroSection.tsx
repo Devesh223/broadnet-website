@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import {
   ArrowRight,
   ShieldCheck,
@@ -15,17 +14,79 @@ import {
   Eye,
   Sun,
   Moon,
-  Radio,
-  Sliders,
   Activity,
   Zap,
+  ZoomIn,
+  Volume2,
+  VolumeX,
+  Crosshair,
+  Maximize2,
+  Camera,
+  Layers,
+  Clock,
+  Radio,
 } from "lucide-react";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
 import { COMPANY_NUMBERS } from "@/data/services";
 
+type CameraChannel = {
+  id: string;
+  name: string;
+  location: string;
+  lens: string;
+  targetType: string;
+  confidence: string;
+  alert: string;
+  badge: string;
+  fps: number;
+  bitrate: string;
+};
+
+const CAMERA_CHANNELS: CameraChannel[] = [
+  {
+    id: "cam-01",
+    name: "CAM 01",
+    location: "AVADI MAIN GATE & DRIVEWAY",
+    lens: "4mm ColorVu F1.0",
+    targetType: "VEHICLE & HUMAN",
+    confidence: "99.4%",
+    alert: "License Plate Captured: TN-02-BL-4075",
+    badge: "ColorVu 24/7",
+    fps: 30,
+    bitrate: "4.8 Mbps",
+  },
+  {
+    id: "cam-02",
+    name: "CAM 02",
+    location: "PERIMETER FENCE & WAREHOUSE",
+    lens: "2.8mm Dual-Light IR",
+    targetType: "INTRUSION BEAM",
+    confidence: "98.7%",
+    alert: "Perimeter Line Secure · 0 Blind Spots",
+    badge: "Smart IR Matrix",
+    fps: 30,
+    bitrate: "3.9 Mbps",
+  },
+  {
+    id: "cam-03",
+    name: "CAM 03",
+    location: "CORPORATE IT RACK & LOBBY",
+    lens: "6mm PTZ Optical Zoom",
+    targetType: "FACIAL RECOGNITION",
+    confidence: "99.8%",
+    alert: "eSSL Biometric Match Verified",
+    badge: "AI DeepinView",
+    fps: 30,
+    bitrate: "5.2 Mbps",
+  },
+];
+
 export default function HeroSection() {
   const [tick, setTick] = useState(0);
-  const [visionMode, setVisionMode] = useState<"colorvu" | "night">("colorvu");
+  const [selectedChannel, setSelectedChannel] = useState<number>(0);
+  const [visionMode, setVisionMode] = useState<"colorvu" | "night" | "ai">("colorvu");
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>("");
 
   useEffect(() => {
@@ -33,7 +94,7 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, []);
 
-  // Live ticking clock for the CCTV HUD
+  // Live ticking clock for CCTV telemetry HUD
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -51,10 +112,12 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
+  const currentCam = CAMERA_CHANNELS[selectedChannel];
+
   return (
     <section
       id="hero"
-      className="relative min-h-[94vh] flex flex-col justify-center items-center overflow-hidden pt-28 sm:pt-32 pb-16 bg-white text-[#16143E] scroll-mt-24"
+      className="relative min-h-[96vh] flex flex-col justify-center items-center overflow-hidden pt-28 sm:pt-32 pb-16 bg-white text-[#16143E] scroll-mt-24"
     >
       {/* Background Subtle Geometric Grid & Radial Aurora Glows */}
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
@@ -68,17 +131,17 @@ export default function HeroSection() {
         />
         {/* Purple top-left aura */}
         <div
-          className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full pointer-events-none opacity-40 blur-3xl"
+          className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full pointer-events-none opacity-40 blur-3xl"
           style={{ background: "radial-gradient(circle, rgba(78,13,186,0.18) 0%, transparent 70%)" }}
         />
         {/* Crimson top-right aura */}
         <div
-          className="absolute top-20 -right-20 w-[550px] h-[550px] rounded-full pointer-events-none opacity-30 blur-3xl"
+          className="absolute top-20 -right-20 w-[600px] h-[600px] rounded-full pointer-events-none opacity-30 blur-3xl"
           style={{ background: "radial-gradient(circle, rgba(239,19,19,0.16) 0%, transparent 70%)" }}
         />
         {/* Subtle center ambient light */}
         <div
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[850px] h-[500px] rounded-full pointer-events-none opacity-20 blur-3xl"
+          className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[550px] rounded-full pointer-events-none opacity-20 blur-3xl"
           style={{ background: "radial-gradient(ellipse at center, rgba(78,13,186,0.12) 0%, transparent 70%)" }}
         />
       </div>
@@ -114,9 +177,9 @@ export default function HeroSection() {
             </div>
             <span>4.9/5 Rating</span>
             <span className="text-[#16143E]/30">|</span>
-            <span>12 Yrs in Avadi</span>
+            <span>12+ Yrs in Avadi</span>
             <span className="text-[#16143E]/30">|</span>
-            <span className="text-[#EF1313] font-bold">10+ Staff</span>
+            <span className="text-[#EF1313] font-bold">500+ Projects</span>
           </motion.div>
         </div>
 
@@ -131,10 +194,10 @@ export default function HeroSection() {
               transition={{ duration: 0.5 }}
               className="mb-3.5 flex flex-wrap items-center gap-2"
             >
-              <span className="text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#4E0DBA] bg-[#4E0DBA]/10 px-3 py-1 rounded-full">
+              <span className="text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#4E0DBA] bg-[#4E0DBA]/10 px-3 py-1 rounded-full border border-[#4E0DBA]/20">
                 Connecting People · Securing Places · Managing Access
               </span>
-              <span className="text-[11px] sm:text-xs font-bold text-[#EF1313] bg-[#EF1313]/10 px-2.5 py-1 rounded-full">
+              <span className="text-[11px] sm:text-xs font-bold text-[#EF1313] bg-[#EF1313]/10 px-2.5 py-1 rounded-full border border-[#EF1313]/20">
                 Lead Division: “We Secure What Matters Most”
               </span>
             </motion.div>
@@ -147,9 +210,12 @@ export default function HeroSection() {
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.08] tracking-tight mb-5 text-[#16143E]"
               style={{ fontFamily: "Syne, sans-serif" }}
             >
-              Engineered <span className="text-[#EF1313]">Surveillance.</span>
+              Engineered <span className="text-[#EF1313] relative inline-block">
+                Surveillance.
+                <span className="absolute left-0 bottom-1 w-full h-1 bg-[#EF1313]/20 rounded-full" />
+              </span>
               <br />
-              Intelligent <span className="text-[#4E0DBA]">Security.</span>
+              Intelligent <span className="text-[#4E0DBA]">Security Systems.</span>
             </motion.h1>
 
             {/* Description */}
@@ -160,7 +226,7 @@ export default function HeroSection() {
               className="text-[#16143E]/80 text-base sm:text-lg leading-relaxed mb-6 max-w-2xl font-normal"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
-              Avadi & Chennai&apos;s certified technology partner for Hikvision & CP PLUS CCTV systems, eSSL biometric attendance, smart video door phones, and enterprise network infrastructure. Backed by guaranteed <strong className="text-[#EF1313]">&lt; 2-hour technician dispatch</strong>.
+              Avadi & Chennai&apos;s certified technology integrator for <strong>Hikvision & CP PLUS CCTV cameras</strong>, eSSL biometric attendance, smart video door phones, and optical enterprise networking. Backed by guaranteed <strong className="text-[#EF1313]">&lt; 2-hour technician dispatch</strong> and genuine warranties.
             </motion.p>
 
             {/* Above the fold CTAs */}
@@ -174,7 +240,7 @@ export default function HeroSection() {
               <button
                 type="button"
                 onClick={() => scrollToWithPhysics("enquiry")}
-                className="btn-crimson min-h-[50px] px-7 text-sm sm:text-base font-bold justify-center glow-btn-crimson group cursor-pointer"
+                className="btn-crimson min-h-[52px] px-8 text-sm sm:text-base font-bold justify-center glow-btn-crimson group cursor-pointer shadow-lg hover:shadow-xl transition-all"
               >
                 <span>Get Free Site Visit & Quote</span>
                 <ArrowRight size={17} className="group-hover:translate-x-1 transition-transform" />
@@ -183,7 +249,7 @@ export default function HeroSection() {
               {/* Direct Phone Number */}
               <a
                 href="tel:+919884344075"
-                className="min-h-[50px] px-5 sm:px-6 rounded-full border-2 border-[#16143E]/15 hover:border-[#16143E] text-xs sm:text-sm font-bold text-[#16143E] bg-white/90 backdrop-blur-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-xs hover:shadow-md"
+                className="min-h-[52px] px-5 sm:px-6 rounded-full border-2 border-[#16143E]/15 hover:border-[#16143E] text-xs sm:text-sm font-bold text-[#16143E] bg-white/95 backdrop-blur-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-xs hover:shadow-md"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 <Phone size={15} className="text-[#EF1313]" />
@@ -195,7 +261,7 @@ export default function HeroSection() {
                 href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20would%20like%20to%20get%20a%20free%20quote%20and%20schedule%20a%20site%20visit."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-[50px] px-4.5 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/35 text-[#15803d] text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                className="min-h-[52px] px-5 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/35 text-[#15803d] text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-xs"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 <MessageCircle size={16} className="text-[#25D366]" />
@@ -208,11 +274,11 @@ export default function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.25 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#FAFAFE] border border-[#16143E]/10 text-xs text-[#16143E]/85 font-medium"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FAFAFE] border border-[#16143E]/10 text-xs text-[#16143E]/85 font-medium shadow-2xs"
             >
               <Sparkles size={14} className="text-[#EF1313] flex-shrink-0" />
               <span>
-                <strong>100% Free Site Visit:</strong> Zero obligation survey for homes, apartments, & business sites across Chennai.
+                <strong>100% Free Site Visit:</strong> Zero obligation survey for homes, apartments, factories & corporate sites across Chennai.
               </span>
             </motion.div>
           </div>
@@ -234,12 +300,33 @@ export default function HeroSection() {
                   <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
                   <span className="font-mono font-bold tracking-wider text-red-400">REC</span>
                   <span className="text-white/40">|</span>
-                  <span className="font-mono text-white/80 text-[11px]">CAM 01 · AVADI HQ GATE</span>
+                  <span className="font-mono text-white/90 text-[11px] font-bold">
+                    {currentCam.name} · {currentCam.location}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 font-mono text-[11px] text-white/70">
                   <Activity size={12} className="text-emerald-400" />
                   <span>{currentTime || "12:00:00"} IST</span>
                 </div>
+              </div>
+
+              {/* Multi-Channel Switcher Tabs */}
+              <div className="grid grid-cols-3 gap-1.5 mb-3">
+                {CAMERA_CHANNELS.map((cam, idx) => (
+                  <button
+                    key={cam.id}
+                    type="button"
+                    onClick={() => setSelectedChannel(idx)}
+                    className={`py-1.5 px-2 rounded-xl text-[10.5px] font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                      selectedChannel === idx
+                        ? "bg-white/20 text-white border border-white/30 shadow-xs"
+                        : "bg-white/5 text-white/60 hover:bg-white/10 border border-transparent"
+                    }`}
+                  >
+                    <Camera size={11} className={selectedChannel === idx ? "text-[#EF1313]" : "text-white/40"} />
+                    <span>{cam.name}</span>
+                  </button>
+                ))}
               </div>
 
               {/* Simulated Camera Feed Viewport */}
@@ -255,13 +342,14 @@ export default function HeroSection() {
                   }}
                 >
                   {/* ColorVu daylight grid elements */}
-                  <div className="absolute inset-0 opacity-15"
+                  <div
+                    className="absolute inset-0 opacity-15"
                     style={{
                       backgroundImage: "radial-gradient(#818cf8 1px, transparent 1px)",
-                      backgroundSize: "24px 24px"
+                      backgroundSize: "24px 24px",
                     }}
                   />
-                  <div className="absolute top-1/3 left-1/4 w-32 h-32 rounded-full bg-indigo-500/10 blur-xl" />
+                  <div className="absolute top-1/4 left-1/3 w-40 h-40 rounded-full bg-indigo-500/15 blur-2xl" />
                 </div>
 
                 <div
@@ -274,13 +362,35 @@ export default function HeroSection() {
                   }}
                 >
                   {/* Infrared green telemetry mesh */}
-                  <div className="absolute inset-0 opacity-20"
+                  <div
+                    className="absolute inset-0 opacity-20"
                     style={{
-                      backgroundImage: "linear-gradient(rgba(34,197,94,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(34,197,94,0.15) 1px, transparent 1px)",
-                      backgroundSize: "32px 32px"
+                      backgroundImage:
+                        "linear-gradient(rgba(34,197,94,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(34,197,94,0.15) 1px, transparent 1px)",
+                      backgroundSize: "32px 32px",
                     }}
                   />
                   <div className="absolute inset-0 bg-emerald-950/20 mix-blend-color" />
+                </div>
+
+                <div
+                  className={`absolute inset-0 transition-opacity duration-700 ${
+                    visionMode === "ai" ? "opacity-100" : "opacity-0 pointer-events-none"
+                  }`}
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at center, #2e1065 0%, #172554 60%, #020617 100%)",
+                  }}
+                >
+                  {/* AI Matrix Mesh */}
+                  <div
+                    className="absolute inset-0 opacity-25"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(rgba(168,85,247,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.2) 1px, transparent 1px)",
+                      backgroundSize: "20px 20px",
+                    }}
+                  />
                 </div>
 
                 {/* Viewport Corners HUD Crosshairs */}
@@ -292,29 +402,51 @@ export default function HeroSection() {
                 {/* Top Overlay Badges inside Feed */}
                 <div className="relative z-10 flex items-center justify-between text-[11px] font-mono">
                   <span className="px-2 py-0.5 rounded bg-black/60 backdrop-blur-md border border-white/10 text-emerald-400 font-bold">
-                    4K UHD · 30 FPS · H.265+
+                    4K UHD · {currentCam.fps} FPS · H.265+
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-black/60 backdrop-blur-md border border-white/10 text-white/80">
-                    {visionMode === "colorvu" ? "ColorVu F1.0 Full-Color" : "Smart Dual-Light IR"}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="px-2 py-0.5 rounded bg-black/60 backdrop-blur-md border border-white/10 text-white/80">
+                      {zoomLevel}x Optical Zoom
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setAudioEnabled(!audioEnabled)}
+                      className="p-1 rounded bg-black/60 border border-white/10 text-white/80 hover:text-white cursor-pointer"
+                      title="Audio Stream"
+                    >
+                      {audioEnabled ? (
+                        <Volume2 size={12} className="text-emerald-400" />
+                      ) : (
+                        <VolumeX size={12} className="text-white/50" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Simulated AI Target Recognition Bounding Box in Feed */}
-                <div className="relative z-10 my-auto flex flex-col items-center justify-center">
+                <div
+                  className="relative z-10 my-auto flex flex-col items-center justify-center transition-transform duration-300"
+                  style={{ transform: `scale(${zoomLevel === 1 ? 1 : zoomLevel === 2 ? 1.15 : 1.3})` }}
+                >
                   <motion.div
                     animate={{ scale: [1, 1.02, 1] }}
                     transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
                     className={`border-2 border-dashed rounded-lg px-4 py-2 text-center backdrop-blur-xs transition-colors duration-300 ${
                       visionMode === "colorvu"
-                        ? "border-[#EF1313]/70 bg-[#EF1313]/10 text-white"
-                        : "border-emerald-400/70 bg-emerald-500/10 text-emerald-300"
+                        ? "border-[#EF1313]/70 bg-[#EF1313]/10 text-white shadow-lg shadow-[#EF1313]/20"
+                        : visionMode === "night"
+                        ? "border-emerald-400/70 bg-emerald-500/10 text-emerald-300 shadow-lg shadow-emerald-500/20"
+                        : "border-purple-400/80 bg-purple-500/15 text-purple-200 shadow-lg shadow-purple-500/20"
                     }`}
                   >
-                    <div className="text-[10px] uppercase font-mono font-bold tracking-wider">
-                      [ AI Human & Vehicle Motion Detected ]
+                    <div className="flex items-center justify-center gap-1.5 text-[10px] uppercase font-mono font-bold tracking-wider">
+                      <Crosshair size={11} />
+                      <span>
+                        [ AI TARGET: {currentCam.targetType} · {currentCam.confidence} ]
+                      </span>
                     </div>
                     <div className="text-xs font-bold mt-0.5">
-                      {visionMode === "colorvu" ? "Full Color Detail · Zero Grain" : "Zero-Light IR Night Precision"}
+                      {currentCam.alert}
                     </div>
                   </motion.div>
                 </div>
@@ -322,48 +454,76 @@ export default function HeroSection() {
                 {/* Bottom Overlay Telemetry inside Feed */}
                 <div className="relative z-10 flex items-center justify-between text-[10px] font-mono text-white/70">
                   <span>LAT 13.1143° N · LON 80.1009° E</span>
-                  <span className="text-emerald-400">AUDIO IN: 2-WAY CLEAR</span>
+                  <span className="text-emerald-400 font-bold">
+                    BITRATE: {currentCam.bitrate} · {audioEnabled ? "AUDIO 2-WAY ACTIVE" : "AUDIO MUTED"}
+                  </span>
                 </div>
               </div>
 
-              {/* Interactive Vision Mode Switcher: Clickable Demo */}
-              <div className="bg-white/5 rounded-2xl p-2.5 border border-white/10 mb-3 flex items-center justify-between gap-2">
-                <span className="text-xs text-white/70 font-semibold pl-1.5 flex items-center gap-1.5">
-                  <Eye size={13} className="text-[#A78BFA]" />
-                  <span>Preview Lens:</span>
-                </span>
+              {/* Interactive Vision Mode & Zoom Controls */}
+              <div className="bg-white/5 rounded-2xl p-2.5 border border-white/10 mb-3 flex flex-wrap items-center justify-between gap-2">
+                {/* Vision Modes */}
                 <div className="flex items-center gap-1.5">
                   <button
                     type="button"
                     onClick={() => setVisionMode("colorvu")}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                       visionMode === "colorvu"
                         ? "bg-[#EF1313] text-white shadow-md shadow-[#EF1313]/30"
                         : "bg-white/10 text-white/70 hover:bg-white/20"
                     }`}
                   >
-                    <Sun size={13} />
-                    <span>ColorVu 24/7</span>
+                    <Sun size={12} />
+                    <span>ColorVu Day</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setVisionMode("night")}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                       visionMode === "night"
                         ? "bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/30"
                         : "bg-white/10 text-white/70 hover:bg-white/20"
                     }`}
                   >
-                    <Moon size={13} />
-                    <span>Smart IR Night</span>
+                    <Moon size={12} />
+                    <span>Smart IR</span>
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => setVisionMode("ai")}
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      visionMode === "ai"
+                        ? "bg-purple-600 text-white font-bold shadow-md shadow-purple-600/30"
+                        : "bg-white/10 text-white/70 hover:bg-white/20"
+                    }`}
+                  >
+                    <Sparkles size={12} />
+                    <span>AI Matrix</span>
+                  </button>
+                </div>
+
+                {/* Optical Zoom Switcher */}
+                <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-white/10">
+                  <span className="text-[10px] text-white/50 px-1 font-mono">ZOOM:</span>
+                  {[1, 2, 4].map((z) => (
+                    <button
+                      key={z}
+                      type="button"
+                      onClick={() => setZoomLevel(z)}
+                      className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold cursor-pointer transition-colors ${
+                        zoomLevel === z ? "bg-white text-[#16143E]" : "text-white/60 hover:text-white"
+                      }`}
+                    >
+                      {z}x
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* Certified Highlights Pill List */}
               <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-semibold text-white/80">
                 <div className="p-2 rounded-xl bg-white/5 border border-white/5">
-                  <span className="text-emerald-400 block font-bold">Hikvision / CP+</span>
+                  <span className="text-emerald-400 block font-bold">Hikvision & CP+</span>
                   <span>Certified Engineers</span>
                 </div>
                 <div className="p-2 rounded-xl bg-white/5 border border-white/5">
@@ -389,14 +549,15 @@ export default function HeroSection() {
           {COMPANY_NUMBERS.map((m, i) => (
             <div
               key={m.label}
-              className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 text-center relative overflow-hidden group ${
+              className={`p-4 sm:p-5 rounded-2xl border transition-all duration-300 text-center relative overflow-hidden group cursor-pointer ${
                 tick === i
                   ? "border-[#4E0DBA]/40 bg-gradient-to-b from-[#4E0DBA]/[0.08] to-white shadow-lg shadow-[#4E0DBA]/5 scale-[1.02]"
                   : "border-[#16143E]/10 bg-white/90 shadow-2xs hover:border-[#4E0DBA]/30 hover:shadow-sm"
               }`}
+              onClick={() => setTick(i)}
             >
               <div
-                className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#16143E] mb-1"
+                className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#16143E] mb-1 group-hover:text-[#4E0DBA] transition-colors"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 {m.value}

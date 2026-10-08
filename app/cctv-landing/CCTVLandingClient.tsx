@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone,
   MessageCircle,
@@ -20,6 +20,16 @@ import {
   Check,
   AlertCircle,
   HelpCircle,
+  ChevronDown,
+  Building,
+  Home,
+  Store,
+  Factory,
+  Briefcase,
+  Sun,
+  Moon,
+  Calculator,
+  User,
 } from "lucide-react";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
 
@@ -124,7 +134,7 @@ const REVIEWS = [
 const FAQS = [
   {
     q: "What is included in the Free Site Visit?",
-    a: "Our certified CCTV engineer visits your premises anywhere in Chennai (with priority in Avadi, Pattabiram, Thirumullaivoyal, etc.) to assess coverage angles, identify blind spots, calculate necessary cable footage, and provide an exact, itemized quotation with zero obligation.",
+    a: "Our certified CCTV engineer visits your premises anywhere in Chennai (with priority in Avadi, Pattabiram, Thirumullaivoyal, Ambattur, Poonamallee, etc.) to assess coverage angles, identify blind spots, calculate necessary cable footage, and provide an exact, itemized quotation with zero obligation.",
   },
   {
     q: "Can I view the cameras live on my mobile phone when away?",
@@ -137,6 +147,10 @@ const FAQS = [
   {
     q: "Do you provide CCTV Annual Maintenance Contracts (AMC)?",
     a: "Yes! We manage CCTV AMC contracts for apartments, commercial stores, factories, and schools across Chennai with guaranteed 2-hour technician dispatch, regular camera cleaning, and NVR health checks.",
+  },
+  {
+    q: "Are the camera hardware and warranty 100% genuine?",
+    a: "Absolutely. We are authorized partners for Hikvision, CP PLUS, and Dahua. Every system is unboxed in front of you with official serial numbers, brand warranty cards, and manufacturer invoices.",
   },
 ];
 
@@ -151,6 +165,43 @@ export default function CCTVLandingClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
+  // Interactive Night Vision Demo
+  const [visionComparison, setVisionComparison] = useState<"colorvu" | "standard">("colorvu");
+
+  // Interactive CCTV Estimator State
+  const [calcProperty, setCalcProperty] = useState("Home / Villa");
+  const [calcCamCount, setCalcCamCount] = useState<number>(4);
+  const [calcTech, setCalcTech] = useState<"hd" | "colorvu" | "ip">("colorvu");
+  const [calcStorage, setCalcStorage] = useState<"1tb" | "2tb" | "4tb">("1tb");
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  // Dynamic estimate calculation
+  const getEstimatedPrice = () => {
+    let base = 0;
+    if (calcCamCount === 2) base = 8499;
+    else if (calcCamCount === 4) base = 14499;
+    else if (calcCamCount === 8) base = 26999;
+    else base = 48999; // 16+
+
+    if (calcTech === "colorvu") base += calcCamCount * 450;
+    if (calcTech === "ip") base += calcCamCount * 1200;
+
+    if (calcStorage === "2tb") base += 2200;
+    if (calcStorage === "4tb") base += 4800;
+
+    return `₹${base.toLocaleString("en-IN")}`;
+  };
+
+  const handleApplyEstimate = () => {
+    const techName = calcTech === "colorvu" ? "ColorVu Full-Color" : calcTech === "ip" ? "4K IP Network" : "Standard HD";
+    setForm((prev) => ({
+      ...prev,
+      buildingType: calcProperty,
+      requirement: `${calcCamCount}-Camera Setup (${techName}, ${calcStorage.toUpperCase()} HDD)`,
+    }));
+    scrollToWithPhysics("cctv-quote-form");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -199,14 +250,28 @@ export default function CCTVLandingClient() {
     <div className="bg-white text-[#16143E]">
       {/* 1. Hero Above the Fold */}
       <section className="relative pt-28 sm:pt-36 pb-20 bg-gradient-to-b from-[#FFF5F5] via-white to-white overflow-hidden border-b border-[#16143E]/8">
+        {/* Subtle grid background */}
+        <div
+          className="absolute inset-0 opacity-[0.035] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(#EF1313 1px, transparent 1px), linear-gradient(90deg, #EF1313 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
           {/* Top Trust Ribbon */}
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider border border-[#EF1313]/20">
               <ShieldCheck size={14} />
-              <span>Lead Surveillance Division · 12 Years in Avadi</span>
+              <span>Lead Surveillance Division · 12+ Years in Avadi</span>
             </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#4E0DBA]/10 text-[#4E0DBA] text-xs font-bold">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Active Dispatch in Avadi & Chennai · &lt;2h SLA</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#4E0DBA]/10 text-[#4E0DBA] text-xs font-bold border border-[#4E0DBA]/20">
               <Star size={12} className="fill-[#F59E0B] text-[#F59E0B]" />
               <span>4.9/5 Rating (500+ Google Reviews)</span>
             </div>
@@ -216,17 +281,20 @@ export default function CCTVLandingClient() {
             {/* Left Column: Headlines & Instant Dispatch Buttons */}
             <div className="lg:col-span-7 text-center lg:text-left">
               <h1
-                className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#16143E] tracking-tight leading-[1.1] mb-5"
+                className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#16143E] tracking-tight leading-[1.08] mb-5"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 We Secure <br className="hidden sm:inline" />
-                <span className="text-[#EF1313]">What Matters Most.</span>
+                <span className="text-[#EF1313] relative inline-block">
+                  What Matters Most.
+                  <span className="absolute left-0 bottom-1 w-full h-1 bg-[#EF1313]/20 rounded-full" />
+                </span>
               </h1>
               <p
-                className="text-[#16143E]/75 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto lg:mx-0 font-medium"
+                className="text-[#16143E]/80 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto lg:mx-0 font-normal"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
-                Certified Hikvision & CP PLUS CCTV camera sales, professional conduit installation, and 24/7 surveillance maintenance for homes, apartments, and businesses across Avadi & Chennai.
+                Official <strong>Hikvision & CP PLUS CCTV camera sales</strong>, professional concealed conduit installation, and 24/7 surveillance AMC maintenance for homes, villas, apartments, and commercial facilities across Avadi & Chennai.
               </p>
 
               {/* Action Buttons */}
@@ -234,7 +302,7 @@ export default function CCTVLandingClient() {
                 <button
                   type="button"
                   onClick={() => scrollToWithPhysics("cctv-quote-form")}
-                  className="btn-crimson min-h-[50px] px-8 text-sm sm:text-base justify-center shadow-xl shadow-[#EF1313]/25 hover:shadow-[#EF1313]/40 cursor-pointer"
+                  className="btn-crimson min-h-[52px] px-8 text-sm sm:text-base font-bold justify-center shadow-xl shadow-[#EF1313]/25 hover:shadow-[#EF1313]/40 cursor-pointer glow-btn-crimson"
                 >
                   <span>Get Free Site Visit & Quote</span>
                   <ArrowRight size={17} />
@@ -242,34 +310,45 @@ export default function CCTVLandingClient() {
 
                 <a
                   href="tel:+919884344075"
-                  className="min-h-[50px] px-6 rounded-full border-2 border-[#16143E]/15 hover:border-[#16143E] text-sm sm:text-base font-bold text-[#16143E] bg-white flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="min-h-[52px] px-6 rounded-full border-2 border-[#16143E]/15 hover:border-[#16143E] text-sm sm:text-base font-bold text-[#16143E] bg-white flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md"
                   style={{ fontFamily: "Syne, sans-serif" }}
                 >
                   <Phone size={17} className="text-[#EF1313]" />
                   <span>Call 98843 44075</span>
                 </a>
+
+                <a
+                  href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20would%20like%20to%20get%20a%20free%20CCTV%20quote%20and%20schedule%20a%20site%20visit."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="min-h-[52px] px-5 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/35 text-[#15803d] text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-xs"
+                  style={{ fontFamily: "Syne, sans-serif" }}
+                >
+                  <MessageCircle size={17} className="text-[#25D366]" />
+                  <span>WhatsApp</span>
+                </a>
               </div>
 
               {/* Key Highlights */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-6 border-t border-[#16143E]/10 max-w-xl mx-auto lg:mx-0">
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#16143E]/80">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#16143E]/85">
                   <CheckCircle2 size={16} className="text-[#EF1313] flex-shrink-0" />
                   <span>Free Site Visit in 2 Hrs</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#16143E]/80">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#16143E]/85">
                   <CheckCircle2 size={16} className="text-[#EF1313] flex-shrink-0" />
                   <span>Genuine 2-Yr Warranty</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#16143E]/80">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#16143E]/85">
                   <CheckCircle2 size={16} className="text-[#EF1313] flex-shrink-0" />
-                  <span>Full-Color Night Vision</span>
+                  <span>ColorVu 24/7 Night Vision</span>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Quick Quote Box Above the Fold */}
             <div id="cctv-quote-form" className="lg:col-span-5 scroll-mt-28">
-              <div className="rounded-3xl bg-white border-2 border-[#EF1313]/30 p-7 sm:p-8 shadow-2xl relative">
+              <div className="rounded-3xl bg-white border-2 border-[#EF1313]/35 p-7 sm:p-8 shadow-2xl relative">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider mb-2">
                   <Sparkles size={12} /> Free Site Survey Offer
                 </div>
@@ -280,7 +359,7 @@ export default function CCTVLandingClient() {
                   Request Fast CCTV Quotation
                 </h3>
                 <p className="text-xs text-[#16143E]/60 mb-6">
-                  Our engineer will inspect your property and provide an exact estimate.
+                  Our certified engineer visits your property, checks angles & gives an exact itemized bill.
                 </p>
 
                 {submitted ? (
@@ -297,7 +376,7 @@ export default function CCTVLandingClient() {
                       href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20just%20submitted%20the%20CCTV%20quote%20request."
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#25D366] text-white text-xs font-bold"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#25D366] text-white text-xs font-bold shadow-md shadow-[#25D366]/30"
                     >
                       <MessageCircle size={15} /> Chat on WhatsApp Now
                     </a>
@@ -391,7 +470,7 @@ export default function CCTVLandingClient() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full btn-crimson justify-center py-3 text-sm font-bold shadow-lg shadow-[#EF1313]/25 mt-2 cursor-pointer disabled:opacity-60"
+                      className="w-full btn-crimson justify-center py-3 text-sm font-bold shadow-lg shadow-[#EF1313]/25 mt-2 cursor-pointer disabled:opacity-60 glow-btn-crimson"
                     >
                       {isSubmitting ? "Sending Request..." : "Request Free On-Site Inspection"}
                     </button>
@@ -407,7 +486,216 @@ export default function CCTVLandingClient() {
         </div>
       </section>
 
-      {/* 2. CCTV Packages Breakdown */}
+      {/* 2. Interactive CCTV Cost Estimator & System Configurator */}
+      <section className="py-20 bg-gradient-to-b from-white to-[#F8F9FD] border-b border-[#16143E]/8 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#4E0DBA]/10 text-[#4E0DBA] text-xs font-bold uppercase tracking-wider mb-2">
+              <Calculator size={13} />
+              <span>Interactive System Configurator</span>
+            </div>
+            <h2
+              className="text-3xl sm:text-4xl font-bold text-[#16143E]"
+              style={{ fontFamily: "Syne, sans-serif" }}
+            >
+              Configure & Estimate Your CCTV System
+            </h2>
+            <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
+              Select your property type, camera count, and lens technology for an instant transparent estimate.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#16143E]/12 shadow-xl max-w-5xl mx-auto">
+            <div className="grid lg:grid-cols-12 gap-8 items-center">
+              {/* Controls Column */}
+              <div className="lg:col-span-7 space-y-6">
+                {/* 1. Property Type */}
+                <div>
+                  <label className="block text-xs font-bold text-[#16143E] uppercase tracking-wider mb-2.5">
+                    1. Select Premise Type
+                  </label>
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    {[
+                      { label: "Home / Villa", icon: Home },
+                      { label: "Apartment", icon: Building },
+                      { label: "Retail Shop", icon: Store },
+                      { label: "Warehouse", icon: Factory },
+                      { label: "Office", icon: Briefcase },
+                    ].map((item) => {
+                      const Icon = item.icon;
+                      const selected = calcProperty === item.label;
+                      return (
+                        <button
+                          key={item.label}
+                          type="button"
+                          onClick={() => setCalcProperty(item.label)}
+                          className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center gap-1.5 ${
+                            selected
+                              ? "bg-[#EF1313]/10 border-[#EF1313] text-[#EF1313] font-bold shadow-xs"
+                              : "bg-[#FAFAFE] border-[#16143E]/10 text-[#16143E]/70 hover:border-[#16143E]/30"
+                          }`}
+                        >
+                          <Icon size={16} />
+                          <span className="text-[11px] leading-tight">{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. Camera Count */}
+                <div>
+                  <label className="block text-xs font-bold text-[#16143E] uppercase tracking-wider mb-2.5">
+                    2. Number of Cameras Needed
+                  </label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[2, 4, 8, 16].map((count) => (
+                      <button
+                        key={count}
+                        type="button"
+                        onClick={() => setCalcCamCount(count)}
+                        className={`py-2.5 px-3 rounded-xl border text-center transition-all cursor-pointer font-mono font-bold ${
+                          calcCamCount === count
+                            ? "bg-[#16143E] border-[#16143E] text-white shadow-xs"
+                            : "bg-[#FAFAFE] border-[#16143E]/10 text-[#16143E]/70 hover:border-[#16143E]/30"
+                        }`}
+                      >
+                        <span className="text-sm block">{count} Cams</span>
+                        <span className="text-[10px] font-normal opacity-70">
+                          {count === 2 ? "Basic" : count === 4 ? "Popular" : count === 8 ? "Medium" : "Large Site"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Camera Technology */}
+                <div>
+                  <label className="block text-xs font-bold text-[#16143E] uppercase tracking-wider mb-2.5">
+                    3. Night Vision & Resolution Tech
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: "hd", label: "2MP HD", desc: "Economy IR" },
+                      { id: "colorvu", label: "ColorVu 3K", desc: "24/7 Full Color" },
+                      { id: "ip", label: "4K UHD IP", desc: "AI Network Cams" },
+                    ].map((tech) => (
+                      <button
+                        key={tech.id}
+                        type="button"
+                        onClick={() => setCalcTech(tech.id as any)}
+                        className={`py-2 px-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+                          calcTech === tech.id
+                            ? "bg-[#4E0DBA] border-[#4E0DBA] text-white shadow-xs"
+                            : "bg-[#FAFAFE] border-[#16143E]/10 text-[#16143E]/70 hover:border-[#16143E]/30"
+                        }`}
+                      >
+                        <span className="text-xs font-bold block">{tech.label}</span>
+                        <span className="text-[10.5px] opacity-80">{tech.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4. Storage Days */}
+                <div>
+                  <label className="block text-xs font-bold text-[#16143E] uppercase tracking-wider mb-2.5">
+                    4. Recording Hard Disk Storage
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: "1tb", label: "1TB HDD", desc: "~12-15 Days" },
+                      { id: "2tb", label: "2TB HDD", desc: "~25-30 Days" },
+                      { id: "4tb", label: "4TB HDD", desc: "~50-60 Days" },
+                    ].map((storage) => (
+                      <button
+                        key={storage.id}
+                        type="button"
+                        onClick={() => setCalcStorage(storage.id as any)}
+                        className={`py-2 px-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+                          calcStorage === storage.id
+                            ? "bg-emerald-700 border-emerald-700 text-white shadow-xs"
+                            : "bg-[#FAFAFE] border-[#16143E]/10 text-[#16143E]/70 hover:border-[#16143E]/30"
+                        }`}
+                      >
+                        <span className="text-xs font-bold block">{storage.label}</span>
+                        <span className="text-[10.5px] opacity-80">{storage.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Estimate Summary Box */}
+              <div className="lg:col-span-5 bg-gradient-to-br from-[#16143E] to-[#251347] rounded-3xl p-6 sm:p-7 text-white flex flex-col justify-between shadow-2xl border border-white/10">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs uppercase tracking-wider text-[#EF1313] font-bold">
+                      Calculated Hardware Proposal
+                    </span>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono font-bold">
+                      IN STOCK
+                    </span>
+                  </div>
+
+                  <div className="text-3xl sm:text-4xl font-extrabold text-white mb-1" style={{ fontFamily: "Syne, sans-serif" }}>
+                    {getEstimatedPrice()}
+                  </div>
+                  <div className="text-xs text-white/60 mb-5">
+                    All-inclusive turnkey price · No hidden installation charges
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2.5 text-xs text-white/85 mb-6">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">Config:</span>
+                      <span className="font-bold">{calcCamCount}x {calcTech === "colorvu" ? "ColorVu" : calcTech === "ip" ? "4K IP" : "HD"} Cameras</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">Recorder:</span>
+                      <span className="font-bold">{calcCamCount <= 4 ? "4-Channel" : calcCamCount <= 8 ? "8-Channel" : "16-Channel"} DVR/NVR</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">Storage:</span>
+                      <span className="font-bold">{calcStorage.toUpperCase()} WD Purple 24/7 HDD</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">Warranty:</span>
+                      <span className="font-bold text-emerald-400">2-Year Replacement Warranty</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-white/60">Site Survey:</span>
+                      <span className="font-bold text-[#EF1313]">100% Free On-Site Inspection</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5">
+                  <button
+                    type="button"
+                    onClick={handleApplyEstimate}
+                    className="w-full btn-crimson justify-center py-3 text-sm font-bold shadow-lg shadow-[#EF1313]/30 cursor-pointer glow-btn-crimson"
+                  >
+                    <span>Book This Setup With Free Site Visit</span>
+                    <ArrowRight size={15} />
+                  </button>
+
+                  <a
+                    href={`https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20am%20interested%20in%20the%20${calcCamCount}-camera%20${calcTech}%20CCTV%20setup%20estimated%20at%20${getEstimatedPrice()}.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2.5 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors border border-[#25D366]/40"
+                  >
+                    <MessageCircle size={14} className="text-[#25D366]" />
+                    <span>WhatsApp This Estimate to Tech Desk</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. CCTV Packages Breakdown */}
       <section className="py-20 bg-[#FAFAFE] border-b border-[#16143E]/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-14">
@@ -431,7 +719,7 @@ export default function CCTVLandingClient() {
                 key={pkg.name}
                 className={`rounded-3xl p-6.5 flex flex-col justify-between transition-all duration-300 relative ${
                   pkg.popular
-                    ? "bg-white border-2 border-[#EF1313] shadow-xl shadow-[#EF1313]/10"
+                    ? "bg-white border-2 border-[#EF1313] shadow-xl shadow-[#EF1313]/10 scale-[1.02]"
                     : "bg-white border border-[#16143E]/12 hover:border-[#4E0DBA]/40 shadow-xs hover:shadow-md"
                 }`}
               >
@@ -488,7 +776,7 @@ export default function CCTVLandingClient() {
                       setForm((prev) => ({ ...prev, requirement: pkg.name }));
                       scrollToWithPhysics("cctv-quote-form");
                     }}
-                    className="w-full py-2 rounded-xl border border-[#16143E]/15 hover:border-[#16143E] text-xs font-semibold text-[#16143E] transition-colors"
+                    className="w-full py-2 rounded-xl border border-[#16143E]/15 hover:border-[#16143E] text-xs font-semibold text-[#16143E] transition-colors cursor-pointer"
                   >
                     Book Site Inspection
                   </button>
@@ -499,67 +787,134 @@ export default function CCTVLandingClient() {
         </div>
       </section>
 
-      {/* 3. Sub-Sections: Camera Types & Technologies */}
+      {/* 4. Interactive Technology Comparison: ColorVu vs Standard IR */}
       <section className="py-20 bg-white border-b border-[#16143E]/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-bold uppercase tracking-wider text-[#4E0DBA]">
-              Advanced Surveillance Capabilities
+              Optical Innovation
             </span>
             <h2
               className="text-3xl sm:text-4xl font-bold text-[#16143E] mt-1"
               style={{ fontFamily: "Syne, sans-serif" }}
             >
-              Engineered for Real-World Security
+              See the Difference: ColorVu 24/7 vs Traditional IR
             </h2>
+            <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
+              Why 90% of our residential and commercial clients choose full-color night vision cameras.
+            </p>
+
+            <div className="inline-flex items-center gap-2 mt-5 p-1 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
+              <button
+                type="button"
+                onClick={() => setVisionComparison("colorvu")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  visionComparison === "colorvu"
+                    ? "bg-[#EF1313] text-white shadow-xs"
+                    : "text-[#16143E]/70 hover:text-[#16143E]"
+                }`}
+              >
+                <Sun size={13} />
+                <span>ColorVu 24/7 Full Color</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setVisionComparison("standard")}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  visionComparison === "standard"
+                    ? "bg-slate-800 text-white shadow-xs"
+                    : "text-[#16143E]/70 hover:text-[#16143E]"
+                }`}
+              >
+                <Moon size={13} />
+                <span>Traditional Grainy IR</span>
+              </button>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-              <div className="w-11 h-11 rounded-xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-4">
-                <Eye size={22} />
+          <div className="grid md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
+            {/* Visual simulation box */}
+            <div
+              className={`rounded-3xl p-6 sm:p-8 aspect-[16/10] flex flex-col justify-between text-white relative overflow-hidden transition-all duration-500 border border-[#16143E]/15 ${
+                visionComparison === "colorvu"
+                  ? "bg-gradient-to-tr from-[#16143E] via-[#321759] to-[#0f172a]"
+                  : "bg-gradient-to-tr from-[#020617] via-[#0f172a] to-[#1e293b] grayscale"
+              }`}
+            >
+              <div className="flex items-center justify-between text-xs font-mono">
+                <span className={`px-2.5 py-1 rounded-full font-bold ${visionComparison === "colorvu" ? "bg-[#EF1313] text-white" : "bg-white/20 text-white"}`}>
+                  {visionComparison === "colorvu" ? "COLORVU F1.0 APERTURE" : "STANDARD IR BLACK & WHITE"}
+                </span>
+                <span className="text-white/60">SIMULATION</span>
               </div>
-              <h3 className="text-lg font-bold text-[#16143E] mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
-                ColorVu & Full-Color Night Vision
-              </h3>
-              <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed">
-                No more grainy black-and-white night video. Large F1.0 apertures and warm supplemental LEDs illuminate dark compound walls in vivid color 24 hours a day.
-              </p>
+
+              <div className="my-auto text-center">
+                <div
+                  className={`inline-block border-2 border-dashed rounded-xl p-4 backdrop-blur-sm ${
+                    visionComparison === "colorvu"
+                      ? "border-[#EF1313] bg-[#EF1313]/10 text-white"
+                      : "border-white/30 bg-black/30 text-white/70"
+                  }`}
+                >
+                  <div className="text-xs font-mono uppercase tracking-wider mb-1">
+                    {visionComparison === "colorvu" ? "✓ Full Color Identification" : "✗ Grainy Silhouette"}
+                  </div>
+                  <div className="text-sm sm:text-base font-bold">
+                    {visionComparison === "colorvu"
+                      ? "Red Shirt · Blue Car TN-02-BL-4075"
+                      : "Indistinct Grey Figure · License Unreadable"}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] text-white/70">
+                <span>Avadi Villa Entryway</span>
+                <span>{visionComparison === "colorvu" ? "Zero Light Supplemental LED" : "Infrared Mesh"}</span>
+              </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-              <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center mb-4">
-                <Sliders size={22} />
+            {/* Explainer Points */}
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
+                <h4 className="text-base font-bold text-[#16143E] mb-1 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-lg bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center text-xs font-bold">1</span>
+                  <span>Crystal Color Facial Recognition at Night</span>
+                </h4>
+                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed pl-8">
+                  Conventional infrared cameras turn night footage into grainy black and white, making clothing color and car paint impossible for police to identify. ColorVu preserves 100% natural color.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-[#16143E] mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
-                Built-in Audio & Dual-Light
-              </h3>
-              <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed">
-                Equipped with noise-cancelling microphones to capture critical conversations. Smart dual-light switches from stealth IR to bright white light only when humans are detected.
-              </p>
-            </div>
 
-            <div className="p-6 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-              <div className="w-11 h-11 rounded-xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-4">
-                <HardDrive size={22} />
+              <div className="p-4 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
+                <h4 className="text-base font-bold text-[#16143E] mb-1 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-lg bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center text-xs font-bold">2</span>
+                  <span>Built-in Microphones for 2-Way Audio</span>
+                </h4>
+                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed pl-8">
+                  Capture verbal delivery confirmations and conversations outside your gate with ultra-sensitive acoustic noise reduction.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-[#16143E] mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
-                ANPR & Cloud Surveillance
-              </h3>
-              <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed">
-                Automated license plate recognition for apartment gates and factories. Optional cloud video archiving protects evidence even if physical recorders are tampered with.
-              </p>
+
+              <div className="p-4 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
+                <h4 className="text-base font-bold text-[#16143E] mb-1 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-700 flex items-center justify-center text-xs font-bold">3</span>
+                  <span>AI Human & Vehicle Smart Filtering</span>
+                </h4>
+                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed pl-8">
+                  Never be disturbed by false alarms from swaying trees, rain, or street animals. The camera only pings your phone when a human or vehicle crosses your boundary line.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Customer Reviews Near Enquiry */}
+      {/* 5. Customer Reviews Near Enquiry */}
       <section className="py-20 bg-[#FAFAFE] border-b border-[#16143E]/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-xl mx-auto mb-12">
             <span className="text-xs font-bold uppercase tracking-wider text-[#EF1313]">
-              What Our Clients Say
+              Verified Client Feedback
             </span>
             <h2
               className="text-3xl font-bold text-[#16143E] mt-1"
@@ -573,7 +928,7 @@ export default function CCTVLandingClient() {
             {REVIEWS.map((rev) => (
               <div
                 key={rev.name}
-                className="p-6 rounded-2xl bg-white border border-[#16143E]/10 shadow-xs flex flex-col justify-between"
+                className="p-6 rounded-2xl bg-white border border-[#16143E]/10 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow"
               >
                 <div>
                   <div className="flex items-center gap-1 text-[#F59E0B] mb-3">
@@ -595,7 +950,7 @@ export default function CCTVLandingClient() {
           </div>
 
           {/* Bottom Free Site Visit Reminder CTA */}
-          <div className="p-8 rounded-3xl bg-[#16143E] text-white text-center max-w-4xl mx-auto shadow-xl">
+          <div className="p-8 rounded-3xl bg-[#16143E] text-white text-center max-w-4xl mx-auto shadow-xl border border-white/10">
             <h3 className="text-2xl sm:text-3xl font-bold mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
               Ready to Secure Your Property with a Free Site Visit?
             </h3>
@@ -605,7 +960,7 @@ export default function CCTVLandingClient() {
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a
                 href="tel:+919884344075"
-                className="btn-crimson min-h-[48px] px-8 text-sm justify-center cursor-pointer"
+                className="btn-crimson min-h-[48px] px-8 text-sm justify-center cursor-pointer glow-btn-crimson"
               >
                 <Phone size={16} /> Call 98843 44075
               </a>
@@ -622,7 +977,7 @@ export default function CCTVLandingClient() {
         </div>
       </section>
 
-      {/* 5. FAQs */}
+      {/* 6. Interactive FAQs Accordion */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -634,18 +989,48 @@ export default function CCTVLandingClient() {
             </h2>
           </div>
 
-          <div className="space-y-4">
-            {FAQS.map((faq) => (
-              <div key={faq.q} className="p-5.5 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-                <h4 className="text-base font-bold text-[#16143E] mb-2 flex items-center gap-2">
-                  <HelpCircle size={18} className="text-[#EF1313] flex-shrink-0" />
-                  <span>{faq.q}</span>
-                </h4>
-                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed pl-6.5">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
+          <div className="space-y-3.5">
+            {FAQS.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <div
+                  key={faq.q}
+                  className="rounded-2xl border border-[#16143E]/10 overflow-hidden bg-[#FAFAFE] transition-colors"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    className="w-full p-5 text-left flex items-center justify-between gap-3 cursor-pointer"
+                  >
+                    <span className="text-sm sm:text-base font-bold text-[#16143E] flex items-center gap-2.5">
+                      <HelpCircle size={17} className="text-[#EF1313] flex-shrink-0" />
+                      <span>{faq.q}</span>
+                    </span>
+                    <ChevronDown
+                      size={18}
+                      className={`text-[#16143E]/50 transition-transform duration-200 flex-shrink-0 ${
+                        isOpen ? "rotate-180 text-[#EF1313]" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <p className="px-5 pb-5 text-xs sm:text-sm text-[#16143E]/75 leading-relaxed pl-11">
+                          {faq.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
