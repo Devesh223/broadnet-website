@@ -334,7 +334,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
               <Link
                 href="/contact#enquiry"
                 onClick={handleEnquiryClick}
-                className="btn-crimson text-xs py-2.5 px-4 shadow-sm"
+                className="btn-crimson text-xs py-2 px-4 shadow-sm glow-btn-crimson font-bold"
               >
                 Free Site Visit
               </Link>

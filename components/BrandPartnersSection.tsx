@@ -14,11 +14,14 @@ const CERTIFICATIONS_BADGES = [
 
 export default function BrandPartnersSection() {
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-[#16143E]/8 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-16 sm:py-24 bg-white border-b border-[#16143E]/8 relative overflow-hidden">
+      {/* Background radial glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#4E0DBA]/[0.025] blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Top Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#EF1313]/10 border border-[#EF1313]/20 text-[#EF1313] text-xs font-bold uppercase tracking-wider mb-3">
             <Award size={13} />
             <span>Authorized Hardware Partners</span>
           </div>
@@ -29,19 +32,19 @@ export default function BrandPartnersSection() {
             Direct Manufacturer Partnerships & Certifications
           </h2>
           <p
-            className="text-[#16143E]/65 text-sm sm:text-base mt-2"
+            className="text-[#16143E]/70 text-sm sm:text-base mt-2"
             style={{ fontFamily: "DM Sans, sans-serif" }}
           >
-            Genuine brand hardware backed by official manufacturer warranties, certified installation engineers, and prompt RMA support.
+            Genuine brand hardware backed by official manufacturer warranties, certified installation engineers, and rapid RMA support.
           </p>
         </div>
 
         {/* Certifications Row */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-2.5 sm:gap-3.5 mb-12">
           {CERTIFICATIONS_BADGES.map((cert) => (
             <div
               key={cert.name}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#FAFAFE] border border-[#16143E]/12 text-xs sm:text-sm font-semibold text-[#16143E] shadow-2xs hover:border-[#4E0DBA]/40 transition-colors"
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#FAFAFE] border border-[#16143E]/10 text-xs sm:text-sm font-semibold text-[#16143E] shadow-2xs hover:border-[#4E0DBA]/50 hover:shadow-sm transition-all"
             >
               <div className="w-5 h-5 rounded-full bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center flex-shrink-0">
                 <ShieldCheck size={13} />
@@ -55,7 +58,7 @@ export default function BrandPartnersSection() {
         </div>
 
         {/* Brand Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4.5">
           {BRAND_PARTNERS.map((brand, idx) => (
             <motion.div
               key={brand.name}
@@ -63,10 +66,11 @@ export default function BrandPartnersSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.35, delay: idx * 0.05 }}
-              className="p-4 sm:p-5 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10 hover:border-[#EF1313]/35 hover:shadow-md transition-all text-center flex flex-col justify-center items-center group"
+              className="p-5 sm:p-6 rounded-2xl bg-white border border-[#16143E]/10 hover:border-[#EF1313]/40 shadow-xs hover:shadow-xl transition-all duration-300 text-center flex flex-col justify-center items-center group relative overflow-hidden hover:-translate-y-1"
             >
+              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#EF1313] group-hover:to-[#4E0DBA] transition-all" />
               <div
-                className="text-lg sm:text-xl font-black text-[#16143E] group-hover:text-[#EF1313] transition-colors mb-1 tracking-tight"
+                className="text-lg sm:text-xl font-black text-[#16143E] group-hover:text-[#EF1313] transition-colors mb-1.5 tracking-tight"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
                 {brand.name}
@@ -74,7 +78,7 @@ export default function BrandPartnersSection() {
               <div className="text-[11px] font-bold text-[#4E0DBA] uppercase tracking-wider mb-1">
                 {brand.tag}
               </div>
-              <div className="text-[10px] text-[#16143E]/60 font-medium">
+              <div className="text-[10.5px] text-[#16143E]/60 font-medium">
                 {brand.cert}
               </div>
             </motion.div>

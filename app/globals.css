@@ -165,6 +165,70 @@ h1, h2, h3, h4, h5, h6,
   box-shadow: 0 28px 70px rgba(78,13,186,0.22);
 }
 
+/* Futuristic Surveillance HUD & Glows */
+@keyframes radar-ping {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(0.95); opacity: 0; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(400px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.radar-dot {
+  position: relative;
+  display: inline-flex;
+}
+.radar-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  background: inherit;
+  animation: radar-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.hud-scanline {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.6), transparent);
+  animation: scanline 3.5s linear infinite;
+  pointer-events: none;
+}
+
+.glow-btn-crimson {
+  position: relative;
+  box-shadow: 0 0 20px -2px rgba(239, 19, 19, 0.4), 0 10px 25px -5px rgba(239, 19, 19, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glow-btn-crimson:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(239, 19, 19, 0.6), 0 12px 30px -4px rgba(239, 19, 19, 0.45);
+}
+
+.glass-card-premium {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(22, 20, 62, 0.08);
+  box-shadow: 0 20px 40px -15px rgba(22, 20, 62, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.dark-hud-glass {
+  background: radial-gradient(circle at 50% 0%, rgba(30, 27, 75, 0.95), rgba(15, 12, 38, 0.98));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 60px -15px rgba(15, 12, 38, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
 .input-field {
   width: 100%;
   padding-top: 14px;

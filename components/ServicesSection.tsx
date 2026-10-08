@@ -18,6 +18,7 @@ import {
   Sparkles,
   Phone,
   MessageCircle,
+  Zap,
 } from "lucide-react";
 import { SERVICES_LIST } from "@/data/services";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
@@ -40,19 +41,22 @@ export default function ServicesSection() {
 
   return (
     <section id="services" className="py-20 sm:py-28 bg-[#FAFAFE] relative overflow-hidden scroll-mt-20">
-      {/* Background accents */}
+      {/* Background ambient accents */}
       <div
         className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{
-          backgroundImage: "linear-gradient(#16143E 1px, transparent 1px), linear-gradient(90deg, #16143E 1px, transparent 1px)",
+          backgroundImage:
+            "linear-gradient(#16143E 1px, transparent 1px), linear-gradient(90deg, #16143E 1px, transparent 1px)",
           backgroundSize: "64px 64px",
         }}
       />
+      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-[#4E0DBA]/[0.035] blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] rounded-full bg-[#EF1313]/[0.025] blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider mb-3.5 border border-[#EF1313]/20">
             <Sparkles size={13} />
             <span>Technology & Security Infrastructure</span>
           </div>
@@ -73,23 +77,23 @@ export default function ServicesSection() {
         {/* 1. LEAD DIVISION: CCTV Surveillance Hero Feature Card */}
         <div className="mb-14">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 22 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
-            className="rounded-3xl bg-white border-2 border-[#EF1313]/30 shadow-xl p-7 sm:p-10 relative overflow-hidden group hover:border-[#EF1313] transition-all"
+            className="rounded-3xl bg-white border-2 border-[#EF1313]/35 shadow-2xl p-7 sm:p-10 relative overflow-hidden group hover:border-[#EF1313] transition-all"
           >
-            {/* Top decorative badge */}
+            {/* Top decorative badge bar */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-6 border-b border-[#16143E]/8 pb-5">
               <div className="flex items-center gap-2.5">
-                <span className="w-8 h-8 rounded-xl bg-[#EF1313] text-white flex items-center justify-center font-black text-sm">
+                <span className="w-8 h-8 rounded-xl bg-[#EF1313] text-white flex items-center justify-center font-black text-sm shadow-md shadow-[#EF1313]/30">
                   #1
                 </span>
                 <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#EF1313]">
                   {cctvLead.badge}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#4E0DBA]/10 text-[#4E0DBA]">
                   Hikvision & CP PLUS Certified
                 </span>
@@ -131,7 +135,7 @@ export default function ServicesSection() {
                 <div className="flex flex-wrap items-center gap-3">
                   <Link
                     href={cctvLead.href}
-                    className="btn-crimson min-h-[46px] px-6 text-sm justify-center group"
+                    className="btn-crimson min-h-[46px] px-6 text-sm justify-center group glow-btn-crimson"
                   >
                     <span>Explore CCTV Packages & AMC</span>
                     <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
@@ -140,7 +144,7 @@ export default function ServicesSection() {
                   <button
                     type="button"
                     onClick={() => scrollToWithPhysics("enquiry")}
-                    className="px-6 py-2.5 rounded-full border border-[#16143E]/20 hover:border-[#4E0DBA] text-xs sm:text-sm font-semibold text-[#16143E] hover:text-[#4E0DBA] transition-colors min-h-[46px] cursor-pointer"
+                    className="px-6 py-2.5 rounded-full border border-[#16143E]/20 hover:border-[#4E0DBA] text-xs sm:text-sm font-semibold text-[#16143E] hover:text-[#4E0DBA] transition-colors min-h-[46px] cursor-pointer bg-white"
                     style={{ fontFamily: "Syne, sans-serif" }}
                   >
                     Request Free Site Visit
@@ -150,7 +154,7 @@ export default function ServicesSection() {
                     href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20need%20a%20quotation%20for%20CCTV%20Surveillance%20installation."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2.5 rounded-full bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#16143E] text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors min-h-[46px]"
+                    className="px-4.5 py-2.5 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/35 text-[#15803d] text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all min-h-[46px]"
                   >
                     <MessageCircle size={15} className="text-[#25D366]" />
                     <span>WhatsApp Quote</span>
@@ -159,13 +163,13 @@ export default function ServicesSection() {
               </div>
 
               {/* Lead Division Visual Right Column */}
-              <div className="lg:col-span-5 bg-gradient-to-br from-[#16143E] to-[#2B1055] rounded-2xl p-6 sm:p-7 text-white shadow-lg flex flex-col justify-between">
+              <div className="lg:col-span-5 bg-gradient-to-br from-[#16143E] via-[#231248] to-[#16143E] rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col justify-between border border-white/10">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs uppercase tracking-widest text-[#EF1313] font-bold">
                       Direct Surveillance Assurance
                     </span>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-white/80">
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-white/80 font-mono">
                       Chennai & Avadi
                     </span>
                   </div>
@@ -173,19 +177,19 @@ export default function ServicesSection() {
                     Why Choose Our CCTV Division?
                   </h4>
                   <ul className="space-y-3 text-xs sm:text-[13px] text-white/80">
-                    <li className="flex items-start gap-2">
+                    <li className="flex items-start gap-2.5">
                       <span className="text-[#EF1313] font-bold">✓</span>
                       <span><strong>Genuine Optical Sensors:</strong> Only original Hikvision, CP PLUS, and Dahua cameras with genuine manufacturer serials.</span>
                     </li>
-                    <li className="flex items-start gap-2">
+                    <li className="flex items-start gap-2.5">
                       <span className="text-[#EF1313] font-bold">✓</span>
                       <span><strong>Surveillance Hard Drives:</strong> WD Purple & Seagate SkyHawk 24/7 drives that never drop recorded frames.</span>
                     </li>
-                    <li className="flex items-start gap-2">
+                    <li className="flex items-start gap-2.5">
                       <span className="text-[#EF1313] font-bold">✓</span>
-                      <span><strong>2-Hour Dispatch:</strong> Quick local technicians in Avadi for emergency lens cleaning, cable repair, or NVR setup.</span>
+                      <span><strong>&lt; 2-Hour Local Dispatch:</strong> Quick local technicians in Avadi for emergency lens cleaning, cable repair, or NVR setup.</span>
                     </li>
-                    <li className="flex items-start gap-2">
+                    <li className="flex items-start gap-2.5">
                       <span className="text-[#EF1313] font-bold">✓</span>
                       <span><strong>Dedicated CCTV Landing Page:</strong> Complete package calculators & camera previews available.</span>
                     </li>
@@ -201,7 +205,7 @@ export default function ServicesSection() {
                   </div>
                   <Link
                     href="/cctv-landing"
-                    className="px-3.5 py-1.5 rounded-lg bg-[#EF1313] hover:bg-[#d81010] text-white text-xs font-bold transition-all shadow-md"
+                    className="px-4 py-2 rounded-xl bg-[#EF1313] hover:bg-[#d81010] text-white text-xs font-bold transition-all shadow-md shadow-[#EF1313]/30"
                   >
                     Quick CCTV Page →
                   </Link>
@@ -211,7 +215,7 @@ export default function ServicesSection() {
           </motion.div>
         </div>
 
-        {/* 2 to 9: ALL OTHER SERVICES IN STRICT PRIORITY ORDER */}
+        {/* 2 to 9: ALL OTHER SERVICES IN STRICT PRIORITY ORDER WITH GLASSMORPHIC CARDS */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {otherServices.map((service, index) => {
             const Icon = ICON_MAP[service.id] || ShieldCheck;
@@ -227,7 +231,7 @@ export default function ServicesSection() {
                 className={`rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1.5 ${
                   isMinor
                     ? "bg-[#F3F4F8] border border-[#16143E]/10 hover:border-[#16143E]/30"
-                    : "bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/40 shadow-xs hover:shadow-md"
+                    : "glass-card-premium hover:border-[#4E0DBA]/40 hover:shadow-xl"
                 }`}
               >
                 <div>
@@ -254,10 +258,10 @@ export default function ServicesSection() {
 
                   {/* Icon */}
                   <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-105 ${
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 ${
                       isMinor
                         ? "bg-[#16143E]/10 text-[#16143E]"
-                        : "bg-[#4E0DBA]/10 text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white"
+                        : "bg-[#4E0DBA]/10 text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white group-hover:shadow-md group-hover:shadow-[#4E0DBA]/25"
                     }`}
                   >
                     <Icon size={24} />
@@ -296,7 +300,7 @@ export default function ServicesSection() {
                 <div className="pt-3 border-t border-[#16143E]/8 flex items-center justify-between">
                   <Link
                     href={service.href}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4E0DBA] hover:text-[#EF1313] transition-colors group-hover:translate-x-0.5"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4E0DBA] hover:text-[#EF1313] transition-colors group-hover:translate-x-1"
                     style={{ fontFamily: "Syne, sans-serif" }}
                   >
                     <span>View Details</span>
