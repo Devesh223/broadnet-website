@@ -77,7 +77,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
   const handleDropdownLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setDropdownOpen(false);
-    }, 200);
+    }, 260);
   };
 
   const handleEnquiryClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
@@ -146,93 +146,118 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
 
                 <AnimatePresence>
                   {dropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                      transition={{ duration: 0.16 }}
-                      className="absolute top-full -left-20 mt-2 w-[440px] rounded-3xl bg-white/98 backdrop-blur-2xl border border-[#16143E]/12 shadow-2xl p-3 z-50"
-                    >
-                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#16143E]/8 mb-1">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[#16143E]/50">
-                          Services in Priority Order
-                        </span>
-                        <Link
-                          href="/cctv-landing"
-                          onClick={() => setDropdownOpen(false)}
-                          className="text-[10px] font-bold text-[#EF1313] hover:underline"
-                        >
-                          CCTV Landing Page →
-                        </Link>
-                      </div>
+                    <div className="absolute top-full -left-20 pt-2.5 z-50">
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.94, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, y: 8, scale: 0.96, filter: "blur(2px)" }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 26,
+                          mass: 0.6,
+                        }}
+                        className="w-[450px] rounded-3xl bg-white/98 backdrop-blur-2xl border border-[#16143E]/12 shadow-2xl shadow-[#16143E]/18 p-3"
+                        style={{
+                          WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                          backdropFilter: "blur(24px) saturate(180%)",
+                          willChange: "transform, opacity",
+                        }}
+                      >
+                        <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#16143E]/8 mb-1">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-[#16143E]/50 font-display">
+                            Services in Priority Order
+                          </span>
+                          <Link
+                            href="/cctv-landing"
+                            onClick={() => setDropdownOpen(false)}
+                            className="text-[10px] font-bold text-[#EF1313] hover:underline"
+                          >
+                            CCTV Landing Page →
+                          </Link>
+                        </div>
 
-                      <div className="max-h-[380px] overflow-y-auto pr-1 space-y-1">
-                        {SERVICES_LIST.map((srv) => {
-                          const Icon = ICON_MAP[srv.id] || ShieldCheck;
-                          const isLead = srv.isLeadDivision;
-                          return (
-                            <Link
-                              key={srv.id}
-                              href={srv.href}
-                              onClick={() => setDropdownOpen(false)}
-                              className={`flex items-start gap-2.5 p-2 rounded-xl transition-all group ${
-                                isLead
-                                  ? "bg-[#FFF0F0] border border-[#EF1313]/25 hover:bg-[#FFE5E5]"
-                                  : "hover:bg-[#16143E]/5"
-                              }`}
-                            >
-                              <div
-                                className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                                  isLead
-                                    ? "bg-[#EF1313] text-white"
-                                    : "bg-[#4E0DBA]/10 text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white"
-                                } transition-colors`}
+                        <div className="max-h-[380px] overflow-y-auto pr-1 space-y-1">
+                          {SERVICES_LIST.map((srv) => {
+                            const Icon = ICON_MAP[srv.id] || ShieldCheck;
+                            const isLead = srv.isLeadDivision;
+                            return (
+                              <motion.div
+                                key={srv.id}
+                                whileHover={{
+                                  y: -2,
+                                  scale: 1.018,
+                                  transition: { type: "spring", stiffness: 450, damping: 20 },
+                                }}
+                                whileTap={{ scale: 0.98 }}
+                                className="relative rounded-xl"
                               >
-                                <Icon size={14} />
-                              </div>
+                                <Link
+                                  href={srv.href}
+                                  onClick={() => setDropdownOpen(false)}
+                                  className={`flex items-start gap-2.5 p-2 rounded-xl transition-all duration-200 group border ${
+                                    isLead
+                                      ? "bg-[#FFF0F0] border-[#EF1313]/25 hover:bg-white hover:border-[#EF1313]/50 hover:shadow-lg hover:shadow-[#EF1313]/15"
+                                      : "bg-transparent border-transparent hover:bg-white hover:border-[#4E0DBA]/20 hover:shadow-lg hover:shadow-[#4E0DBA]/10"
+                                  }`}
+                                >
+                                  <div
+                                    className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 transition-all duration-200 group-hover:scale-110 group-hover:shadow-md ${
+                                      isLead
+                                        ? "bg-[#EF1313] text-white"
+                                        : "bg-[#4E0DBA]/10 text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white"
+                                    }`}
+                                  >
+                                    <Icon size={14} />
+                                  </div>
 
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between gap-1">
-                                  <span className="text-xs font-bold text-[#16143E] group-hover:text-[#4E0DBA] truncate" style={{ fontFamily: "Syne, sans-serif" }}>
-                                    #{srv.order}. {srv.shortTitle}
-                                  </span>
-                                  {srv.badge && (
-                                    <span
-                                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full ${
-                                        isLead
-                                          ? "bg-[#EF1313] text-white"
-                                          : "bg-[#16143E]/5 text-[#16143E]/70"
-                                      }`}
-                                    >
-                                      {srv.badge}
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-[10.5px] text-[#16143E]/60 truncate mt-0.5">
-                                  {srv.tagline}
-                                </p>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center justify-between gap-1">
+                                      <span
+                                        className="text-xs font-bold text-[#16143E] group-hover:text-[#4E0DBA] truncate transition-colors"
+                                        style={{ fontFamily: "Syne, sans-serif" }}
+                                      >
+                                        #{srv.order}. {srv.shortTitle}
+                                      </span>
+                                      {srv.badge && (
+                                        <span
+                                          className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full transition-colors ${
+                                            isLead
+                                              ? "bg-[#EF1313] text-white"
+                                              : "bg-[#16143E]/5 text-[#16143E]/70 group-hover:bg-[#4E0DBA]/10 group-hover:text-[#4E0DBA]"
+                                          }`}
+                                        >
+                                          {srv.badge}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-[10.5px] text-[#16143E]/60 group-hover:text-[#16143E]/80 truncate mt-0.5 transition-colors">
+                                      {srv.tagline}
+                                    </p>
+                                  </div>
+                                </Link>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
 
-                      <div className="mt-2 pt-2 border-t border-[#16143E]/8 flex items-center justify-between px-2 text-xs">
-                        <Link
-                          href="/security#solution-finder"
-                          onClick={() => setDropdownOpen(false)}
-                          className="text-[11px] font-bold text-[#4E0DBA] hover:underline flex items-center gap-1"
-                        >
-                          <Sparkles size={11} className="text-[#EF1313]" /> Solution Advisor
-                        </Link>
-                        <a
-                          href="tel:+919884344075"
-                          className="text-[11px] font-bold text-[#EF1313] hover:underline"
-                        >
-                          Direct Call: 98843 44075
-                        </a>
-                      </div>
-                    </motion.div>
+                        <div className="mt-2 pt-2 border-t border-[#16143E]/8 flex items-center justify-between px-2 text-xs">
+                          <Link
+                            href="/security#solution-finder"
+                            onClick={() => setDropdownOpen(false)}
+                            className="text-[11px] font-bold text-[#4E0DBA] hover:underline flex items-center gap-1"
+                          >
+                            <Sparkles size={11} className="text-[#EF1313]" /> Solution Advisor
+                          </Link>
+                          <a
+                            href="tel:+919884344075"
+                            className="text-[11px] font-bold text-[#EF1313] hover:underline"
+                          >
+                            Direct Call: 98843 44075
+                          </a>
+                        </div>
+                      </motion.div>
+                    </div>
                   )}
                 </AnimatePresence>
               </div>
