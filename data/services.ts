@@ -220,24 +220,24 @@ export const SERVICES_LIST: ServiceDetail[] = [
     order: 9,
     title: "Fiber Internet & Broadband",
     shortTitle: "Fiber Broadband",
-    tagline: "Private Optical Fiber Backbone in Avadi (Avadi Only)",
+    tagline: "Dedicated High-Speed Optical Fiber across Avadi & Nearby Areas",
     description:
-      "Reliable FTTH fiber broadband connection powered by Broadnet's private 100+ km fiber network, BSNL Bharat Fibre, and RailWire. (Note: Available strictly in Avadi only; listed as a minor offering).",
+      "Fiber broadband, available across Avadi and nearby areas. High-speed symmetrical internet powered by Broadnet's private 100+ km fiber network, BSNL Bharat Fibre, and RailWire.",
     href: "/internet",
-    badge: "Avadi Only · Minor Offering",
-    isMinorOffering: true,
+    badge: "Avadi & Nearby Localities",
+    isMinorOffering: false,
     brands: ["Broadnet Fiber", "BSNL Bharat Fibre", "RailWire"],
     certifications: ["BSNL FTTH Partner", "RailWire Franchise Partner"],
-    startingPrice: "From ₹499 / Month",
+    startingPrice: "From ₹499 / Month [CONFIRM]",
     features: [
       "Private 100+ km Optical Fiber Backbone across Avadi",
-      "Symmetric High-Speed Upload & Download up to 300 Mbps",
+      "Symmetric High-Speed Upload & Download up to 300 Mbps [CONFIRM]",
       "Zero-FUP Truly Unlimited Data with Local Peering",
       "Dual-Band Wi-Fi 5 / 6 Optical ONT Device Provided",
       "Official BSNL Bharat Fibre & RailWire Franchise Partner",
       "Local Avadi Support Team at Fire Station Road TNHB",
     ],
-    idealFor: ["Homes in Avadi", "Local Shops & Small Businesses in Avadi"],
+    idealFor: ["Homes in Avadi", "Local Shops & Small Businesses in Avadi and nearby areas"],
   },
 ];
 
@@ -247,16 +247,19 @@ export const BRAND_PARTNERS = [
   { name: "Grandstream", tag: "Enterprise Wi-Fi & VoIP", cert: "Certified Network Specialists" },
   { name: "eSSL", tag: "Biometrics & Access Control", cert: "Authorised Partner" },
   { name: "Tactine", tag: "UTM Hardware Firewalls", cert: "Authorised Dealer" },
+  // TODO: Proof needed for Dahua partner level certification tier [CONFIRM]
   { name: "Dahua", tag: "Smart Surveillance & AI", cert: "Installation Partner" },
   { name: "CCL", tag: "Intercom & Video Phones", cert: "Certified Dealer" },
+  // TODO: Proof needed for HiFocus integration partner certification tier [CONFIRM]
   { name: "HiFocus", tag: "CCTV Solutions", cert: "Integration Partner" },
+  // TODO: Proof needed for Prama channel partner certification tier [CONFIRM]
   { name: "Prama", tag: "Make in India Surveillance", cert: "Channel Partner" },
 ];
 
 export const COMPANY_NUMBERS = [
   { value: "12+", label: "Years in Operation", detail: "Operating Since 2014" },
-  { value: "10+", label: "Certified Staff", detail: "In-House Engineers" },
-  { value: "2,500+", label: "Satisfied Clients", detail: "Homes & Corporates" },
+  { value: "10+ [CONFIRM]", label: "Certified Staff", detail: "In-House Engineers" },
+  { value: "2,500+ [CONFIRM]", label: "Satisfied Clients", detail: "Homes & Corporates" },
   { value: "100+ km", label: "Private OFC Network", detail: "Direct Avadi Ring" },
 ];
 

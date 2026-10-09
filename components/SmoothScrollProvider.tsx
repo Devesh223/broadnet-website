@@ -15,6 +15,11 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
   }, [pathname]);
 
   useEffect(() => {
+    // Respect prefers-reduced-motion
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     // Initialize Lenis motion-graphic inertia scrolling
     const lenis = new Lenis({
       duration: 1.3, // Silky cinematic deceleration curve

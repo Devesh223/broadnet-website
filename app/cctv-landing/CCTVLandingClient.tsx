@@ -32,77 +32,8 @@ import {
   User,
 } from "lucide-react";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
-
-const CCTV_PACKAGES = [
-  {
-    name: "2-Camera Home Starter",
-    desc: "Perfect for independent houses, duplex homes & small retail counters.",
-    price: "₹8,499",
-    savings: "Free On-Site Survey Included",
-    features: [
-      "2x 2MP Full HD Cameras (Indoor Dome + Outdoor Bullet)",
-      "4-Channel High Definition DVR / XVR",
-      "500GB Surveillance-Grade Storage Hard Disk",
-      "Up to 40m Heavy-Duty Copper Coaxial Cabling",
-      "Power Supply SMPS & Water-Resistant Junction Boxes",
-      "Live Mobile Viewing App Setup on Android & iPhone",
-      "1-Year Comprehensive On-Site Warranty",
-    ],
-    popular: false,
-    recommendedFor: "Villas & Small Shops",
-  },
-  {
-    name: "4-Camera Popular Security Kit",
-    desc: "Our #1 best-selling setup for complete residential compound & shop coverage.",
-    price: "₹14,999",
-    badge: "Most Popular",
-    savings: "Best Value · Free Site Survey",
-    features: [
-      "4x 2MP or 3MP ColorVu / Full-Color Night Vision Cameras",
-      "4-Channel Smart Audio DVR with Built-in Mic Support",
-      "1TB WD Purple / Seagate SkyHawk Surveillance HDD",
-      "Up to 90m Precision Conduit Routing & Cabling",
-      "Full Tamper-Proof Enclosure & Power Distribution",
-      "Remote Notification Alerts on Perimeter Motion",
-      "2-Year Manufacturer Warranty + 1-Year Broadnet On-Site AMC",
-    ],
-    popular: true,
-    recommendedFor: "Independent Homes & Offices",
-  },
-  {
-    name: "8-Camera Society & Enterprise",
-    desc: "Engineered for gated communities, apartments, warehouses, and schools.",
-    price: "₹28,999",
-    savings: "Heavy-Duty IP / HD Setup",
-    features: [
-      "8x 3MP / 5MP IP Network or HD High-Res Cameras",
-      "8-Channel Network Video Recorder (NVR) / HD DVR",
-      "2TB Surveillance Hard Drive (15-20 Days Recording)",
-      "High-Speed Gigabit PoE Switch & Cat6 Shielded Cabling",
-      "Smart Dual-Light IR + Warm LED for Night Intruders",
-      "Multi-User Access (Guard Cabin + Association President)",
-      "Dedicated Technician Dispatch & Free Bi-Monthly Maintenance",
-    ],
-    popular: false,
-    recommendedFor: "Apartments & Factories",
-  },
-  {
-    name: "Commercial & Custom AMC",
-    desc: "Tailored multi-location enterprise surveillance, ANPR plate cameras & cloud backup.",
-    price: "Custom Estimate",
-    savings: "100% Tailored Engineering",
-    features: [
-      "16 to 64+ Channel 4K IP Surveillance with PTZ 360° Tracking",
-      "ANPR / OCR Automated Vehicle Number Plate Recognition",
-      "Off-Site Cloud Video Backup & Redundant Storage RAID",
-      "Server Rack Integration, Optical Fiber Splicing & Patch Panels",
-      "Centralized Command Center / Multi-Monitor Video Wall Setup",
-      "Custom SLA AMC Contract with 2-Hour Response Time Guarantee",
-    ],
-    popular: false,
-    recommendedFor: "Commercial Parks & Institutions",
-  },
-];
+import PackageCard from "@/components/PackageCard";
+import { CCTV_PACKAGES, CCTVPackage } from "@/data/site";
 
 const REVIEWS = [
   {
@@ -177,12 +108,13 @@ export default function CCTVLandingClient() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   // Dynamic estimate calculation
+  // Reconciled with CCTV_PACKAGES base rates in data/site.ts
   const getEstimatedPrice = () => {
     let base = 0;
     if (calcCamCount === 2) base = 8499;
-    else if (calcCamCount === 4) base = 14499;
-    else if (calcCamCount === 8) base = 26999;
-    else base = 48999; // 16+
+    else if (calcCamCount === 4) base = 14999;
+    else if (calcCamCount === 8) base = 28999;
+    else base = 54999; // 16+ enterprise tier
 
     if (calcTech === "colorvu") base += calcCamCount * 450;
     if (calcTech === "ip") base += calcCamCount * 1200;
@@ -190,7 +122,7 @@ export default function CCTVLandingClient() {
     if (calcStorage === "2tb") base += 2200;
     if (calcStorage === "4tb") base += 4800;
 
-    return `₹${base.toLocaleString("en-IN")}`;
+    return `₹${base.toLocaleString("en-IN")} [CONFIRM]`;
   };
 
   const handleApplyEstimate = () => {
@@ -641,6 +573,9 @@ export default function CCTVLandingClient() {
                   <div className="text-3xl sm:text-4xl font-extrabold text-white mb-1" style={{ fontFamily: "Syne, sans-serif" }}>
                     {getEstimatedPrice()}
                   </div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[11px] font-bold uppercase tracking-wider mb-3">
+                    <span>Estimate · Final quote after free site survey [CONFIRM]</span>
+                  </div>
                   <div className="text-xs text-white/60 mb-5">
                     All-inclusive turnkey price · No hidden installation charges
                   </div>
@@ -713,75 +648,20 @@ export default function CCTVLandingClient() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {CCTV_PACKAGES.map((pkg) => (
-              <div
-                key={pkg.name}
-                className={`rounded-3xl p-6.5 flex flex-col justify-between transition-all duration-300 relative ${
-                  pkg.popular
-                    ? "bg-white border-2 border-[#EF1313] shadow-xl shadow-[#EF1313]/10 scale-[1.02]"
-                    : "bg-white border border-[#16143E]/12 hover:border-[#4E0DBA]/40 shadow-xs hover:shadow-md"
-                }`}
-              >
-                <div>
-                  {pkg.badge && (
-                    <span className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-[#EF1313] text-white text-[10px] font-black uppercase tracking-wider shadow-sm">
-                      {pkg.badge}
-                    </span>
-                  )}
-                  <div className="text-xs font-bold text-[#4E0DBA] uppercase tracking-wider mb-1">
-                    {pkg.recommendedFor}
-                  </div>
-                  <h3
-                    className="text-xl font-bold text-[#16143E] mb-2 leading-snug"
-                    style={{ fontFamily: "Syne, sans-serif" }}
-                  >
-                    {pkg.name}
-                  </h3>
-                  <div className="text-2xl font-black text-[#16143E] mb-1">
-                    {pkg.price}
-                  </div>
-                  <div className="text-xs text-[#EF1313] font-semibold mb-4">
-                    {pkg.savings}
-                  </div>
-                  <p className="text-xs text-[#16143E]/65 mb-6 leading-relaxed">
-                    {pkg.desc}
-                  </p>
-
-                  <div className="space-y-2 mb-6 pt-4 border-t border-[#16143E]/8">
-                    {pkg.features.map((f) => (
-                      <div key={f} className="flex items-start gap-2 text-xs text-[#16143E]/80">
-                        <Check size={14} className="text-[#EF1313] mt-0.5 flex-shrink-0" />
-                        <span>{f}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-[#16143E]/8 flex flex-col gap-2">
-                  <a
-                    href={`https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20am%20interested%20in%20the%20${encodeURIComponent(
-                      pkg.name
-                    )}%20package.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#16143E] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <MessageCircle size={15} className="text-[#25D366]" />
-                    <span>Enquire via WhatsApp</span>
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setForm((prev) => ({ ...prev, requirement: pkg.name }));
-                      scrollToWithPhysics("cctv-quote-form");
-                    }}
-                    className="w-full py-2 rounded-xl border border-[#16143E]/15 hover:border-[#16143E] text-xs font-semibold text-[#16143E] transition-colors cursor-pointer"
-                  >
-                    Book Site Inspection
-                  </button>
-                </div>
-              </div>
+              <PackageCard
+                key={pkg.id}
+                pkg={pkg}
+                variant="light"
+                onSelect={(selectedPkg) => {
+                  setForm((prev) => ({
+                    ...prev,
+                    requirement: `${selectedPkg.name} (${selectedPkg.price})`,
+                  }));
+                  scrollToWithPhysics("cctv-quote-form");
+                }}
+              />
             ))}
           </div>
         </div>

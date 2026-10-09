@@ -52,78 +52,8 @@ export const metadata: Metadata = {
   },
 };
 
-const PACKAGES = [
-  {
-    name: "Standalone Camera Upgrade",
-    tagline: "Ideal for expanding existing systems or single-point monitoring",
-    price: "₹1,399",
-    unit: "per camera onwards",
-    badge: "Budget Friendly",
-    popular: false,
-    features: [
-      "2MP Full HD 1080p Resolution",
-      "Infrared Night Vision up to 20m",
-      "Weatherproof IP66 bullet or indoor dome",
-      "Compatible with existing CP PLUS & Hikvision DVRs",
-      "1-Year On-Site Manufacturer Warranty",
-    ],
-    ctaText: "Order Camera Upgrade",
-  },
-  {
-    name: "Complete 4-Camera Home Kit",
-    tagline: "Our most popular setup for independent houses, villas & small shops",
-    price: "₹8,499",
-    unit: "complete kit with installation",
-    badge: "Most Popular",
-    popular: true,
-    features: [
-      "4x 1080p HD Cameras (Choice of Dome & Bullet)",
-      "4-Channel High-Performance DVR with HDMI/VGA out",
-      "1TB Surveillance-Grade HDD (15+ days recording loop)",
-      "Dedicated SMPS Power Supply & Heavy BNC Connectors",
-      "Concealed PVC conduit cabling & neat routing",
-      "Mobile App setup on iOS & Android for live viewing",
-      "2-Year On-Site Replacement Warranty",
-    ],
-    ctaText: "Book 4-Camera Kit",
-  },
-  {
-    name: "Premium 8-Camera 4K ColorVu Kit",
-    tagline: "Engineered for luxury homes, multi-story buildings & commercial offices",
-    price: "₹18,999",
-    unit: "complete 8-camera kit",
-    badge: "Color Night Vision",
-    popular: false,
-    features: [
-      "8x 5MP / 4K Ultra-HD Cameras with 24/7 ColorVu Night Vision",
-      "8-Channel H.265+ High Efficiency DVR/NVR",
-      "2TB WD Purple / Seagate SkyHawk Surveillance HDD",
-      "AI Human & Vehicle Motion Detection (no false alarms)",
-      "Built-in High-Gain Audio Mic for sound recording",
-      "Remote multi-user monitoring across multiple smartphones",
-      "Priority 2-Hour SLA Local Technician Support",
-    ],
-    ctaText: "Book 8-Camera Setup",
-  },
-  {
-    name: "Enterprise & Industrial Mesh",
-    tagline: "Custom-architected for factories, apartment complexes & campuses",
-    price: "Custom Quote",
-    unit: "No Upper Ceiling — Any Scale",
-    badge: "Enterprise Scale",
-    popular: false,
-    features: [
-      "16 to 128+ Channel 4K IP Camera Network",
-      "Optical Fiber Backhaul for long-distance perimeter feeds",
-      "PTZ (Pan-Tilt-Zoom) 360° Cameras with 30x Optical Zoom",
-      "ANPR Automatic Number Plate Recognition for vehicle gates",
-      "Centralized Server Rack & Multi-Screen Video Wall Setup",
-      "Annual Maintenance Contract (AMC) with quarterly audits",
-      "Dedicated account engineer with < 90 min SLA",
-    ],
-    ctaText: "Request Enterprise Survey",
-  },
-];
+import PackageCard from "@/components/PackageCard";
+import { CCTV_PACKAGES } from "@/data/site";
 
 const WORKFLOW = [
   {
@@ -198,9 +128,22 @@ const FAQS = [
   },
 ];
 
+import { getCctvPackagesJsonLd, getFaqPageJsonLd } from "@/lib/jsonLd";
+
 export default function CamerasPage() {
+  const packagesJsonLd = getCctvPackagesJsonLd();
+  const faqJsonLd = getFaqPageJsonLd(FAQS);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(packagesJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Header activePage="Security" />
       <main>
         {/* Hero Section */}
@@ -377,6 +320,7 @@ export default function CamerasPage() {
                 {
                   icon: Shield,
                   title: "Active Deterrence of Trespassing",
+                  // TODO: Proof needed for claim: "deters over 85%" [CONFIRM]
                   desc: "Visible, professionally positioned CCTV bullet cameras deter over 85% of opportunistic property trespassing, vehicle tampering, and boundary breaches before they occur.",
                 },
                 {
@@ -402,6 +346,7 @@ export default function CamerasPage() {
                 {
                   icon: HardDrive,
                   title: "Legally Admissible High-Definition Evidence",
+                  // TODO: Proof needed for claim: "legally admissible" [CONFIRM]
                   desc: "Surveillance-grade continuous recording ensures tamper-free timestamped footage, critical for police FIR reports, insurance claims, and legal documentation.",
                 },
               ].map((item) => (
@@ -435,65 +380,9 @@ export default function CamerasPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {PACKAGES.map((pkg) => (
-                <div
-                  key={pkg.name}
-                  className={`rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 relative ${
-                    pkg.popular
-                      ? "bg-[#16143E] border-2 border-[#EF1313] shadow-2xl shadow-[#EF1313]/20"
-                      : "bg-[#120F2E] border border-white/10 hover:border-white/25"
-                  }`}
-                >
-                  {pkg.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#EF1313] text-white shadow-md">
-                      {pkg.badge}
-                    </span>
-                  )}
-
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-bold text-[#A78BFA] uppercase tracking-wider">
-                        {pkg.badge}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-white mb-2 font-display">{pkg.name}</h3>
-                    <p className="text-xs text-white/55 mb-6 leading-relaxed">{pkg.tagline}</p>
-
-                    <div className="mb-6 pb-6 border-b border-white/10">
-                      <div className="text-3xl font-bold text-white font-display">{pkg.price}</div>
-                      <div className="text-xs text-white/50 mt-1">{pkg.unit}</div>
-                    </div>
-
-                    <ul className="space-y-3 mb-8">
-                      {pkg.features.map((feat) => (
-                        <li key={feat} className="flex items-start gap-2.5 text-xs text-white/80 leading-relaxed">
-                          <CheckCircle2 size={14} className="text-emerald-400 mt-0.5 flex-shrink-0" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <a
-                      href={`https://wa.me/919884344075?text=${encodeURIComponent(
-                        `Hi Broadnet, I am interested in the ${pkg.name} (${pkg.price}) for CCTV installation in Avadi. Please share details.`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-full min-h-[44px] px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-colors ${
-                        pkg.popular
-                          ? "bg-[#EF1313] hover:bg-[#d60e0e] text-white"
-                          : "bg-white/10 hover:bg-white/20 text-white"
-                      }`}
-                    >
-                      <span>{pkg.ctaText}</span>
-                      <ArrowRight size={13} />
-                    </a>
-                  </div>
-                </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {CCTV_PACKAGES.map((pkg) => (
+                <PackageCard key={pkg.id} pkg={pkg} variant="dark" />
               ))}
             </div>
 

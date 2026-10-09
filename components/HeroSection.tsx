@@ -28,6 +28,8 @@ import {
 } from "lucide-react";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
 import { COMPANY_NUMBERS } from "@/data/services";
+import { useLanguage } from "@/lib/i18n";
+import { trackEvent } from "@/lib/analytics";
 
 type CameraChannel = {
   id: string;
@@ -82,14 +84,20 @@ const CAMERA_CHANNELS: CameraChannel[] = [
 ];
 
 export default function HeroSection() {
+  const { lang, t } = useLanguage();
   const [tick, setTick] = useState(0);
   const [selectedChannel, setSelectedChannel] = useState<number>(0);
   const [visionMode, setVisionMode] = useState<"colorvu" | "night" | "ai">("colorvu");
   const [zoomLevel, setZoomLevel] = useState<number>(1);
   const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>("");
+  const [reducedMotion, setReducedMotion] = useState<boolean>(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setReducedMotion(true);
+      return;
+    }
     const id = setInterval(() => setTick((t) => (t + 1) % COMPANY_NUMBERS.length), 3200);
     return () => clearInterval(id);
   }, []);
@@ -194,12 +202,10 @@ export default function HeroSection() {
               transition={{ duration: 0.5 }}
               className="mb-3.5 flex flex-wrap items-center gap-2"
             >
-              <span className="text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[#4E0DBA] bg-[#4E0DBA]/10 px-3 py-1 rounded-full border border-[#4E0DBA]/20">
-                Connecting People · Securing Places · Managing Access
-              </span>
-              <span className="text-[11px] sm:text-xs font-bold text-[#EF1313] bg-[#EF1313]/10 px-2.5 py-1 rounded-full border border-[#EF1313]/20">
-                Lead Division: “We Secure What Matters Most”
-              </span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EF1313]/10 text-[#EF1313] border border-[#EF1313]/25 text-xs font-bold uppercase tracking-wider">
+                <ShieldCheck size={14} />
+                <span>{t("hero.badge")}</span>
+              </div>
             </motion.div>
 
             {/* Main Punchy Headline */}
@@ -210,12 +216,25 @@ export default function HeroSection() {
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.08] tracking-tight mb-5 text-[#16143E]"
               style={{ fontFamily: "Syne, sans-serif" }}
             >
-              Engineered <span className="text-[#EF1313] relative inline-block">
-                Surveillance.
-                <span className="absolute left-0 bottom-1 w-full h-1 bg-[#EF1313]/20 rounded-full" />
-              </span>
-              <br />
-              Intelligent <span className="text-[#4E0DBA]">Security Systems.</span>
+              {lang === "ta" ? (
+                <>
+                  நம்பகமான சிசிடிவி.{" "}
+                  <span className="text-[#EF1313] relative inline-block">
+                    பாதுகாப்பு அமைப்புகள்.
+                    <span className="absolute left-0 bottom-1 w-full h-1 bg-[#EF1313]/20 rounded-full" />
+                  </span>
+                </>
+              ) : (
+                <>
+                  Engineered{" "}
+                  <span className="text-[#EF1313] relative inline-block">
+                    Surveillance.
+                    <span className="absolute left-0 bottom-1 w-full h-1 bg-[#EF1313]/20 rounded-full" />
+                  </span>
+                  <br />
+                  Intelligent <span className="text-[#4E0DBA]">Security Systems.</span>
+                </>
+              )}
             </motion.h1>
 
             {/* Description */}
@@ -223,62 +242,56 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.15 }}
-              className="text-[#16143E]/80 text-base sm:text-lg leading-relaxed mb-6 max-w-2xl font-normal"
+              className="text-[#16143E]/80 text-base sm:text-lg leading-relaxed mb-8 max-w-2xl font-normal"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
-              Avadi & Chennai&apos;s certified technology integrator for <strong>Hikvision & CP PLUS CCTV cameras</strong>, eSSL biometric attendance, smart video door phones, and optical enterprise networking. Backed by guaranteed <strong className="text-[#EF1313]">&lt; 2-hour technician dispatch</strong> and genuine warranties.
+              {t("hero.desc")}
             </motion.p>
 
-            {/* Above the fold CTAs */}
+            {/* Above the fold CTAs: Exactly One Primary & One Secondary */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.2 }}
-              className="flex flex-wrap items-center gap-3 w-full sm:w-auto mb-6"
+              className="flex flex-wrap items-center gap-3.5 w-full sm:w-auto mb-6"
             >
-              {/* Primary CTA: Free Site Visit */}
+              {/* Primary CTA */}
               <button
                 type="button"
-                onClick={() => scrollToWithPhysics("enquiry")}
+                onClick={() => {
+                  trackEvent("quote_request", { category: "Hero", label: "PrimaryCTA" });
+                  scrollToWithPhysics("enquiry");
+                }}
                 className="btn-crimson min-h-[52px] px-8 text-sm sm:text-base font-bold justify-center glow-btn-crimson group cursor-pointer shadow-lg hover:shadow-xl transition-all"
               >
-                <span>Get Free Site Visit & Quote</span>
+                <span>{t("hero.primaryCta")}</span>
                 <ArrowRight size={17} className="group-hover:translate-x-1 transition-transform" />
               </button>
 
-              {/* Direct Phone Number */}
-              <a
-                href="tel:+919884344075"
-                className="min-h-[52px] px-5 sm:px-6 rounded-full border-2 border-[#16143E]/15 hover:border-[#16143E] text-xs sm:text-sm font-bold text-[#16143E] bg-white/95 backdrop-blur-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-xs hover:shadow-md"
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                <Phone size={15} className="text-[#EF1313]" />
-                <span>Call 98843 44075</span>
-              </a>
-
-              {/* WhatsApp CTA */}
+              {/* Secondary CTA */}
               <a
                 href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20would%20like%20to%20get%20a%20free%20quote%20and%20schedule%20a%20site%20visit."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-[52px] px-5 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/35 text-[#15803d] text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-xs"
+                onClick={() => trackEvent("whatsapp_click", { category: "Hero", label: "SecondaryCTA" })}
+                className="min-h-[52px] px-6 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/35 text-[#15803d] text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-xs"
                 style={{ fontFamily: "Syne, sans-serif" }}
               >
-                <MessageCircle size={16} className="text-[#25D366]" />
-                <span>WhatsApp</span>
+                <MessageCircle size={18} className="text-[#25D366]" />
+                <span>{t("hero.whatsappCta")} · 98843 44075</span>
               </a>
             </motion.div>
 
-            {/* Reassurance Trust Pill */}
+            {/* Reassurance line */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.25 }}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FAFAFE] border border-[#16143E]/10 text-xs text-[#16143E]/85 font-medium shadow-2xs"
+              className="inline-flex items-center gap-2 text-xs text-[#16143E]/75 font-medium"
             >
               <Sparkles size={14} className="text-[#EF1313] flex-shrink-0" />
               <span>
-                <strong>100% Free Site Visit:</strong> Zero obligation survey for homes, apartments, factories & corporate sites across Chennai.
+                <strong>100% Free On-Site Inspection</strong> across Avadi & Chennai · Zero Obligation Survey
               </span>
             </motion.div>
           </div>
@@ -304,9 +317,13 @@ export default function HeroSection() {
                     {currentCam.name} · {currentCam.location}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 font-mono text-[11px] text-white/70">
-                  <Activity size={12} className="text-emerald-400" />
-                  <span>{currentTime || "12:00:00"} IST</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-white/10 text-white/70 tracking-wider">
+                    Illustration
+                  </span>
+                  <span className="font-mono text-[11px] text-white/70 hidden sm:inline">
+                    {currentTime || "12:00:00"} IST
+                  </span>
                 </div>
               </div>
 

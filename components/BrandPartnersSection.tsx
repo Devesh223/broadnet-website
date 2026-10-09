@@ -83,6 +83,7 @@ export default function BrandPartnersSection() {
               <div className="text-[10.5px] text-[#16143E]/60 font-medium">
                 {brand.cert}
               </div>
+              {/* TODO: Proof needed for claim: Official Warranty Included on every brand card [CONFIRM] */}
               <div className="mt-2 text-[10px] text-emerald-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
                 Official Warranty Included ✓
               </div>

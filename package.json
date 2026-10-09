@@ -5,12 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "revert:baseline": "git checkout master",
-    "apply:premium": "git checkout feature/premium-enhancements"
+    "start": "next start"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
     "@react-three/fiber": "^9.8.1",
     "@types/three": "^0.186.0",
     "framer-motion": "^13.4.4",

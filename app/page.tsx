@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import BrandPartnersSection from "@/components/BrandPartnersSection";
-import ServicesSection from "@/components/ServicesSection";
+import TrustBar from "@/components/TrustBar";
+import TopServicesSection from "@/components/TopServicesSection";
+import PackagePricingTeaser from "@/components/PackagePricingTeaser";
 import ProcessSection from "@/components/ProcessSection";
-import MilestonesSection from "@/components/MilestonesSection";
+import ProjectsTeaser from "@/components/ProjectsTeaser";
+import HomeFiberSection from "@/components/HomeFiberSection";
 import LocationChecker from "@/components/LocationChecker";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import HomeFaqSection from "@/components/HomeFaqSection";
 import EnquirySection from "@/components/EnquirySection";
 import Footer from "@/components/Footer";
 
@@ -17,6 +20,28 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.broadnet.in",
   },
+  openGraph: {
+    title: "Broadnet | CCTV Security Systems & Fiber Internet in Chennai & Avadi",
+    description:
+      "Avadi & Chennai's authorized security systems integrator for Hikvision & CP PLUS CCTV cameras, eSSL biometrics, and high-speed fiber broadband. Established 2014.",
+    url: "https://www.broadnet.in",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Broadnet Security Systems and Fiber Broadband",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Broadnet | CCTV Security Systems & Fiber Broadband",
+    description:
+      "Official Hikvision & CP PLUS CCTV camera installations and high-speed fiber broadband across Avadi & Chennai.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function HomePage() {
@@ -24,28 +49,37 @@ export default function HomePage() {
     <>
       <Header activePage="Home" />
       <main>
-        {/* 1. Hero with strong CCTV headline, phone call link, and 'Get Free Site Visit & Quote' button */}
+        {/* 1. Hero with one clear H1, one primary CTA, one secondary CTA, and HUD simulation */}
         <HeroSection />
 
-        {/* 2. Brand Partners & Official Certifications (Hikvision, CP PLUS, Grandstream, eSSL, Tactine) */}
-        <BrandPartnersSection />
+        {/* 2. Unified Trust Bar with verified statistics and certifications */}
+        <TrustBar />
 
-        {/* 3. Core Services in strict priority order (CCTV Lead Division down to Internet minor card) */}
-        <ServicesSection />
+        {/* 3. Top 3 Services (CCTV, Biometrics + Video Door Phones, Wi-Fi + Networking) with View All link */}
+        <TopServicesSection />
 
-        {/* 4. Our Process (6-step graphic: Enquiry → Site Visit → Quotation → Installation → Testing → AMC/Support) */}
+        {/* 4. Package Pricing Teaser with shared PackageCard component */}
+        <PackagePricingTeaser />
+
+        {/* 5. 6-Step Compact Protocol (No duplicated detail pane) */}
         <ProcessSection />
 
-        {/* 5. Milestones timeline (2014 founded → 2016 → 2019 → 2024 → 2025 → 2026) + Company Numbers */}
-        <MilestonesSection />
+        {/* 6. Real Projects Teaser showcasing completed Chennai installations */}
+        <ProjectsTeaser />
 
-        {/* 6. Service Areas & Interactive Locality Coverage Checker (Chennai for CCTV, Avadi for Internet) */}
+        {/* 7. Fiber Broadband — Customer-Facing Dedicated Section */}
+        <HomeFiberSection />
+
+        {/* 8. Interactive Coverage Checker by Locality / Pincode */}
         <LocationChecker />
 
-        {/* 7. Verified Customer Reviews & Testimonials */}
+        {/* 9. Verified Google Reviews & Customer Testimonials */}
         <TestimonialsSection />
 
-        {/* 8. Short Quote / Site Visit Form with Building Type that emails admin@broadnet.in */}
+        {/* 10. Frequently Asked Questions with FAQPage JSON-LD schema */}
+        <HomeFaqSection />
+
+        {/* 11. Free Site Visit & Quote Enquiry Form */}
         <EnquirySection />
       </main>
       <Footer />

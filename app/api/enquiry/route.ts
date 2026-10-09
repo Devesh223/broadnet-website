@@ -9,6 +9,10 @@ interface EnquiryPayload {
   enquiryType: string;
   requirements: string[];
   message?: string;
+  website?: string; // Honeypot field
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
 }
 
 function generateEmailHtml(data: EnquiryPayload): string {
@@ -133,6 +137,12 @@ function generateEmailHtml(data: EnquiryPayload): string {
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as EnquiryPayload;
+
+    // ── Honeypot spam protection ──────────────────────────────────────────
+    if (body.website && body.website.trim().length > 0) {
+      // Silently return success to confuse automated bot submissions
+      return NextResponse.json({ success: true, mode: "bot_ignored" });
+    }
 
     // ── Validation ──────────────────────────────────────────────────────────
     const trimmedName = body.name?.trim();

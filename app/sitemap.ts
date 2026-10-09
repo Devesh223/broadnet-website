@@ -4,108 +4,115 @@ export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.broadnet.in";
-  const currentDate = new Date().toISOString();
+  // Consistent release timestamp for accurate crawl cache invalidation
+  const releaseDate = new Date("2026-10-09T00:00:00.000Z");
 
   return [
     {
       url: baseUrl,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "daily",
       priority: 1.0,
     },
     {
       url: `${baseUrl}/cctv-landing`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "daily",
       priority: 0.98,
     },
     {
+      url: `${baseUrl}/security`,
+      lastModified: releaseDate,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/security/cameras`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.95,
     },
     {
       url: `${baseUrl}/services/biometric-attendance`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.92,
     },
     {
       url: `${baseUrl}/security/door-phones`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/services/enterprise-wifi`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/services/networking`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/security/intrusion-alarms`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.88,
     },
     {
       url: `${baseUrl}/security/access-control`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.88,
     },
     {
       url: `${baseUrl}/services/entrance-security`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.88,
     },
     {
       url: `${baseUrl}/internet`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/industries`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.85,
     },
     {
       url: `${baseUrl}/projects`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
-      priority: 0.85,
+      priority: 0.88,
     },
     {
       url: `${baseUrl}/service-areas`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "weekly",
       priority: 0.85,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: currentDate,
+      lastModified: releaseDate,
       changeFrequency: "monthly",
       priority: 0.85,
     },

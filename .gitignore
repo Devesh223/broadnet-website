@@ -25,7 +25,12 @@ next-env.d.ts
 # OS
 .DS_Store
 desktop.ini
+**/desktop.ini
 Thumbs.db
+
+# Launch scripts
+Launch BroadNet.bat
+Launch BroadNet.vbs
 
 # debug logs
 npm-debug.log*

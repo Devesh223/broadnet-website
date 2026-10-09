@@ -158,16 +158,16 @@ export default function ServiceAreaCoverageClient() {
               </div>
               <div>
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#4E0DBA]">
-                  Minor Offering
+                  Fiber Broadband
                 </span>
-                <h3 className="text-xl font-bold text-[#16143E]">Fiber Internet / Broadband</h3>
+                <h3 className="text-xl font-bold text-[#16143E]">High-Speed FTTH Internet</h3>
               </div>
             </div>
             <p className="text-xs sm:text-sm text-[#16143E]/75 leading-relaxed mb-4">
-              <strong>Avadi Only!</strong> Powered by Broadnet&apos;s private 100+ km optical fiber ring, BSNL Bharat Fibre, and RailWire. Not available outside the Avadi municipal boundary.
+              <strong>Available across Avadi & nearby localities!</strong> Powered by Broadnet&apos;s private 100+ km optical fiber ring, BSNL Bharat Fibre, and RailWire.
             </p>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16143E]/60 bg-[#16143E]/5 px-3 py-1 rounded-full">
-              <span>Exclusively serving Avadi 600054 & immediate borders</span>
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16143E]/80 bg-[#4E0DBA]/10 px-3 py-1 rounded-full">
+              <span>Serving Avadi 600054 & immediate nearby areas</span>
             </div>
           </div>
         </div>

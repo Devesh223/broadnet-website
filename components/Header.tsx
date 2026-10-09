@@ -26,6 +26,8 @@ import {
 import BroadnetLogo from "./BroadnetLogo";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
 import { SERVICES_LIST } from "@/data/services";
+import { useLanguage } from "@/lib/i18n";
+import { trackEvent } from "@/lib/analytics";
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   cctv: Camera,
@@ -40,6 +42,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: 
 };
 
 export default function Header({ activePage = "" }: { activePage?: string }) {
+  const { lang, setLang, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -99,6 +102,87 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
         }`}
         style={{ overflow: "visible" }}
       >
+        {/* Slim Utility Bar */}
+        <div className="bg-[#0e0c28] text-white/80 border-b border-white/10 text-[11px] py-1 px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            {/* Quick Utility Links */}
+            <div className="flex items-center gap-3 sm:gap-5">
+              <button
+                type="button"
+                onClick={() => {
+                  trackEvent("quote_request", { category: "UtilityBar", label: "PayBill" });
+                  scrollToWithPhysics("enquiry");
+                }}
+                className="hover:text-white transition-colors cursor-pointer flex items-center gap-1 font-medium"
+              >
+                <span>{t("util.payBill")}</span>
+              </button>
+              <span className="text-white/20">·</span>
+              <button
+                type="button"
+                onClick={() => {
+                  trackEvent("quote_request", { category: "UtilityBar", label: "RaiseTicket" });
+                  scrollToWithPhysics("enquiry");
+                }}
+                className="hover:text-white transition-colors cursor-pointer flex items-center gap-1 font-medium"
+              >
+                <span>{t("util.raiseTicket")}</span>
+              </button>
+              <span className="text-white/20 hidden xs:inline">·</span>
+              <a
+                href="https://fast.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-emerald-400 transition-colors flex items-center gap-1 hidden xs:flex font-medium text-white/70"
+              >
+                <span>⚡ {t("util.speedTest")} ↗</span>
+              </a>
+            </div>
+
+            {/* Right Meta & Language Toggle */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              <span className="hidden sm:inline text-white/50 text-[10px]">
+                {t("util.sla")}
+              </span>
+              <a
+                href="tel:+919884344075"
+                onClick={() => trackEvent("call_click", { category: "UtilityBar" })}
+                className="font-bold text-white hover:text-[#EF1313] transition-colors flex items-center gap-1"
+              >
+                <Phone size={11} className="text-[#EF1313]" />
+                <span>98843 44075</span>
+              </a>
+
+              {/* Tamil / English Toggle */}
+              <div
+                className="flex items-center border border-white/20 rounded-md overflow-hidden text-[10.5px] font-bold"
+                aria-label="Language selector"
+              >
+                <button
+                  type="button"
+                  onClick={() => setLang("en")}
+                  className={`px-1.5 py-0.5 transition-colors cursor-pointer ${
+                    lang === "en" ? "bg-[#EF1313] text-white" : "bg-transparent text-white/70 hover:text-white"
+                  }`}
+                  aria-pressed={lang === "en"}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLang("ta")}
+                  className={`px-1.5 py-0.5 transition-colors cursor-pointer ${
+                    lang === "ta" ? "bg-[#EF1313] text-white" : "bg-transparent text-white/70 hover:text-white"
+                  }`}
+                  aria-pressed={lang === "ta"}
+                >
+                  தமிழ்
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-18 sm:h-20 gap-3">
             {/* Logo */}
