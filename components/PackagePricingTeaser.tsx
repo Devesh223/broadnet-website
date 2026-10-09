@@ -27,7 +27,7 @@ export default function PackagePricingTeaser() {
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
-            {lang === "ta" ? "சிசிடிவி தொகுப்பு கட்டணங்கள்" : "Transparent CCTV Package Packages"}
+            {lang === "ta" ? "சிசிடிவி தொகுப்பு கட்டணங்கள்" : "Transparent CCTV Packages"}
           </h2>
           <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
             Complete turnkey solutions with genuine cameras, surveillance HDD, DVR/NVR, power supply, concealed conduit cabling, and mobile app configuration.

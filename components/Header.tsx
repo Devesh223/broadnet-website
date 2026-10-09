@@ -10,18 +10,14 @@ import {
   Phone,
   MessageCircle,
   ChevronDown,
+  ChevronRight,
   Camera,
-  Fingerprint,
-  PhoneCall,
-  Wifi,
-  Network,
-  BellRing,
-  Lock,
-  Car,
-  Globe,
-  Sparkles,
   ArrowRight,
+  Users,
   ShieldCheck,
+  Shield,
+  Wifi,
+  MapPin,
 } from "lucide-react";
 import BroadnetLogo from "./BroadnetLogo";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
@@ -29,25 +25,36 @@ import { SERVICES_LIST } from "@/data/services";
 import { useLanguage } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
 
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  cctv: Camera,
-  "biometric-attendance": Fingerprint,
-  "door-phones": PhoneCall,
-  "enterprise-wifi": Wifi,
-  networking: Network,
-  "intrusion-alarms": BellRing,
-  "access-control": Lock,
-  "entrance-security": Car,
-  internet: Globe,
-};
+const SECURITY_SERVICES = SERVICES_LIST.filter((s) => s.id !== "internet");
+
+function WhatsAppIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.82 11.82 0 00-3.48-8.413Z" />
+    </svg>
+  );
+}
 
 export default function Header({ activePage = "" }: { activePage?: string }) {
   const { lang, setLang, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileSecurityOpen, setMobileSecurityOpen] = useState(true);
+  const [activeServiceTab, setActiveServiceTab] = useState<"security" | null>("security");
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const aboutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const pathname = usePathname();
   const isHomePage = pathname === "/" || activePage === "Home";
@@ -56,13 +63,18 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
     pathname?.startsWith("/services") ||
     pathname?.startsWith("/cctv") ||
     pathname?.startsWith("/internet") ||
-    activePage === "Services";
-  const isIndustries = pathname?.startsWith("/industries") || activePage === "Industries";
-  const isProjects = pathname?.startsWith("/projects") || activePage === "Projects";
-  const isServiceAreas = pathname?.startsWith("/service-areas") || activePage === "Service Areas";
-  const isAbout = pathname?.startsWith("/about") || activePage === "About Us";
-  const isBlog = pathname?.startsWith("/blog") || activePage === "Blog";
-  const isContact = pathname?.startsWith("/contact") || activePage === "Contact";
+    pathname?.startsWith("/service-areas") ||
+    activePage === "Services" ||
+    activePage === "Service Areas";
+  const isProjects =
+    pathname?.startsWith("/projects") ||
+    activePage === "Projects" ||
+    activePage === "Past Projects";
+  const isAbout =
+    pathname?.startsWith("/about") ||
+    pathname?.startsWith("/industries") ||
+    activePage === "About Us" ||
+    activePage === "Industries";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -71,21 +83,36 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
   }, []);
 
   const handleDropdownEnter = () => {
-    if (dropdownTimeoutRef.current) {
-      clearTimeout(dropdownTimeoutRef.current);
-    }
+    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    if (aboutTimeoutRef.current) clearTimeout(aboutTimeoutRef.current);
+    setActiveServiceTab("security");
+    setAboutDropdownOpen(false);
     setDropdownOpen(true);
   };
 
   const handleDropdownLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setDropdownOpen(false);
-    }, 200);
+    }, 180);
+  };
+
+  const handleAboutEnter = () => {
+    if (aboutTimeoutRef.current) clearTimeout(aboutTimeoutRef.current);
+    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    setDropdownOpen(false);
+    setAboutDropdownOpen(true);
+  };
+
+  const handleAboutLeave = () => {
+    aboutTimeoutRef.current = setTimeout(() => {
+      setAboutDropdownOpen(false);
+    }, 180);
   };
 
   const handleEnquiryClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     setMobileOpen(false);
     setDropdownOpen(false);
+    setAboutDropdownOpen(false);
     const enquiryEl = document.getElementById("enquiry");
     if (enquiryEl) {
       e.preventDefault();
@@ -102,100 +129,20 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
         }`}
         style={{ overflow: "visible" }}
       >
-        {/* Slim Utility Bar */}
-        <div className="bg-[#0e0c28] text-white/80 border-b border-white/10 text-[11px] py-1 px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            {/* Quick Utility Links */}
-            <div className="flex items-center gap-3 sm:gap-5">
-              <button
-                type="button"
-                onClick={() => {
-                  trackEvent("quote_request", { category: "UtilityBar", label: "PayBill" });
-                  scrollToWithPhysics("enquiry");
-                }}
-                className="hover:text-white transition-colors cursor-pointer flex items-center gap-1 font-medium"
-              >
-                <span>{t("util.payBill")}</span>
-              </button>
-              <span className="text-white/20">·</span>
-              <button
-                type="button"
-                onClick={() => {
-                  trackEvent("quote_request", { category: "UtilityBar", label: "RaiseTicket" });
-                  scrollToWithPhysics("enquiry");
-                }}
-                className="hover:text-white transition-colors cursor-pointer flex items-center gap-1 font-medium"
-              >
-                <span>{t("util.raiseTicket")}</span>
-              </button>
-              <span className="text-white/20 hidden xs:inline">·</span>
-              <a
-                href="https://fast.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-emerald-400 transition-colors flex items-center gap-1 hidden xs:flex font-medium text-white/70"
-              >
-                <span>⚡ {t("util.speedTest")} ↗</span>
-              </a>
-            </div>
-
-            {/* Right Meta & Language Toggle */}
-            <div className="flex items-center gap-3 sm:gap-4">
-              <span className="hidden sm:inline text-white/50 text-[10px]">
-                {t("util.sla")}
-              </span>
-              <a
-                href="tel:+919884344075"
-                onClick={() => trackEvent("call_click", { category: "UtilityBar" })}
-                className="font-bold text-white hover:text-[#EF1313] transition-colors flex items-center gap-1"
-              >
-                <Phone size={11} className="text-[#EF1313]" />
-                <span>98843 44075</span>
-              </a>
-
-              {/* Tamil / English Toggle */}
-              <div
-                className="flex items-center border border-white/20 rounded-md overflow-hidden text-[10.5px] font-bold"
-                aria-label="Language selector"
-              >
-                <button
-                  type="button"
-                  onClick={() => setLang("en")}
-                  className={`px-1.5 py-0.5 transition-colors cursor-pointer ${
-                    lang === "en" ? "bg-[#EF1313] text-white" : "bg-transparent text-white/70 hover:text-white"
-                  }`}
-                  aria-pressed={lang === "en"}
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLang("ta")}
-                  className={`px-1.5 py-0.5 transition-colors cursor-pointer ${
-                    lang === "ta" ? "bg-[#EF1313] text-white" : "bg-transparent text-white/70 hover:text-white"
-                  }`}
-                  aria-pressed={lang === "ta"}
-                >
-                  தமிழ்
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        {/* Main Clean Header Bar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-18 sm:h-20 gap-3">
+          <div className="flex items-center justify-between h-16 sm:h-18 gap-4">
             {/* Logo */}
             <div className="flex-shrink-0">
               <BroadnetLogo />
             </div>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden xl:flex items-center gap-1 bg-[#16143E]/[0.03] p-1 rounded-full border border-[#16143E]/10 backdrop-blur-md">
+            {/* Desktop Navigation Links (Clean & Smooth 3-Item Layout) */}
+            <nav className="hidden md:flex items-center gap-1 bg-[#16143E]/[0.03] p-1 rounded-full border border-[#16143E]/8 backdrop-blur-md">
               <Link
                 href="/"
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
-                  isHomePage && !isServices && !isIndustries && !isProjects && !isServiceAreas && !isAbout && !isBlog && !isContact
+                className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-200 ${
+                  isHomePage && !isServices && !isAbout
                     ? "text-[#4E0DBA] bg-white shadow-xs"
                     : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
                 }`}
@@ -204,7 +151,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                 Home
               </Link>
 
-              {/* Services Mega Dropdown */}
+              {/* Services Dropdown */}
               <div
                 className="relative"
                 onMouseEnter={handleDropdownEnter}
@@ -212,7 +159,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
               >
                 <button
                   type="button"
-                  className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all flex items-center gap-1 cursor-pointer ${
+                  className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
                     isServices
                       ? "text-[#4E0DBA] bg-white shadow-xs"
                       : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
@@ -231,111 +178,138 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                 <AnimatePresence>
                   {dropdownOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                      initial={{ opacity: 0, y: 6, scale: 0.98 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                      transition={{ duration: 0.16 }}
-                      className="absolute top-full -left-20 mt-2 w-[440px] rounded-3xl bg-white/98 backdrop-blur-2xl border border-[#16143E]/12 shadow-2xl p-3 z-50"
+                      exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="absolute top-full left-0 mt-2 rounded-2xl bg-white/98 backdrop-blur-xl border border-[#16143E]/10 shadow-2xl shadow-[#16143E]/10 p-2 z-50 flex gap-2 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
                     >
-                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#16143E]/8 mb-1">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[#16143E]/50">
-                          Services in Priority Order
-                        </span>
-                        <Link
-                          href="/cctv-landing"
-                          onClick={() => setDropdownOpen(false)}
-                          className="text-[10px] font-bold text-[#EF1313] hover:underline"
+                      {/* Left Column: Categories */}
+                      <div className="w-56 flex flex-col gap-1 pr-1 border-r border-[#16143E]/8">
+                        {/* 1. Security Solutions (Active / Hoverable tab) */}
+                        <div
+                          onMouseEnter={() => setActiveServiceTab("security")}
+                          className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-150 cursor-pointer ${
+                            activeServiceTab === "security"
+                              ? "bg-[#4E0DBA]/[0.08] text-[#4E0DBA]"
+                              : "text-[#16143E]/80 hover:text-[#4E0DBA] hover:bg-[#16143E]/[0.04]"
+                          }`}
+                          style={{ fontFamily: "Syne, sans-serif" }}
                         >
-                          CCTV Landing Page →
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center flex-shrink-0">
+                              <ShieldCheck size={14} />
+                            </div>
+                            <div className="text-left">
+                              <span className="block leading-tight">Security Solutions</span>
+                              <span className="text-[10px] text-[#16143E]/50 font-medium block">
+                                8 Systems
+                              </span>
+                            </div>
+                          </div>
+                          <ChevronRight
+                            size={13}
+                            className={`transition-transform duration-150 ${
+                              activeServiceTab === "security"
+                                ? "translate-x-0.5 text-[#4E0DBA]"
+                                : "text-[#16143E]/30"
+                            }`}
+                          />
+                        </div>
+
+                        {/* 2. Internet (Direct link to existing /internet page) */}
+                        <Link
+                          href="/internet"
+                          onClick={() => setDropdownOpen(false)}
+                          onMouseEnter={() => setActiveServiceTab(null)}
+                          className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#16143E]/80 hover:text-[#EF1313] hover:bg-[#EF1313]/[0.06] transition-all duration-150 group"
+                          style={{ fontFamily: "Syne, sans-serif" }}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                              <Wifi size={14} />
+                            </div>
+                            <div className="text-left">
+                              <span className="block leading-tight">Internet</span>
+                              <span className="text-[10px] text-[#16143E]/50 font-medium block">
+                                Fiber Broadband
+                              </span>
+                            </div>
+                          </div>
+                          <ArrowRight
+                            size={12}
+                            className="opacity-0 -translate-x-1 text-[#EF1313] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
+                          />
+                        </Link>
+
+                        <div className="my-0.5 border-t border-[#16143E]/8" />
+
+                        {/* 3. Service Areas (Direct link to /service-areas) */}
+                        <Link
+                          href="/service-areas"
+                          onClick={() => setDropdownOpen(false)}
+                          onMouseEnter={() => setActiveServiceTab(null)}
+                          className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#16143E]/80 hover:text-[#4E0DBA] hover:bg-[#4E0DBA]/[0.06] transition-all duration-150 group"
+                          style={{ fontFamily: "Syne, sans-serif" }}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                              <MapPin size={14} />
+                            </div>
+                            <div className="text-left">
+                              <span className="block leading-tight">Service Areas</span>
+                              <span className="text-[10px] text-[#16143E]/50 font-medium block">
+                                Avadi & Chennai
+                              </span>
+                            </div>
+                          </div>
+                          <ArrowRight
+                            size={12}
+                            className="opacity-0 -translate-x-1 text-emerald-600 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
+                          />
                         </Link>
                       </div>
 
-                      <div className="max-h-[380px] overflow-y-auto pr-1 space-y-1">
-                        {SERVICES_LIST.map((srv) => {
-                          const Icon = ICON_MAP[srv.id] || ShieldCheck;
-                          const isLead = srv.isLeadDivision;
-                          return (
+                      {/* Right Sub-Panel: Mention all items of Security */}
+                      {activeServiceTab === "security" && (
+                        <div className="w-64 flex flex-col gap-0.5 pl-1 py-1">
+                          <div className="px-3 pb-1.5 mb-1 border-b border-[#16143E]/6 flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-[#4E0DBA]">
+                              Security Systems
+                            </span>
+                            <span className="text-[10px] text-[#16143E]/40 font-medium">
+                              Certified Install
+                            </span>
+                          </div>
+
+                          {SECURITY_SERVICES.map((srv) => (
                             <Link
                               key={srv.id}
                               href={srv.href}
                               onClick={() => setDropdownOpen(false)}
-                              className={`flex items-start gap-2.5 p-2 rounded-xl transition-all group ${
-                                isLead
-                                  ? "bg-[#FFF0F0] border border-[#EF1313]/25 hover:bg-[#FFE5E5]"
-                                  : "hover:bg-[#16143E]/5"
-                              }`}
+                              className="group flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-semibold text-[#16143E]/80 hover:text-[#4E0DBA] hover:bg-[#16143E]/[0.04] transition-all duration-150"
+                              style={{ fontFamily: "Syne, sans-serif" }}
                             >
-                              <div
-                                className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                                  isLead
-                                    ? "bg-[#EF1313] text-white"
-                                    : "bg-[#4E0DBA]/10 text-[#4E0DBA] group-hover:bg-[#4E0DBA] group-hover:text-white"
-                                } transition-colors`}
-                              >
-                                <Icon size={14} />
-                              </div>
-
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between gap-1">
-                                  <span className="text-xs font-bold text-[#16143E] group-hover:text-[#4E0DBA] truncate" style={{ fontFamily: "Syne, sans-serif" }}>
-                                    #{srv.order}. {srv.shortTitle}
-                                  </span>
-                                  {srv.badge && (
-                                    <span
-                                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full ${
-                                        isLead
-                                          ? "bg-[#EF1313] text-white"
-                                          : "bg-[#16143E]/5 text-[#16143E]/70"
-                                      }`}
-                                    >
-                                      {srv.badge}
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-[10.5px] text-[#16143E]/60 truncate mt-0.5">
-                                  {srv.tagline}
-                                </p>
-                              </div>
+                              <span className="transition-transform duration-150 group-hover:translate-x-1">
+                                {srv.shortTitle}
+                              </span>
+                              <ArrowRight
+                                size={12}
+                                className="opacity-0 -translate-x-1.5 text-[#4E0DBA] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
+                              />
                             </Link>
-                          );
-                        })}
-                      </div>
-
-                      <div className="mt-2 pt-2 border-t border-[#16143E]/8 flex items-center justify-between px-2 text-xs">
-                        <Link
-                          href="/security#solution-finder"
-                          onClick={() => setDropdownOpen(false)}
-                          className="text-[11px] font-bold text-[#4E0DBA] hover:underline flex items-center gap-1"
-                        >
-                          <Sparkles size={11} className="text-[#EF1313]" /> Solution Advisor
-                        </Link>
-                        <a
-                          href="tel:+919884344075"
-                          className="text-[11px] font-bold text-[#EF1313] hover:underline"
-                        >
-                          Direct Call: 98843 44075
-                        </a>
-                      </div>
+                          ))}
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
 
-              <Link
-                href="/industries"
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
-                  isIndustries
-                    ? "text-[#4E0DBA] bg-white shadow-xs"
-                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
-                }`}
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                Industries
-              </Link>
-
+              {/* Projects */}
               <Link
                 href="/projects"
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
+                className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-200 ${
                   isProjects
                     ? "text-[#4E0DBA] bg-white shadow-xs"
                     : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
@@ -345,57 +319,109 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                 Projects
               </Link>
 
-              <Link
-                href="/service-areas"
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
-                  isServiceAreas
-                    ? "text-[#4E0DBA] bg-white shadow-xs"
-                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
-                }`}
-                style={{ fontFamily: "Syne, sans-serif" }}
+              {/* About Us Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={handleAboutEnter}
+                onMouseLeave={handleAboutLeave}
               >
-                Service Areas
-              </Link>
+                <button
+                  type="button"
+                  className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer ${
+                    isAbout
+                      ? "text-[#4E0DBA] bg-white shadow-xs"
+                      : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
+                  }`}
+                  style={{ fontFamily: "Syne, sans-serif" }}
+                >
+                  <span>About Us</span>
+                  <ChevronDown
+                    size={12}
+                    className={`transition-transform duration-200 ${
+                      aboutDropdownOpen ? "rotate-180 text-[#EF1313]" : "text-[#16143E]/50"
+                    }`}
+                  />
+                </button>
 
-              <Link
-                href="/about"
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
-                  isAbout
-                    ? "text-[#4E0DBA] bg-white shadow-xs"
-                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
-                }`}
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                About Us
-              </Link>
+                <AnimatePresence>
+                  {aboutDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                      transition={{ duration: 0.15, ease: "easeOut" }}
+                      className="absolute top-full left-0 mt-2 w-56 rounded-2xl bg-white/95 backdrop-blur-xl border border-[#16143E]/10 shadow-xl shadow-[#16143E]/5 p-1.5 z-50 before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3"
+                    >
+                      <div className="flex flex-col gap-0.5">
+                        <Link
+                          href="/about"
+                          onClick={() => setAboutDropdownOpen(false)}
+                          className="group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-[#16143E]/75 hover:text-[#4E0DBA] hover:bg-[#16143E]/[0.04] transition-all duration-150"
+                          style={{ fontFamily: "Syne, sans-serif" }}
+                        >
+                          <span className="transition-transform duration-150 group-hover:translate-x-1">
+                            About Broadnet
+                          </span>
+                          <ArrowRight
+                            size={12}
+                            className="opacity-0 -translate-x-1.5 text-[#4E0DBA] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
+                          />
+                        </Link>
 
-              <Link
-                href="/blog"
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
-                  isBlog
-                    ? "text-[#4E0DBA] bg-white shadow-xs"
-                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
-                }`}
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                Blog
-              </Link>
-
-              <Link
-                href="/contact"
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
-                  isContact
-                    ? "text-[#4E0DBA] bg-white shadow-xs"
-                    : "text-[#16143E]/75 hover:text-[#16143E] hover:bg-white/60"
-                }`}
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                Contact
-              </Link>
+                        <Link
+                          href="/industries"
+                          onClick={() => setAboutDropdownOpen(false)}
+                          className="group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-[#16143E]/75 hover:text-[#4E0DBA] hover:bg-[#16143E]/[0.04] transition-all duration-150"
+                          style={{ fontFamily: "Syne, sans-serif" }}
+                        >
+                          <span className="transition-transform duration-150 group-hover:translate-x-1">
+                            Industries & Solutions
+                          </span>
+                          <ArrowRight
+                            size={12}
+                            className="opacity-0 -translate-x-1.5 text-[#4E0DBA] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
+                          />
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </nav>
 
             {/* Desktop Quick Actions */}
-            <div className="hidden lg:flex items-center gap-2.5">
+            <div className="hidden sm:flex items-center gap-2.5">
+              {/* Language Selector */}
+              <div
+                className="flex items-center border border-[#16143E]/15 rounded-full overflow-hidden text-[10.5px] font-bold p-0.5 bg-[#16143E]/[0.03]"
+                aria-label="Language selector"
+              >
+                <button
+                  type="button"
+                  onClick={() => setLang("en")}
+                  className={`px-2 py-0.5 rounded-full transition-colors cursor-pointer ${
+                    lang === "en"
+                      ? "bg-[#EF1313] text-white"
+                      : "text-[#16143E]/70 hover:text-[#16143E]"
+                  }`}
+                  aria-pressed={lang === "en"}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLang("ta")}
+                  className={`px-2 py-0.5 rounded-full transition-colors cursor-pointer ${
+                    lang === "ta"
+                      ? "bg-[#EF1313] text-white"
+                      : "text-[#16143E]/70 hover:text-[#16143E]"
+                  }`}
+                  aria-pressed={lang === "ta"}
+                >
+                  தமிழ்
+                </button>
+              </div>
+
               <a
                 href="tel:+919884344075"
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-[#16143E] hover:text-[#EF1313] hover:bg-[#16143E]/5 transition-colors"
@@ -409,16 +435,16 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                 href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20would%20like%20to%20enquire%20about%20your%20services."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-full bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] flex items-center justify-center transition-colors"
                 aria-label="WhatsApp Broadnet"
               >
-                <MessageCircle size={16} />
+                <WhatsAppIcon size={16} />
               </a>
 
               <Link
                 href="/contact#enquiry"
                 onClick={handleEnquiryClick}
-                className="btn-crimson text-xs py-2 px-4 shadow-sm glow-btn-crimson font-bold"
+                className="btn-crimson text-xs py-2 px-4 shadow-sm glow-btn-crimson font-bold rounded-full"
               >
                 Free Site Visit
               </Link>
@@ -427,7 +453,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
             {/* Mobile Burger Button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="xl:hidden p-2.5 rounded-xl text-[#16143E] hover:bg-[#16143E]/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="md:hidden p-2.5 rounded-xl text-[#16143E] hover:bg-[#16143E]/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -442,9 +468,9 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="xl:hidden bg-white/98 backdrop-blur-2xl border-t border-[#16143E]/10 max-h-[85vh] overflow-y-auto px-4 py-4 shadow-2xl"
+              className="md:hidden bg-white/98 backdrop-blur-2xl border-t border-[#16143E]/10 max-h-[85vh] overflow-y-auto px-4 py-4 shadow-2xl"
             >
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <Link
                   href="/"
                   onClick={() => setMobileOpen(false)}
@@ -458,12 +484,13 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                   <div className="flex items-center justify-between pr-2">
                     <span className="px-4 py-2.5 text-sm font-bold text-[#16143E] flex items-center gap-2">
                       <Camera size={16} className="text-[#EF1313]" />
-                      <span>Services (Priority Order)</span>
+                      <span>Services</span>
                     </span>
                     <button
                       type="button"
                       onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                      className="p-2 text-[#16143E]/60"
+                      className="p-2 text-[#16143E]/60 cursor-pointer"
+                      aria-label="Toggle services list"
                     >
                       <ChevronDown
                         size={16}
@@ -475,78 +502,128 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                   </div>
 
                   {mobileServicesOpen && (
-                    <div className="px-3 pb-3 space-y-1 border-t border-[#16143E]/8 pt-2">
-                      {SERVICES_LIST.map((srv) => (
-                        <Link
-                          key={srv.id}
-                          href={srv.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="flex items-center justify-between p-2 rounded-lg text-xs font-semibold text-[#16143E]/85 hover:bg-white"
+                    <div className="px-2 pb-2 space-y-1.5 border-t border-[#16143E]/8 pt-1.5">
+                      {/* 1. Security Solutions (Sub-Accordion) */}
+                      <div className="rounded-lg border border-[#16143E]/6 bg-white overflow-hidden">
+                        <button
+                          type="button"
+                          onClick={() => setMobileSecurityOpen(!mobileSecurityOpen)}
+                          className="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-[#16143E] hover:text-[#4E0DBA] transition-colors cursor-pointer"
                         >
-                          <span>#{srv.order}. {srv.title}</span>
-                          <span className="text-[10px] text-[#EF1313] font-bold">→</span>
-                        </Link>
-                      ))}
+                          <span className="flex items-center gap-2">
+                            <ShieldCheck size={14} className="text-[#4E0DBA]" />
+                            <span>Security Solutions</span>
+                          </span>
+                          <ChevronDown
+                            size={13}
+                            className={`transition-transform duration-200 ${
+                              mobileSecurityOpen ? "rotate-180 text-[#EF1313]" : "text-[#16143E]/40"
+                            }`}
+                          />
+                        </button>
+
+                        {mobileSecurityOpen && (
+                          <div className="px-2 pb-2 space-y-0.5 border-t border-[#16143E]/6 pt-1 bg-[#FAFAFE]">
+                            {SECURITY_SERVICES.map((srv) => (
+                              <Link
+                                key={srv.id}
+                                href={srv.href}
+                                onClick={() => setMobileOpen(false)}
+                                className="flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-semibold text-[#16143E]/80 hover:text-[#4E0DBA] hover:bg-white transition-all"
+                              >
+                                <span>{srv.shortTitle}</span>
+                                <ArrowRight size={11} className="text-[#16143E]/30" />
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* 2. Internet (Direct Link) */}
+                      <Link
+                        href="/internet"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#16143E] hover:text-[#EF1313] hover:bg-white transition-all"
+                      >
+                        <span className="flex items-center gap-2">
+                          <Wifi size={14} className="text-[#EF1313]" />
+                          <span>Internet</span>
+                        </span>
+                        <ArrowRight size={12} className="text-[#16143E]/30" />
+                      </Link>
+
+                      <div className="my-0.5 border-t border-[#16143E]/8" />
+
+                      {/* 3. Service Areas (Direct Link) */}
+                      <Link
+                        href="/service-areas"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#16143E] hover:text-[#4E0DBA] hover:bg-white transition-all"
+                      >
+                        <span className="flex items-center gap-2">
+                          <MapPin size={14} className="text-emerald-500" />
+                          <span>Service Areas</span>
+                        </span>
+                        <ArrowRight size={12} className="text-[#16143E]/30" />
+                      </Link>
                     </div>
                   )}
                 </div>
 
-                <Link
-                  href="/cctv-landing"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold text-[#EF1313] bg-[#FFF0F0] border border-[#EF1313]/20"
-                >
-                  <span>CCTV Lead Division Page</span>
-                  <span>🔥</span>
-                </Link>
-
-                <Link
-                  href="/industries"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
-                >
-                  Industries & Solutions
-                </Link>
-
+                {/* Mobile Projects */}
                 <Link
                   href="/projects"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
+                  className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
                 >
-                  Projects & Gallery
+                  <span>Projects</span>
+                  <ArrowRight size={14} className="text-[#16143E]/30" />
                 </Link>
 
-                <Link
-                  href="/service-areas"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
-                >
-                  Service Areas (Chennai / Avadi)
-                </Link>
+                {/* Mobile About Us Accordion */}
+                <div className="rounded-xl border border-[#16143E]/8 overflow-hidden bg-[#FAFAFE]">
+                  <div className="flex items-center justify-between pr-2">
+                    <span className="px-4 py-2.5 text-sm font-bold text-[#16143E] flex items-center gap-2">
+                      <Users size={16} className="text-[#4E0DBA]" />
+                      <span>About Us</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                      className="p-2 text-[#16143E]/60 cursor-pointer"
+                      aria-label="Toggle about us list"
+                    >
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform duration-200 ${
+                          mobileAboutOpen ? "rotate-180 text-[#EF1313]" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
 
-                <Link
-                  href="/about"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
-                >
-                  About Us (12 Yrs / 10+ Staff)
-                </Link>
+                  {mobileAboutOpen && (
+                    <div className="px-2 pb-2 space-y-0.5 border-t border-[#16143E]/8 pt-1.5">
+                      <Link
+                        href="/about"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-[#16143E]/80 hover:text-[#4E0DBA] hover:bg-white transition-all"
+                      >
+                        <span>About Broadnet</span>
+                        <ArrowRight size={12} className="text-[#16143E]/30" />
+                      </Link>
 
-                <Link
-                  href="/blog"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
-                >
-                  Blog & Knowledge Hub
-                </Link>
-
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center px-4 py-2.5 rounded-xl text-sm font-bold text-[#16143E] hover:bg-[#16143E]/5"
-                >
-                  Contact & Dispatch Office
-                </Link>
+                      <Link
+                        href="/industries"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-[#16143E]/80 hover:text-[#4E0DBA] hover:bg-white transition-all"
+                      >
+                        <span>Industries & Solutions</span>
+                        <ArrowRight size={12} className="text-[#16143E]/30" />
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Mobile CTA Strip */}
@@ -560,7 +637,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                 <Link
                   href="/contact#enquiry"
                   onClick={handleEnquiryClick}
-                  className="w-full btn-crimson text-xs py-2.5 justify-center"
+                  className="w-full btn-crimson text-xs py-2.5 justify-center rounded-full"
                 >
                   Claim Free Site Visit
                 </Link>

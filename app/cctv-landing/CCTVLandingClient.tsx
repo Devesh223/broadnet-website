@@ -122,7 +122,7 @@ export default function CCTVLandingClient() {
     if (calcStorage === "2tb") base += 2200;
     if (calcStorage === "4tb") base += 4800;
 
-    return `₹${base.toLocaleString("en-IN")} [CONFIRM]`;
+    return `₹${base.toLocaleString("en-IN")}`;
   };
 
   const handleApplyEstimate = () => {
@@ -574,7 +574,7 @@ export default function CCTVLandingClient() {
                     {getEstimatedPrice()}
                   </div>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[11px] font-bold uppercase tracking-wider mb-3">
-                    <span>Estimate · Final quote after free site survey [CONFIRM]</span>
+                    <span>Estimate · Final quote after free site survey</span>
                   </div>
                   <div className="text-xs text-white/60 mb-5">
                     All-inclusive turnkey price · No hidden installation charges

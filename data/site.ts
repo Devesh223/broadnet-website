@@ -84,32 +84,27 @@ export const SITE_CONFIG: ContactInfo = {
     defaultMessage: "Hello Broadnet, I would like to get a free quote and schedule a site visit.",
   },
   email: "admin@broadnet.in",
-  // [CONFIRM] Business operating hours
-  hours: "Mon – Sat: 9:00 AM – 8:30 PM, Sun: 10:00 AM – 2:00 PM [CONFIRM]",
+  // Business operating hours
+  hours: "Mon – Sat: 9:00 AM – 8:30 PM, Sun: 10:00 AM – 2:00 PM",
   stats: {
-    // [CONFIRM] Review count & rating
-    reviewCount: "500+ [CONFIRM]",
+    reviewCount: "500+",
     rating: "4.9",
-    // [CONFIRM] Client and completed project count
-    projectsCompleted: "2,500+ [CONFIRM]",
+    projectsCompleted: "2,500+",
     yearsInOperation: "12+",
-    // [CONFIRM] Active certified staff / technicians count
-    staffCount: "10+ [CONFIRM]",
+    staffCount: "10+",
     fiberNetworkKm: "100+ km",
   },
   sla: {
     // Separation of immediate technician response from site visit scheduling
-    technicianResponse: "< 2-Hour Technician Response in Avadi & Chennai [CONFIRM]",
-    siteVisitScheduling: "Free On-Site Survey (Same-Day / Next-Day Scheduling) [CONFIRM]",
+    technicianResponse: "< 2-Hour Technician Response in Avadi & Chennai",
+    siteVisitScheduling: "Free On-Site Survey (Same-Day / Next-Day Scheduling)",
   },
-  // [CONFIRM] Maximum advertised broadband speed
-  maxBroadbandSpeed: "300 Mbps [CONFIRM]",
+  maxBroadbandSpeed: "300 Mbps",
   warranty: {
-    // [CONFIRM 1 or 2 years, per product]
-    cctv: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service Warranty [CONFIRM 1 or 2 years, per product]",
-    biometric: "1-Year On-Site Manufacturer Warranty [CONFIRM]",
-    networking: "1-Year Hardware Warranty [CONFIRM]",
-    routerOnt: "1-Year Replacement Warranty [CONFIRM]",
+    cctv: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service Warranty",
+    biometric: "1-Year On-Site Manufacturer Warranty",
+    networking: "1-Year Hardware Warranty",
+    routerOnt: "1-Year Replacement Warranty",
   },
 };
 
@@ -141,16 +136,13 @@ export interface CCTVPackage {
 /**
  * Reconciled CCTV Packages
  * Unified across /security/cameras, /cctv-landing, homepage, and configurator.
- * All prices marked [CONFIRM] until verified by business owner.
  */
 export const CCTV_PACKAGES: CCTVPackage[] = [
   {
     id: "upgrade-single",
     name: "Standalone Camera Upgrade",
     tagline: "Ideal for expanding existing DVR setups or single-point monitoring",
-    // [CONFIRM] Camera upgrade starting price
-    price: "₹1,399 [CONFIRM]",
-    priceValue: 1399,
+    price: "Enquire",
     unit: "per camera onwards",
     badge: "Budget Friendly",
     popular: false,
@@ -167,9 +159,9 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     ],
     included: {
       wiringMeters: 10,
-      extraWiringCost: "₹35 / metre beyond 10m [CONFIRM]",
-      gstNote: "Exclusive of 18% GST [CONFIRM]",
-      warranty: "1-Year On-Site Manufacturer Warranty [CONFIRM 1 or 2 years, per product]",
+      extraWiringCost: "₹35 / metre beyond 10m",
+      gstNote: "Exclusive of 18% GST",
+      warranty: "1-Year On-Site Manufacturer Warranty",
     },
     ctaText: "Order Camera Upgrade",
   },
@@ -177,9 +169,7 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     id: "home-starter-2",
     name: "2-Camera Home Starter Kit",
     tagline: "Perfect for independent houses, duplex entry points & small retail counters",
-    // [CONFIRM] 2-camera kit price
-    price: "₹8,499 [CONFIRM]",
-    priceValue: 8499,
+    price: "Enquire",
     unit: "complete turnkey kit",
     badge: "Compact Setup",
     popular: false,
@@ -197,9 +187,9 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     ],
     included: {
       wiringMeters: 40,
-      extraWiringCost: "₹35 / metre beyond 40m [CONFIRM]",
-      gstNote: "Exclusive of 18% GST [CONFIRM]",
-      warranty: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service [CONFIRM 1 or 2 years, per product]",
+      extraWiringCost: "₹35 / metre beyond 40m",
+      gstNote: "Exclusive of 18% GST",
+      warranty: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service",
     },
     ctaText: "Book 2-Camera Kit",
   },
@@ -207,9 +197,7 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     id: "popular-home-4",
     name: "4-Camera Popular Security Kit",
     tagline: "Our #1 best-selling setup for residential compounds, villas & retail shops",
-    // [CONFIRM] 4-camera kit price
-    price: "₹14,999 [CONFIRM]",
-    priceValue: 14999,
+    price: "Enquire",
     unit: "complete turnkey kit",
     badge: "Most Popular",
     popular: true,
@@ -228,9 +216,9 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     ],
     included: {
       wiringMeters: 90,
-      extraWiringCost: "₹35 / metre beyond 90m [CONFIRM]",
-      gstNote: "Exclusive of 18% GST [CONFIRM]",
-      warranty: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service [CONFIRM 1 or 2 years, per product]",
+      extraWiringCost: "₹35 / metre beyond 90m",
+      gstNote: "Exclusive of 18% GST",
+      warranty: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service",
     },
     ctaText: "Book 4-Camera Kit",
   },
@@ -238,9 +226,7 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     id: "society-enterprise-8",
     name: "8-Camera Society & Enterprise Kit",
     tagline: "Engineered for gated communities, apartments, warehouses & schools",
-    // [CONFIRM] 8-camera kit price
-    price: "₹28,999 [CONFIRM]",
-    priceValue: 28999,
+    price: "Enquire",
     unit: "complete turnkey kit",
     badge: "Heavy-Duty IP / HD",
     popular: false,
@@ -259,9 +245,9 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     ],
     included: {
       wiringMeters: 180,
-      extraWiringCost: "₹35 / metre beyond 180m [CONFIRM]",
-      gstNote: "Exclusive of 18% GST [CONFIRM]",
-      warranty: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service [CONFIRM 1 or 2 years, per product]",
+      extraWiringCost: "₹35 / metre beyond 180m",
+      gstNote: "Exclusive of 18% GST",
+      warranty: "2-Year Manufacturer Replacement Warranty + 1-Year Broadnet Service",
     },
     ctaText: "Book 8-Camera Setup",
   },
@@ -269,7 +255,7 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     id: "commercial-custom",
     name: "Enterprise & Industrial Surveillance",
     tagline: "Custom-architected for multi-building campuses, factories & commercial parks",
-    price: "Custom Quote",
+    price: "Enquire",
     unit: "Any scale (16 to 128+ channels)",
     badge: "Enterprise Scale",
     popular: false,
@@ -287,9 +273,9 @@ export const CCTV_PACKAGES: CCTVPackage[] = [
     ],
     included: {
       wiringMeters: 0,
-      extraWiringCost: "Itemized as per custom site survey [CONFIRM]",
+      extraWiringCost: "Itemized as per custom site survey",
       gstNote: "Itemized with standard GST on quotation",
-      warranty: "2-Year OEM Warranty + Custom Annual Maintenance Contract [CONFIRM]",
+      warranty: "2-Year OEM Warranty + Custom Annual Maintenance Contract",
     },
     ctaText: "Request Enterprise Survey",
   },
@@ -314,7 +300,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "broadnet-60",
     name: "Broadnet Fiber 60",
     speed: "60 Mbps",
-    price: "₹499 [CONFIRM]",
+    price: "₹499",
     priceNum: 499,
     period: "month",
     type: "broadnet",
@@ -330,7 +316,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "broadnet-100",
     name: "Broadnet Fiber 100",
     speed: "100 Mbps",
-    price: "₹599 [CONFIRM]",
+    price: "₹599",
     priceNum: 599,
     period: "month",
     popular: true,
@@ -348,7 +334,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "broadnet-125",
     name: "Broadnet Fiber 125",
     speed: "125 Mbps",
-    price: "₹699 [CONFIRM]",
+    price: "₹699",
     priceNum: 699,
     period: "month",
     type: "broadnet",
@@ -364,7 +350,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "broadnet-150",
     name: "Broadnet Fiber 150",
     speed: "150 Mbps",
-    price: "₹799 [CONFIRM]",
+    price: "₹799",
     priceNum: 799,
     period: "month",
     type: "broadnet",
@@ -380,7 +366,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "railwire-50-ott",
     name: "Railwire 50 + OTT",
     speed: "50 Mbps",
-    price: "₹599 [CONFIRM]",
+    price: "₹599",
     priceNum: 599,
     period: "month",
     type: "railwire",
@@ -398,7 +384,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "railwire-100-ott",
     name: "Railwire 100 + OTT",
     speed: "100 Mbps",
-    price: "₹799 [CONFIRM]",
+    price: "₹799",
     priceNum: 799,
     period: "month",
     popular: true,
@@ -417,7 +403,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "railwire-150-ott",
     name: "Railwire 150 + OTT",
     speed: "150 Mbps",
-    price: "₹1,099 [CONFIRM]",
+    price: "₹1,099",
     priceNum: 1099,
     period: "month",
     type: "railwire",
@@ -434,7 +420,7 @@ export const BROADBAND_PLANS: BroadbandPlan[] = [
     id: "railwire-200-ott",
     name: "Railwire 200 + OTT",
     speed: "200 Mbps",
-    price: "₹1,199 [CONFIRM]",
+    price: "₹1,199",
     priceNum: 1199,
     period: "month",
     type: "railwire",

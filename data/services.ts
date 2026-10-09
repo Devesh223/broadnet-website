@@ -228,10 +228,10 @@ export const SERVICES_LIST: ServiceDetail[] = [
     isMinorOffering: false,
     brands: ["Broadnet Fiber", "BSNL Bharat Fibre", "RailWire"],
     certifications: ["BSNL FTTH Partner", "RailWire Franchise Partner"],
-    startingPrice: "From ₹499 / Month [CONFIRM]",
+    startingPrice: "From ₹499 / Month",
     features: [
       "Private 100+ km Optical Fiber Backbone across Avadi",
-      "Symmetric High-Speed Upload & Download up to 300 Mbps [CONFIRM]",
+      "Symmetric High-Speed Upload & Download up to 300 Mbps",
       "Zero-FUP Truly Unlimited Data with Local Peering",
       "Dual-Band Wi-Fi 5 / 6 Optical ONT Device Provided",
       "Official BSNL Bharat Fibre & RailWire Franchise Partner",
@@ -258,8 +258,8 @@ export const BRAND_PARTNERS = [
 
 export const COMPANY_NUMBERS = [
   { value: "12+", label: "Years in Operation", detail: "Operating Since 2014" },
-  { value: "10+ [CONFIRM]", label: "Certified Staff", detail: "In-House Engineers" },
-  { value: "2,500+ [CONFIRM]", label: "Satisfied Clients", detail: "Homes & Corporates" },
+  { value: "10+", label: "Certified Staff", detail: "In-House Engineers" },
+  { value: "2,500+", label: "Satisfied Clients", detail: "Homes & Corporates" },
   { value: "100+ km", label: "Private OFC Network", detail: "Direct Avadi Ring" },
 ];
 

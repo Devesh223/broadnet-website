@@ -36,46 +36,46 @@ export interface LocationData {
 
 export const SERVING_LOCATIONS: LocationData[] = [
   // Zone: Avadi Core (600054)
-  { name: "TNHB Avadi", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true, landmark: "Near Fire Station & Bus Terminus" },
-  { name: "Fire Station Road", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true, landmark: "Broadnet HQ Backbone Feeder" },
-  { name: "JB Nagar & Vasantham Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Gandhi Nagar & Nehru Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Kamaraj Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Cholambedu", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true, landmark: "Cholambedu High Road" },
-  { name: "Anna Nagar Avadi", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Vaishnavi Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "HVF Estate & Ordnance Road", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
+  { name: "TNHB Avadi", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true, landmark: "Near Fire Station & Bus Terminus" },
+  { name: "Fire Station Road", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true, landmark: "Broadnet HQ Backbone Feeder" },
+  { name: "JB Nagar & Vasantham Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Gandhi Nagar & Nehru Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Kamaraj Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Cholambedu", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true, landmark: "Cholambedu High Road" },
+  { name: "Anna Nagar Avadi", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Vaishnavi Nagar", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "HVF Estate & Ordnance Road", pincode: "600054", zone: "Avadi Core", status: "available", speed: "Up to 300 Mbps", sameDay: true },
 
   // Zone: Avadi Surrounds (600071 / 600055)
-  { name: "Paruthipattu", pincode: "600071", zone: "Avadi Outskirts", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Kovilpathu", pincode: "600071", zone: "Avadi Outskirts", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Mittanamallee", pincode: "600055", zone: "Avadi Outskirts", status: "available", speed: "Up to 200 Mbps [CONFIRM]", sameDay: true, landmark: "IAF Gate Feeder" },
-  { name: "Morai", pincode: "600055", zone: "Avadi Outskirts", status: "available", speed: "Up to 200 Mbps [CONFIRM]", sameDay: false },
+  { name: "Paruthipattu", pincode: "600071", zone: "Avadi Outskirts", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Kovilpathu", pincode: "600071", zone: "Avadi Outskirts", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Mittanamallee", pincode: "600055", zone: "Avadi Outskirts", status: "available", speed: "Up to 200 Mbps", sameDay: true, landmark: "IAF Gate Feeder" },
+  { name: "Morai", pincode: "600055", zone: "Avadi Outskirts", status: "available", speed: "Up to 200 Mbps", sameDay: false },
 
   // Zone: Thirumullaivoyal (600062)
-  { name: "Thirumullaivoyal", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true, landmark: "CTH Road Corridor" },
-  { name: "Thirumullaivoyal Pudur", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Manikandapuram", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Women's Industrial Estate", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true, landmark: "Enterprise Industrial Hub" },
-  { name: "Sivasakthi Nagar", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
+  { name: "Thirumullaivoyal", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps", sameDay: true, landmark: "CTH Road Corridor" },
+  { name: "Thirumullaivoyal Pudur", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Manikandapuram", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Women's Industrial Estate", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps", sameDay: true, landmark: "Enterprise Industrial Hub" },
+  { name: "Sivasakthi Nagar", pincode: "600062", zone: "Thirumullaivoyal", status: "available", speed: "Up to 300 Mbps", sameDay: true },
 
   // Zone: Pattabiram & Thandurai (600072)
-  { name: "Pattabiram", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true, landmark: "Pattabiram Railway Station Area" },
-  { name: "Thandurai", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Sekkadu", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Iyyappan Nagar", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Military Siding", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
+  { name: "Pattabiram", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps", sameDay: true, landmark: "Pattabiram Railway Station Area" },
+  { name: "Thandurai", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Sekkadu", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Iyyappan Nagar", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Military Siding", pincode: "600072", zone: "Pattabiram", status: "available", speed: "Up to 300 Mbps", sameDay: true },
 
   // Zone: Ambattur (600053)
-  { name: "Ambattur OT", pincode: "600053", zone: "Ambattur", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Menambedu", pincode: "600053", zone: "Ambattur", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
-  { name: "Ram Nagar", pincode: "600053", zone: "Ambattur", status: "available", speed: "Up to 300 Mbps [CONFIRM]", sameDay: true },
+  { name: "Ambattur OT", pincode: "600053", zone: "Ambattur", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Menambedu", pincode: "600053", zone: "Ambattur", status: "available", speed: "Up to 300 Mbps", sameDay: true },
+  { name: "Ram Nagar", pincode: "600053", zone: "Ambattur", status: "available", speed: "Up to 300 Mbps", sameDay: true },
 
   // Zone: Poonamallee (600056)
-  { name: "Poonamallee Trunk Road", pincode: "600056", zone: "Poonamallee", status: "available", speed: "Up to 200 Mbps [CONFIRM]", sameDay: true },
-  { name: "Senneerkuppam", pincode: "600056", zone: "Poonamallee", status: "available", speed: "Up to 200 Mbps [CONFIRM]", sameDay: true },
-  { name: "Kumananchavadi", pincode: "600056", zone: "Poonamallee", status: "coming_soon", speed: "Up to 200 Mbps [CONFIRM]", sameDay: false, landmark: "Line Expansion Active" },
-  { name: "Nemilichery & Thiruninravur", pincode: "602024", zone: "Outer Feeder", status: "coming_soon", speed: "Up to 200 Mbps [CONFIRM]", sameDay: false, landmark: "Pre-Booking Open" },
+  { name: "Poonamallee Trunk Road", pincode: "600056", zone: "Poonamallee", status: "available", speed: "Up to 200 Mbps", sameDay: true },
+  { name: "Senneerkuppam", pincode: "600056", zone: "Poonamallee", status: "available", speed: "Up to 200 Mbps", sameDay: true },
+  { name: "Kumananchavadi", pincode: "600056", zone: "Poonamallee", status: "coming_soon", speed: "Up to 200 Mbps", sameDay: false, landmark: "Line Expansion Active" },
+  { name: "Nemilichery & Thiruninravur", pincode: "602024", zone: "Outer Feeder", status: "coming_soon", speed: "Up to 200 Mbps", sameDay: false, landmark: "Pre-Booking Open" },
 ];
 
 const ZONE_FILTERS = [

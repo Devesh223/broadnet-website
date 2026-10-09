@@ -35,7 +35,7 @@ const DICTIONARY: Record<Language, Record<string, string>> = {
     "hero.title1": "Engineered Surveillance.",
     "hero.title2": "Intelligent Security Systems.",
     "hero.desc":
-      "Avadi & Chennai's certified technology integrator for Hikvision & CP PLUS CCTV cameras, eSSL biometric attendance, smart video door phones, and optical enterprise networking. Backed by guaranteed < 2-hour technician dispatch and genuine warranties.",
+      "BroadNet has been connecting and securing homes, businesses, and communities across Avadi & Chennai since 2014 with certified technology infrastructure.",
     "hero.primaryCta": "Get Free Quote & Site Visit",
     "hero.callCta": "Call 98843 44075",
     "hero.whatsappCta": "WhatsApp Tech Desk",
@@ -81,7 +81,7 @@ const DICTIONARY: Record<Language, Record<string, string>> = {
     "hero.title1": "நம்பகமான சிசிடிவி.",
     "hero.title2": "பாதுகாப்பு அமைப்புகள்.",
     "hero.desc":
-      "ஆவடி மற்றும் சென்னை முழுவதும் ஹிக்விஷன், சிபி பிளஸ் சிசிடிவி கேமராக்கள், பயோமெட்ரிக் வருகைப் பதிவு, வீடியோ டோர் போன் மற்றும் ஃபைபர் நெட்வொர்க்கிங் அமைப்புகள். 2 மணிநேர விரைவு தொழில்நுட்ப சேவை உத்தரவாதம்.",
+      "2014 முதல் ஆவடி மற்றும் சென்னை முழுவதும் நம்பகமான சிசிடிவி கண்காணிப்பு மற்றும் ஃபைபர் உள்கட்டமைப்பு சேவைகளை வழங்கி வருகிறோம்.",
     "hero.primaryCta": "இலவச ஆய்வு & மதிப்பீடு பெறுக",
     "hero.callCta": "அழைக்க: 98843 44075",
     "hero.whatsappCta": "வாட்ஸ்அப் செய்தி",
