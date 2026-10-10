@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedSolutions from "@/components/RelatedSolutions";
+import HardwareGallery from "@/components/HardwareGallery";
 import {
   Shield,
   AlertTriangle,
@@ -22,6 +24,10 @@ import {
   Quote,
   HelpCircle,
   Zap,
+  Home,
+  Building,
+  Store,
+  Layers,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -46,6 +52,105 @@ export const metadata: Metadata = {
     url: "https://www.broadnet.in/security/intrusion-alarms",
   },
 };
+
+const WHAT_IS_IT_POINTS = [
+  {
+    icon: AlertTriangle,
+    title: "Dual Laser Boundary Trip Beams",
+    desc: "Photo-electric infrared beams creating an invisible perimeter line along compound walls. Triggers when an intruder attempts to scale the wall.",
+  },
+  {
+    icon: Volume2,
+    title: "110dB High-Decibel Siren & Strobe",
+    desc: "Piercing outdoor siren and flashing strobe light that shocks and panics intruders, compelling immediate retreat before reaching doors or windows.",
+  },
+  {
+    icon: Smartphone,
+    title: "GSM Cellular Auto-Dialer Panel",
+    desc: "Standalone cellular dialer that automatically calls up to 5 family mobile numbers within seconds of an unauthorized perimeter breach.",
+  },
+  {
+    icon: Zap,
+    title: "24-Hour Battery Backup Operation",
+    desc: "High-capacity internal battery backup ensuring active perimeter protection even if burglars cut main electrical power lines.",
+  },
+];
+
+const WHO_IS_IT_FOR = [
+  {
+    icon: Home,
+    title: "Independent Villas with Compound Walls",
+    tag: "Residential",
+    desc: "Detect intruders at the boundary parapet before they ever touch your terrace, balcony, or ground floor windows.",
+    benefits: ["Boundary wall scaling alerts", "Pet-immune zero false triggers", "Direct mobile phone phone calls"],
+  },
+  {
+    icon: Layers,
+    title: "Warehouses & Open Storage Yards",
+    tag: "Industrial",
+    desc: "Protect expansive open yards, raw material stock, and perimeter fencing with long-range quad-beam laser pillars.",
+    benefits: ["Up to 100m laser beam barriers", "Weatherproof IP65 outdoor sensors", "Swivels CCTV PTZ cameras to zone"],
+  },
+  {
+    icon: Store,
+    title: "Jewelry Showrooms & Banks",
+    tag: "Commercial",
+    desc: "Heavy-duty rolling shutter magnetic contacts and glass-break acoustic detectors preventing night-time forced entries.",
+    benefits: ["Heavy-duty rolling shutter contacts", "Glass break vibration sensors", "Direct siren shock deterrence"],
+  },
+  {
+    icon: Building,
+    title: "Gated Estates & Farmhouses",
+    tag: "Estates",
+    desc: "Reliable perimeter defense for isolated properties where immediate siren alert and GSM phone notifications are indispensable.",
+    benefits: ["Independent GSM SIM auto-dialer", "Surge and lightning protected", "24-hour backup during power cuts"],
+  },
+];
+
+const HARDWARE_GALLERY_ITEMS = [
+  {
+    title: "Dual-Beam Laser Perimeter Pillars",
+    category: "Perimeter Beam",
+    description: "Weatherproof infrared laser transmitter and receiver pair for compound walls with 40m-100m range and pet immunity.",
+    specs: ["40m to 100m Optical Span", "IP65 Weather & Fog Proof", "Dual Beam Simultaneous Interruption"],
+    status: "Ready Stock",
+  },
+  {
+    title: "GSM Smart Alarm Master Brain",
+    category: "Control Panel",
+    description: "Multi-zone central alarm hub with built-in cellular SIM auto-dialer, 24-hour rechargeable battery, and keypad.",
+    specs: ["Auto-Dials 5 Mobile Numbers", "Supports 32 Wireless/Wired Zones", "24-Hour Power Battery Backup"],
+    status: "In Stock",
+  },
+  {
+    title: "110dB High-Decibel Outdoor Siren",
+    category: "Acoustic Deterrence",
+    description: "Piercing dual-tone sounder with high-intensity flashing LED strobe light in a weatherproof polycarbonate enclosure.",
+    specs: ["110 Decibel Piercing Audio", "Flashing Strobe Warning", "Tamper Detection Switch"],
+    status: "Ready Stock",
+  },
+  {
+    title: "Heavy-Duty Rolling Shutter Sensor",
+    category: "Entry Contacts",
+    description: "Cast-aluminum magnetic sensor engineered to withstand vehicular traffic and heavy shop shutter impacts.",
+    specs: ["Die-Cast Zinc Alloy Shell", "70mm Wide Operating Gap", "Flexible Stainless Conduit Wire"],
+    status: "In Stock",
+  },
+  {
+    title: "Pet-Immune Digital PIR Motion Sensor",
+    category: "Indoor Detection",
+    description: "Passive infrared motion detector utilizing fuzzy logic signal processing to ignore pets under 25kg while detecting humans.",
+    specs: ["12m x 12m Wide Coverage", "Pet-Immune up to 25 kg", "Anti-Crawl Downward Look Lens"],
+    status: "Ready Stock",
+  },
+  {
+    title: "Heavy-Duty Conduit Wiring & Bracket",
+    category: "Installation Finish",
+    description: "Tamper-proof conduit cabling along compound wall parapets with anti-rust mounting brackets and surge protection.",
+    specs: ["UV-Resistant Conduit Piping", "Tamper-Proof Signal Wiring", "2-Year On-Site SLA"],
+    status: "Standard SLA",
+  },
+];
 
 const PACKAGES = [
   {
@@ -168,7 +273,7 @@ export default function IntrusionAlarmsPage() {
     <>
       <Header activePage="Security" />
       <main>
-        {/* Hero Section */}
+        {/* 1. Hero Section (Heading + Details on Left, Image + Use Case on Right) */}
         <section className="relative pt-32 pb-20 sm:pb-28 bg-[#0B091E] text-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div
@@ -259,7 +364,7 @@ export default function IntrusionAlarmsPage() {
                 </div>
               </div>
 
-              {/* Right Column */}
+              {/* Right Column: Visual Showcase + Use Case Badge */}
               <div className="lg:col-span-5 flex justify-center">
                 <div className="relative w-full max-w-md">
                   <div className="relative bg-[#16143E] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-[#16143E]/60 overflow-hidden">
@@ -285,7 +390,7 @@ export default function IntrusionAlarmsPage() {
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-white/10">
+                      <div className="pt-4 border-t border-white/10 mb-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <div className="text-white font-bold text-base">Hikvision Certified Alarms</div>
@@ -295,6 +400,17 @@ export default function IntrusionAlarmsPage() {
                             Starts ₹2,999
                           </span>
                         </div>
+                      </div>
+
+                      {/* Prominent Use Case Tag */}
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-white/50">
+                          Primary Use Case
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EF1313]/20 text-[#EF1313] border border-[#EF1313]/40 shadow-sm">
+                          <Building size={12} />
+                          Compound Walls, Villas & Shops
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -314,8 +430,105 @@ export default function IntrusionAlarmsPage() {
           </div>
         </section>
 
+        {/* 2. "What is it" Section */}
+        <section className="py-20 sm:py-24 bg-white text-[#16143E] relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <span className="w-4 h-px bg-[#EF1313]" /> System Architecture <span className="w-4 h-px bg-[#EF1313]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                What is an Active Perimeter Intrusion Alarm?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Unlike passive recording cameras that simply record video during a burglary, active perimeter alarms create an immediate defensive barrier. They detect boundary wall crossing, trigger piercing sirens, and dial your smartphone in real-time:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHAT_IS_IT_POINTS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/10 hover:border-[#EF1313]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-5 group-hover:bg-[#EF1313] group-hover:text-white transition-colors shadow-sm">
+                        <Icon size={22} />
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-3 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed font-body">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 3. "Who is it for" Section */}
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-3 font-display">
+                <span className="w-4 h-px bg-[#4E0DBA]" /> Properties & Facilities <span className="w-4 h-px bg-[#4E0DBA]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                Who Needs Perimeter Alarms?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Discover which property types require instantaneous perimeter breach shock deterrence:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHO_IS_IT_FOR.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center">
+                          <Icon size={20} />
+                        </div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#4E0DBA] bg-[#4E0DBA]/10 px-2.5 py-0.5 rounded-md">
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-2 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed mb-6 font-body">{item.desc}</p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#16143E]/8 space-y-2">
+                      {item.benefits.map((b) => (
+                        <div key={b} className="flex items-center gap-2 text-xs text-[#16143E]/80">
+                          <CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0" />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. "Images" Section (Hardware & Perimeter Grid Gallery) */}
+        <HardwareGallery
+          sectionSubtitle="Hardware Showcase"
+          sectionTitle="Perimeter Laser Beams & Intrusion Hardware"
+          sectionDescription="Explore our dual-beam laser pillars, high-decibel outdoor strobe sirens, and GSM cellular control hubs."
+          items={HARDWARE_GALLERY_ITEMS}
+          theme="light"
+        />
+
         {/* Relevance Section */}
-        <section className="py-20 sm:py-24 bg-white text-[#16143E]">
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] text-[#16143E] border-t border-[#16143E]/8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
@@ -364,7 +577,7 @@ export default function IntrusionAlarmsPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/8 hover:border-[#EF1313]/30 transition-all duration-300 hover:shadow-lg hover:shadow-[#16143E]/5 group"
+                  className="p-7 rounded-3xl bg-white border border-[#16143E]/8 hover:border-[#EF1313]/30 transition-all duration-300 hover:shadow-lg hover:shadow-[#16143E]/5 group"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-5 group-hover:bg-[#EF1313] group-hover:text-white transition-colors">
                     <item.icon size={22} />
@@ -377,7 +590,7 @@ export default function IntrusionAlarmsPage() {
           </div>
         </section>
 
-        {/* Packages */}
+        {/* 5. "Price" Section */}
         <section id="packages" className="py-20 sm:py-28 bg-[#0B091E] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -525,7 +738,7 @@ export default function IntrusionAlarmsPage() {
         {/* Complementary Solutions */}
         <RelatedSolutions currentKey="intrusion-alarms" />
 
-        {/* Dedicated Enquiry Section */}
+        {/* 6. "Enquiry" Section */}
         <EnquirySection initialService="Intrusion Alarm System" initialType="security" />
       </main>
       <Footer />

@@ -67,7 +67,7 @@ export default function HomeFaqSection() {
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
-            {lang === "ta" ? "அடிக்கடி கேட்கப்படும் கேள்விகள்" : "Frequently Asked Questions"}
+            Frequently Asked Questions
           </h2>
           <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
             Clear answers about our site visits, pricing, warranties, and technician response times.

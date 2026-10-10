@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import TrustBar from "@/components/TrustBar";
 import TopServicesSection from "@/components/TopServicesSection";
 import PackagePricingTeaser from "@/components/PackagePricingTeaser";
+import NightVisionComparisonSlider from "@/components/NightVisionComparisonSlider";
 import ProcessSection from "@/components/ProcessSection";
 import ProjectsTeaser from "@/components/ProjectsTeaser";
 import HomeFiberSection from "@/components/HomeFiberSection";
@@ -60,6 +61,9 @@ export default function HomePage() {
 
         {/* 4. Package Pricing Teaser with shared PackageCard component */}
         <PackagePricingTeaser />
+
+        {/* 4.5 Interactive ColorVu vs Traditional IR Night Vision Split Comparison Slider */}
+        <NightVisionComparisonSlider />
 
         {/* 5. 6-Step Compact Protocol (No duplicated detail pane) */}
         <ProcessSection />

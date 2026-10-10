@@ -112,33 +112,23 @@ const I18nContext = createContext<I18nContextType>({
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Language>("en");
+  const [lang] = useState<Language>("en");
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("broadnet_lang") as Language;
-      if (saved === "en" || saved === "ta") {
-        setLangState(saved);
-      }
+      localStorage.removeItem("broadnet_lang");
     } catch {
       // localStorage may fail in restricted browser modes
     }
   }, []);
 
-  const setLang = (newLang: Language) => {
-    setLangState(newLang);
-    try {
-      localStorage.setItem("broadnet_lang", newLang);
-    } catch {
-      // Ignore
-    }
-  };
+  const setLang = () => {};
 
   const t = (key: string): string => {
-    return DICTIONARY[lang]?.[key] || DICTIONARY.en[key] || key;
+    return DICTIONARY.en[key] || key;
   };
 
-  return <I18nContext.Provider value={{ lang, setLang, t }}>{children}</I18nContext.Provider>;
+  return <I18nContext.Provider value={{ lang: "en", setLang, t }}>{children}</I18nContext.Provider>;
 }
 
 export function useLanguage() {

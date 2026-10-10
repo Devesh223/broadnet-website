@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
 import PackageCard from "@/components/PackageCard";
+import NightVisionComparisonSlider from "@/components/NightVisionComparisonSlider";
 import { CCTV_PACKAGES, CCTVPackage } from "@/data/site";
 
 const REVIEWS = [
@@ -667,127 +668,19 @@ export default function CCTVLandingClient() {
         </div>
       </section>
 
-      {/* 4. Interactive Technology Comparison: ColorVu vs Standard IR */}
-      <section className="py-20 bg-white border-b border-[#16143E]/8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#4E0DBA]">
-              Optical Innovation
-            </span>
-            <h2
-              className="text-3xl sm:text-4xl font-bold text-[#16143E] mt-1"
-              style={{ fontFamily: "Syne, sans-serif" }}
-            >
-              See the Difference: ColorVu 24/7 vs Traditional IR
-            </h2>
-            <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
-              Why 90% of our residential and commercial clients choose full-color night vision cameras.
-            </p>
-
-            <div className="inline-flex items-center gap-2 mt-5 p-1 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-              <button
-                type="button"
-                onClick={() => setVisionComparison("colorvu")}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  visionComparison === "colorvu"
-                    ? "bg-[#EF1313] text-white shadow-xs"
-                    : "text-[#16143E]/70 hover:text-[#16143E]"
-                }`}
-              >
-                <Sun size={13} />
-                <span>ColorVu 24/7 Full Color</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setVisionComparison("standard")}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                  visionComparison === "standard"
-                    ? "bg-slate-800 text-white shadow-xs"
-                    : "text-[#16143E]/70 hover:text-[#16143E]"
-                }`}
-              >
-                <Moon size={13} />
-                <span>Traditional Grainy IR</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
-            {/* Visual simulation box */}
-            <div
-              className={`rounded-3xl p-6 sm:p-8 aspect-[16/10] flex flex-col justify-between text-white relative overflow-hidden transition-all duration-500 border border-[#16143E]/15 ${
-                visionComparison === "colorvu"
-                  ? "bg-gradient-to-tr from-[#16143E] via-[#321759] to-[#0f172a]"
-                  : "bg-gradient-to-tr from-[#020617] via-[#0f172a] to-[#1e293b] grayscale"
-              }`}
-            >
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className={`px-2.5 py-1 rounded-full font-bold ${visionComparison === "colorvu" ? "bg-[#EF1313] text-white" : "bg-white/20 text-white"}`}>
-                  {visionComparison === "colorvu" ? "COLORVU F1.0 APERTURE" : "STANDARD IR BLACK & WHITE"}
-                </span>
-                <span className="text-white/60">SIMULATION</span>
-              </div>
-
-              <div className="my-auto text-center">
-                <div
-                  className={`inline-block border-2 border-dashed rounded-xl p-4 backdrop-blur-sm ${
-                    visionComparison === "colorvu"
-                      ? "border-[#EF1313] bg-[#EF1313]/10 text-white"
-                      : "border-white/30 bg-black/30 text-white/70"
-                  }`}
-                >
-                  <div className="text-xs font-mono uppercase tracking-wider mb-1">
-                    {visionComparison === "colorvu" ? "✓ Full Color Identification" : "✗ Grainy Silhouette"}
-                  </div>
-                  <div className="text-sm sm:text-base font-bold">
-                    {visionComparison === "colorvu"
-                      ? "Red Shirt · Blue Car TN-02-BL-4075"
-                      : "Indistinct Grey Figure · License Unreadable"}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between text-[11px] text-white/70">
-                <span>Avadi Villa Entryway</span>
-                <span>{visionComparison === "colorvu" ? "Zero Light Supplemental LED" : "Infrared Mesh"}</span>
-              </div>
-            </div>
-
-            {/* Explainer Points */}
-            <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-                <h4 className="text-base font-bold text-[#16143E] mb-1 flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-lg bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center text-xs font-bold">1</span>
-                  <span>Crystal Color Facial Recognition at Night</span>
-                </h4>
-                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed pl-8">
-                  Conventional infrared cameras turn night footage into grainy black and white, making clothing color and car paint impossible for police to identify. ColorVu preserves 100% natural color.
-                </p>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-                <h4 className="text-base font-bold text-[#16143E] mb-1 flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-lg bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center text-xs font-bold">2</span>
-                  <span>Built-in Microphones for 2-Way Audio</span>
-                </h4>
-                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed pl-8">
-                  Capture verbal delivery confirmations and conversations outside your gate with ultra-sensitive acoustic noise reduction.
-                </p>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-[#FAFAFE] border border-[#16143E]/10">
-                <h4 className="text-base font-bold text-[#16143E] mb-1 flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-700 flex items-center justify-center text-xs font-bold">3</span>
-                  <span>AI Human & Vehicle Smart Filtering</span>
-                </h4>
-                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed pl-8">
-                  Never be disturbed by false alarms from swaying trees, rain, or street animals. The camera only pings your phone when a human or vehicle crosses your boundary line.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 4. Interactive Technology Comparison: ColorVu vs Standard IR Split Slider */}
+      <NightVisionComparisonSlider
+        onOpenPackageModal={(pkgId) => {
+          const selectedPkg = CCTV_PACKAGES.find((p) => p.id === pkgId);
+          if (selectedPkg) {
+            setForm((prev) => ({
+              ...prev,
+              requirement: `${selectedPkg.name} (${selectedPkg.price})`,
+            }));
+            scrollToWithPhysics("cctv-quote-form");
+          }
+        }}
+      />
 
       {/* 5. Customer Reviews Near Enquiry */}
       <section className="py-20 bg-[#FAFAFE] border-b border-[#16143E]/8">

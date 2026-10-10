@@ -243,7 +243,7 @@ export default function ProjectsGallery({ isTeaser = false }: { isTeaser?: boole
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative border border-white/20 max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative border border-white/20 max-h-[90vh] overflow-y-auto custom-scrollbar-light"
             onClick={(e) => e.stopPropagation()}
           >
             <button

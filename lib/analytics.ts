@@ -13,7 +13,10 @@ export type AnalyticsEvent =
   | "coverage_check"
   | "package_click"
   | "lead_click"
-  | "quote_request";
+  | "quote_request"
+  | "comparison_slider_interact"
+  | "comparison_preset_click"
+  | "colorvu_upgrade_click";
 
 export interface AnalyticsPayload {
   category?: string;

@@ -159,25 +159,13 @@ export default function HeroSection() {
           className="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-[1.08] tracking-tight mb-6 text-[#16143E] max-w-4xl"
           style={{ fontFamily: "Syne, sans-serif" }}
         >
-          {lang === "ta" ? (
-            <>
-              நம்பகமான சிசிடிவி.{" "}
-              <span className="text-[#EF1313] relative inline-block">
-                பாதுகாப்பு அமைப்புகள்.
-                <span className="absolute left-0 bottom-1 w-full h-1 bg-[#EF1313]/20 rounded-full" />
-              </span>
-            </>
-          ) : (
-            <>
-              Engineered{" "}
-              <span className="text-[#EF1313] relative inline-block">
-                Surveillance.
-                <span className="absolute left-0 bottom-1.5 w-full h-1 bg-[#EF1313]/20 rounded-full" />
-              </span>
-              <br />
-              Intelligent <span className="text-[#4E0DBA]">Security Systems.</span>
-            </>
-          )}
+          Engineered{" "}
+          <span className="text-[#EF1313] relative inline-block">
+            Surveillance.
+            <span className="absolute left-0 bottom-1.5 w-full h-1 bg-[#EF1313]/20 rounded-full" />
+          </span>
+          <br />
+          Intelligent <span className="text-[#4E0DBA]">Security Systems.</span>
         </motion.h1>
 
         {/* Description: 1 to 2 clean lines about the company */}

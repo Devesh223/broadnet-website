@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import SecurityFinder from "@/components/SecurityFinder";
 import EnquirySection from "@/components/EnquirySection";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import HardwareGallery from "@/components/HardwareGallery";
 import {
   Shield,
   Camera,
@@ -21,6 +22,11 @@ import {
   Phone,
   MessageCircle,
   Wifi,
+  Home,
+  Store,
+  Layers,
+  Fingerprint,
+  Eye,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -47,6 +53,105 @@ export const metadata: Metadata = {
     url: "https://www.broadnet.in/security",
   },
 };
+
+const WHAT_IS_IT_POINTS = [
+  {
+    icon: Camera,
+    title: "HD & 4K CCTV Video Surveillance",
+    desc: "CP PLUS & Hikvision optical systems with ColorVu night vision, continuous surveillance NVR recording, and mobile streaming.",
+  },
+  {
+    icon: Zap,
+    title: "Smart Video Door Intercoms",
+    desc: "7-inch color touch consoles with all-weather outdoor doorbells and remote electronic gate latch release capabilities.",
+  },
+  {
+    icon: Fingerprint,
+    title: "Biometric Access & Time-Attendance",
+    desc: "eSSL AI contactless face recognition, optical fingerprint readers, 600lbs EM locks, and automated payroll software.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Active Perimeter & Intrusion Alarms",
+    desc: "Compound wall laser photo-beams, pet-immune motion sensors, 110dB acoustic sirens, and cellular GSM auto-dialers.",
+  },
+];
+
+const WHO_IS_IT_FOR = [
+  {
+    icon: Home,
+    title: "Independent Villas & Residences",
+    tag: "Residential",
+    desc: "Complete perimeter cameras, video door phones for doorstep safety, and compound wall laser trip alarms.",
+    benefits: ["See callers before opening doors", "24/7 ColorVu night vision", "Emergency phone call on wall breach"],
+  },
+  {
+    icon: Building,
+    title: "Apartment Complexes & RWAs",
+    tag: "Societies",
+    desc: "Centralized NVR surveillance racks, multi-apartment intercom risers, and RFID automated boom barriers.",
+    benefits: ["Guard booth direct intercom", "Multi-flat video door networks", "Quarterly preventive maintenance AMC"],
+  },
+  {
+    icon: Store,
+    title: "Retail Shops & Commercial Showrooms",
+    tag: "Commercial",
+    desc: "High-resolution cash counter cameras, rolling shutter intrusion sensors, and employee attendance terminals.",
+    benefits: ["Billing counter zoom focus", "Rolling shutter breach alarms", "Automated monthly payroll reports"],
+  },
+  {
+    icon: Layers,
+    title: "Factories & Industrial Tech Parks",
+    tag: "Industrial",
+    desc: "Optical fiber mesh backhauls, 360° PTZ tracking domes, motorized flap turnstiles, and quad-beam laser perimeter grids.",
+    benefits: ["No upper ceiling camera scaling", "Worker shift attendance sync", "Enterprise central monitoring integration"],
+  },
+];
+
+const HARDWARE_GALLERY_ITEMS = [
+  {
+    title: "CP PLUS / Hikvision 4K Dome Camera",
+    category: "CCTV Surveillance",
+    description: "Wide-angle indoor and retail dome camera with built-in audio microphone and 30m smart infrared.",
+    specs: ["1080p to 4K Ultra HD", "Built-In Audio Mic", "Vandal-Resistant Housing"],
+    status: "In Stock",
+  },
+  {
+    title: "7-Inch Smart Video Door Console",
+    category: "Door Intercom",
+    description: "Capacitive color touchscreen console with visitor snapshot logging and remote gate latch release.",
+    specs: ["7-Inch High-Clarity Screen", "Two-Way Audio Talk-Back", "Electric Lock Relay Output"],
+    status: "Ready Stock",
+  },
+  {
+    title: "eSSL AI Face & Fingerprint Terminal",
+    category: "Access Control",
+    description: "Sub-second 0.2s contactless facial recognition scanner with anti-spoofing dual infrared cameras.",
+    specs: ["0.2s Verification Speed", "3,000 Face Profile Memory", "Automated Payroll Sync"],
+    status: "Ready Stock",
+  },
+  {
+    title: "Compound Wall Dual Laser Beam Pillars",
+    category: "Perimeter Defense",
+    description: "Photo-electric laser tripwire sensors creating an invisible perimeter line along compound parapets.",
+    specs: ["40m to 100m Laser Span", "IP65 Weatherproof Enclosure", "Zero Pet False Alarms"],
+    status: "In Stock",
+  },
+  {
+    title: "600 lbs Heavy-Duty Magnetic Lock",
+    category: "Access Hardware",
+    description: "Industrial electromagnetic latch with frameless glass U-brackets and power battery backup.",
+    specs: ["600 lbs (280 kg) Holding Force", "Fail-Safe Fire Release", "Glass & Wood Door Brackets"],
+    status: "Ready Stock",
+  },
+  {
+    title: "16-Channel Surveillance NVR Rack",
+    category: "Storage & Servers",
+    description: "Central network video recording hub with multi-terabyte surveillance HDDs and gigabit POE switch.",
+    specs: ["Up to 32TB Hard Disk Space", "Continuous 30-Day Video Loop", "Encrypted Cloud Sync"],
+    status: "Standard SLA",
+  },
+];
 
 const DOMAINS = [
   {
@@ -181,94 +286,270 @@ export default function SecurityPage() {
     <>
       <Header activePage="Security" />
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-20 sm:pb-28 bg-white overflow-hidden">
-          <div
-            className="absolute inset-0 opacity-[0.02]"
-            style={{
-              backgroundImage: "radial-gradient(circle, #EF1313 1px, transparent 1px)",
-              backgroundSize: "48px 48px",
-            }}
-          />
+        {/* 1. Hero Section (Heading + Details on Left, Image + Use Case on Right) */}
+        <section className="relative pt-32 pb-20 sm:pb-28 bg-[#0B091E] text-white overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: "radial-gradient(circle, #EF1313 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+              }}
+            />
+            <div className="absolute top-1/4 -right-20 w-[600px] h-[500px] bg-[#EF1313]/15 blur-[160px] rounded-full" />
+            <div className="absolute bottom-10 left-10 w-[500px] h-[400px] bg-[#4E0DBA]/20 blur-[150px] rounded-full" />
+          </div>
+
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
             {/* Breadcrumb Navigation */}
             <div className="mb-6">
               <Breadcrumbs
                 items={[{ label: "Security Solutions" }]}
-                variant="light"
+                variant="dark"
               />
             </div>
 
-            <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-4 font-display">
-                <span className="w-4 h-px bg-[#EF1313]" /> Certified Electronic Security & ELV Systems
-              </span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#16143E] leading-tight mb-5 font-display">
-                Intelligent Security.
-                <br />
-                <span className="text-gradient">Zero Compromise.</span>
-              </h1>
-              <p className="text-[#16143E]/65 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl font-body">
-                Official CP PLUS and Hikvision certified solutions engineered for residential villas, gated apartment communities, commercial retail, and industrial facilities across Avadi and Chennai.
-              </p>
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              {/* Left Column */}
+              <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center gap-2.5 mb-6">
+                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold border border-[#EF1313]/30 text-[#EF1313] bg-[#EF1313]/10">
+                    <BadgeCheck size={14} className="text-[#EF1313] flex-shrink-0" />
+                    CP PLUS • Hikvision • eSSL Authorized
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-white/10 text-white/90 border border-white/15">
+                    <Clock size={13} className="text-emerald-400" />
+                    2-Hour Local Technician Dispatch
+                  </span>
+                </div>
 
-              {/* Partner Badges */}
-              <div className="flex flex-wrap gap-2 sm:gap-3 mb-8">
-                {["CP PLUS CSE Certified", "Hikvision HCSA Trained", "eSSL Biometric Partner", "2-Hour Local SLA"].map(
-                  (c) => (
-                    <span
-                      key={c}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold border border-[#EF1313]/25 text-[#EF1313] bg-[#EF1313]/5"
-                    >
-                      <BadgeCheck size={14} className="text-[#EF1313] flex-shrink-0" />
-                      {c}
-                    </span>
-                  )
-                )}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-5 font-display">
+                  Intelligent Security.
+                  <br />
+                  <span className="text-gradient">Zero Compromise.</span>
+                </h1>
+
+                <p className="text-white/70 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl font-body">
+                  Official CP PLUS, Hikvision, and eSSL certified electronic security solutions engineered for residential villas, gated communities, commercial retail, and industrial facilities across Avadi & Chennai.
+                </p>
+
+                <div className="grid sm:grid-cols-2 gap-3 mb-8">
+                  {[
+                    "CCTV, Door Phones, Biometrics & Alarms",
+                    "No upper ceiling on enterprise scaling",
+                    "100% Concealed conduit piping",
+                    "2-Year replacement warranty & local SLA",
+                  ].map((feat) => (
+                    <div key={feat} className="flex items-center gap-2 text-sm text-white/85">
+                      <CheckCircle2 size={16} className="text-emerald-400 flex-shrink-0" />
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-wrap items-center gap-4">
+                  <a href="#solutions-catalog" className="btn-crimson flex items-center gap-2 text-sm font-bold shadow-lg shadow-[#EF1313]/30">
+                    <span>Explore Solutions</span>
+                    <ArrowRight size={15} />
+                  </a>
+                  <a
+                    href="https://wa.me/919884344075?text=Hi%20Broadnet,%20I%20am%20looking%20for%20security%20solutions%20in%20Avadi."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold text-sm transition-colors shadow-md"
+                  >
+                    <MessageCircle size={16} className="fill-white" />
+                    <span>WhatsApp Quote</span>
+                  </a>
+                  <a
+                    href="tel:+919884344075"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-colors border border-white/15"
+                  >
+                    <Phone size={15} />
+                    <span>Call: 98843 44075</span>
+                  </a>
+                </div>
               </div>
 
-              {/* Actions */}
-              <div className="flex flex-wrap items-center gap-3">
-                <a href="#solution-finder" className="btn-crimson flex items-center gap-2 text-sm font-bold">
-                  <span>Find Your Solution</span>
-                  <ArrowRight size={15} />
-                </a>
-                <Link
-                  href="/security/cameras"
-                  className="px-6 py-3 rounded-full bg-[#16143E] hover:bg-[#232057] text-white font-bold text-sm transition-colors flex items-center gap-2"
-                >
-                  <span>Explore CCTV Cameras</span>
-                  <ArrowRight size={15} />
-                </Link>
-                <a
-                  href="https://wa.me/919884344075?text=Hi%20Broadnet,%20I%20am%20looking%20for%20security%20solutions%20in%20Avadi."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold text-sm transition-colors"
-                >
-                  <MessageCircle size={15} className="fill-white" />
-                  <span>WhatsApp Quote</span>
-                </a>
+              {/* Right Column: Visual Card + Use Case Badge */}
+              <div className="lg:col-span-5 flex justify-center">
+                <div className="relative w-full max-w-md">
+                  <div className="relative bg-[#16143E] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-[#16143E]/60 overflow-hidden">
+                    <div className="absolute top-0 right-0 w-36 h-36 bg-[#EF1313]/25 blur-[80px] rounded-full pointer-events-none" />
+
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#EF1313]">
+                          Full Security Stack
+                        </span>
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                          Complete Portfolio
+                        </span>
+                      </div>
+
+                      <div className="h-56 sm:h-64 w-full flex flex-col items-center justify-center my-2 bg-gradient-to-br from-white/[0.04] to-white/[0.01] rounded-2xl border border-white/10 p-6 text-center">
+                        <div className="w-16 h-16 rounded-2xl bg-[#EF1313]/20 border border-[#EF1313]/35 flex items-center justify-center text-[#EF1313] mb-4 shadow-lg shadow-[#EF1313]/20">
+                          <Shield size={34} />
+                        </div>
+                        <h3 className="text-white font-bold text-lg font-display">Integrated Security Hub</h3>
+                        <p className="text-xs text-white/55 mt-1 max-w-xs">
+                          CCTV Surveillance, Video Door Phones, Biometric Access & Perimeter Laser Grids
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-white/10 mb-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-white font-bold text-base">End-to-End ELV Systems</div>
+                            <p className="text-xs text-white/55">Certified In-House Technicians</p>
+                          </div>
+                          <span className="text-sm font-bold text-[#EF1313] bg-[#EF1313]/10 border border-[#EF1313]/25 px-3 py-1.5 rounded-lg">
+                            Starts ₹1,399
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Prominent Use Case Tag */}
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-white/50">
+                          Primary Use Case
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EF1313]/20 text-[#EF1313] border border-[#EF1313]/40 shadow-sm">
+                          <Building size={12} />
+                          Residential & Commercial Portfolios
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute -bottom-5 -left-4 sm:-left-6 bg-[#120F2E] border border-white/15 rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#EF1313]/20 flex items-center justify-center text-[#EF1313] flex-shrink-0">
+                      <Shield size={20} />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-white">2,500+ Deployments</div>
+                      <div className="text-[11px] text-white/50">Across Avadi & Chennai</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Interactive "Find Your Perfect Solution" Quiz/Recommendation */}
-        <SecurityFinder />
-
-        {/* Detailed Domain Showcase Grid */}
-        <section id="solutions-catalog" className="py-24 bg-white text-[#16143E]">
+        {/* 2. "What is it" Section */}
+        <section className="py-20 sm:py-24 bg-white text-[#16143E] relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
-                <span className="w-4 h-px bg-[#EF1313]" /> Dedicated Security Portals <span className="w-4 h-px bg-[#EF1313]" />
+                <span className="w-4 h-px bg-[#EF1313]" /> Unified Electronic Defense <span className="w-4 h-px bg-[#EF1313]" />
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
-                Full-Spectrum Electronic Security Systems
+                What is Broadnet Electronic Security?
               </h2>
               <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
-                Click into any specific security domain below to view complete technical specifications, camera kits, and customized package pricing.
+                We deliver complete physical and digital surveillance infrastructure engineered into four synchronized domains, backed by our dedicated optical fiber backhauls:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHAT_IS_IT_POINTS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/10 hover:border-[#EF1313]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-5 group-hover:bg-[#EF1313] group-hover:text-white transition-colors shadow-sm">
+                        <Icon size={22} />
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-3 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed font-body">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 3. "Who is it for" Section */}
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-3 font-display">
+                <span className="w-4 h-px bg-[#4E0DBA]" /> Sectors & Premise Types <span className="w-4 h-px bg-[#4E0DBA]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                Who Are Our Security Solutions Designed For?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Whether you are securing a family villa, managing an apartment society, or running a manufacturing facility, our systems scale seamlessly:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHO_IS_IT_FOR.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center">
+                          <Icon size={20} />
+                        </div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#4E0DBA] bg-[#4E0DBA]/10 px-2.5 py-0.5 rounded-md">
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-2 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed mb-6 font-body">{item.desc}</p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#16143E]/8 space-y-2">
+                      {item.benefits.map((b) => (
+                        <div key={b} className="flex items-center gap-2 text-xs text-[#16143E]/80">
+                          <CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0" />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. "Images" Section (Hardware & Ecosystem Gallery) */}
+        <HardwareGallery
+          sectionSubtitle="Hardware Showcase"
+          sectionTitle="Certified Hardware & System Components"
+          sectionDescription="View certified CP PLUS, Hikvision, and eSSL hardware components engineered for 24/7 reliability and tamper resistance."
+          items={HARDWARE_GALLERY_ITEMS}
+          theme="light"
+        />
+
+        {/* Interactive "Find Your Perfect Solution" Quiz/Recommendation */}
+        <SecurityFinder />
+
+        {/* 5. "Price" & Detailed Domain Showcase Grid */}
+        <section id="solutions-catalog" className="py-24 bg-[#0B091E] text-white relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <span className="w-4 h-px bg-[#EF1313]" /> Packages & Pricing Portals <span className="w-4 h-px bg-[#EF1313]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight font-display mb-4">
+                Full-Spectrum Electronic Security Packages
+              </h2>
+              <p className="text-white/65 text-base sm:text-lg leading-relaxed">
+                Click into any specific security domain below to view complete technical specifications, camera kits, and customized package pricing with <strong>no upper ceiling</strong>.
               </p>
             </div>
 
@@ -278,12 +559,12 @@ export default function SecurityPage() {
                 return (
                   <div
                     key={domain.title}
-                    className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/10 flex flex-col justify-between hover:border-[#EF1313]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 group"
+                    className="p-7 rounded-3xl bg-[#16143E]/70 border border-white/10 flex flex-col justify-between hover:border-[#EF1313]/35 transition-all duration-300 hover:shadow-xl hover:shadow-black/30 group"
                   >
                     <div>
                       {/* Header & Badges */}
                       <div className="flex items-center justify-between gap-2 mb-4">
-                        <span className="text-[11px] font-bold text-[#4E0DBA] uppercase tracking-wider">
+                        <span className="text-[11px] font-bold text-[#A78BFA] uppercase tracking-wider">
                           {domain.badge}
                         </span>
                         <span className="text-xs font-bold text-[#EF1313] bg-[#EF1313]/10 border border-[#EF1313]/25 px-2.5 py-0.5 rounded-md">
@@ -294,36 +575,36 @@ export default function SecurityPage() {
                       <div className="flex items-start gap-3.5 mb-4">
                         <div
                           className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{ background: `${domain.color}15`, color: domain.color }}
+                          style={{ background: `${domain.color}25`, color: domain.color }}
                         >
                           <Icon size={20} />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold text-[#16143E] font-display leading-snug group-hover:text-[#EF1313] transition-colors">
+                          <h3 className="text-lg font-bold text-white font-display leading-snug group-hover:text-[#EF1313] transition-colors">
                             {domain.title}
                           </h3>
-                          <span className="text-[11px] text-[#16143E]/50 block mt-0.5">{domain.ceilingNote}</span>
+                          <span className="text-[11px] text-white/50 block mt-0.5">{domain.ceilingNote}</span>
                         </div>
                       </div>
 
-                      <p className="text-[#16143E]/65 text-xs sm:text-sm leading-relaxed mb-6">
+                      <p className="text-white/65 text-xs sm:text-sm leading-relaxed mb-6">
                         {domain.desc}
                       </p>
 
-                      <ul className="space-y-2.5 mb-7 pt-4 border-t border-[#16143E]/8">
+                      <ul className="space-y-2.5 mb-7 pt-4 border-t border-white/10">
                         {domain.features.map((feat) => (
-                          <li key={feat} className="flex items-start gap-2 text-xs text-[#16143E]/80 leading-snug">
-                            <CheckCircle2 size={14} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                          <li key={feat} className="flex items-start gap-2 text-xs text-white/80 leading-snug">
+                            <CheckCircle2 size={14} className="text-emerald-400 mt-0.5 flex-shrink-0" />
                             <span>{feat}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="pt-4 border-t border-[#16143E]/10">
+                    <div className="pt-4 border-t border-white/10">
                       <Link
                         href={domain.pageUrl}
-                        className="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-[#16143E] hover:bg-[#EF1313] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                        className="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-[#EF1313] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                       >
                         <span>{domain.ctaText}</span>
                         <ArrowRight size={13} />
@@ -408,7 +689,7 @@ export default function SecurityPage() {
           </div>
         </section>
 
-        {/* General Security Enquiry Section */}
+        {/* 6. "Enquiry" Section */}
         <EnquirySection initialType="security" />
       </main>
       <Footer />

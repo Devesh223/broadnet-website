@@ -26,9 +26,7 @@ export default function HomeFiberSection() {
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
-            {lang === "ta"
-              ? "ஆவடி & சுற்றுவட்டார ஃபைபர் பிராட்பேண்ட்"
-              : "Fiber Broadband Across Avadi & Nearby Areas"}
+            Fiber Broadband Across Avadi & Nearby Areas
           </h2>
           <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
             Broadnet&apos;s private 100+ km optical fiber backbone, official BSNL Bharat Fibre, and RailWire OTT packages. Symmetric speeds with zero evening throttling.

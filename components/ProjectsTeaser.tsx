@@ -21,7 +21,7 @@ export default function ProjectsTeaser() {
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight"
               style={{ fontFamily: "Syne, sans-serif" }}
             >
-              {lang === "ta" ? "சமீபத்திய திட்டங்கள் & சான்றுகள்" : "Real Deployments Across Chennai"}
+              Real Deployments Across Chennai
             </h2>
             <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
               From residential societies to manufacturing plants and medical clinics—see actual installations delivered by our certified in-house technicians.

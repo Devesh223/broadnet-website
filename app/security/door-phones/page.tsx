@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedSolutions from "@/components/RelatedSolutions";
+import HardwareGallery from "@/components/HardwareGallery";
 import {
   Shield,
   Zap,
@@ -24,6 +26,9 @@ import {
   Home,
   Bell,
   Camera,
+  Building,
+  Users,
+  Key,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -48,6 +53,105 @@ export const metadata: Metadata = {
     url: "https://www.broadnet.in/security/door-phones",
   },
 };
+
+const WHAT_IS_IT_POINTS = [
+  {
+    icon: Bell,
+    title: "All-Weather Outdoor Camera Bell",
+    desc: "IP65 weatherproof outdoor panel with wide-angle HD camera, infrared night vision, and tamper-resistant metallic enclosure.",
+  },
+  {
+    icon: Eye,
+    title: "7-Inch Indoor Color Display Console",
+    desc: "Crystal-clear capacitive indoor screen displaying high-resolution live video feeds with hands-free crystal audio communication.",
+  },
+  {
+    icon: Lock,
+    title: "Electronic Gate Lock Release Relay",
+    desc: "Direct integration with electromagnetic door latches or motorized gate drops, allowing one-touch unlocking from the screen or phone.",
+  },
+  {
+    icon: Smartphone,
+    title: "Smart Wi-Fi Mobile Bridge",
+    desc: "Streams incoming doorbell rings directly to family smartphones (iOS & Android) with two-way voice and remote gate release.",
+  },
+];
+
+const WHO_IS_IT_FOR = [
+  {
+    icon: Home,
+    title: "Independent Villas & Duplexes",
+    tag: "Residential",
+    desc: "Answer the front gate from upstairs bedrooms or the ground living room without running down the stairs. Multi-monitor setups supported.",
+    benefits: ["Multi-floor sub-monitor intercom", "Remote gate release button", "Zero staircase rush for deliveries"],
+  },
+  {
+    icon: Users,
+    title: "Families with Seniors & Kids",
+    tag: "Family Safety",
+    desc: "Ensures elderly parents and children at home alone can clearly see and talk to callers before deciding whether to unlock the door.",
+    benefits: ["Large easy-to-see 7-inch display", "No opening door to strangers", "Clear two-way audio speakerphone"],
+  },
+  {
+    icon: Smartphone,
+    title: "Working Professionals",
+    tag: "Remote Control",
+    desc: "Receive doorbell video calls directly on your phone at work. Instruct courier agents to leave parcels securely inside your gate.",
+    benefits: ["Real-time phone alerts with video", "Two-way talkback anywhere in Chennai", "Timestamped visitor snapshot log"],
+  },
+  {
+    icon: Building,
+    title: "Apartments & Gated Societies",
+    tag: "Housing RWAs",
+    desc: "Multi-dwelling entrance panels connecting guard security cabins with individual flats via high-durability internal riser cabling.",
+    benefits: ["Guard booth direct intercom", "Multi-apartment digital keypad", "Quarterly preventive maintenance AMC"],
+  },
+];
+
+const HARDWARE_GALLERY_ITEMS = [
+  {
+    title: "7-Inch HD Color Touch Console",
+    category: "Indoor Monitor",
+    description: "Slim capacitive touchscreen unit with hands-free intercom audio, visitor snapshot memory, and electronic lock trigger.",
+    specs: ["7-Inch 1024x600 Color Screen", "Internal Snapshot Photo Storage", "Multi-Monitor Cascading Support"],
+    status: "Ready Stock",
+  },
+  {
+    title: "IP65 Weatherproof Outdoor Bell",
+    category: "Outdoor Unit",
+    description: "Vandal-resistant aluminum alloy doorbell unit with wide-angle night vision lens and backlit call button.",
+    specs: ["1080p HD Wide-Angle Lens", "Infrared Night Vision up to 5m", "IP65 Rain & Dust Proof"],
+    status: "In Stock",
+  },
+  {
+    title: "Electronic Rim / Drop-Bolt Gate Lock",
+    category: "Access Hardware",
+    description: "Heavy-duty electromagnetic lock for main entrance gates and wooden doors, releasing instantly via screen or phone.",
+    specs: ["500kg Holding Force", "Fail-Secure / Fail-Safe Options", "Stainless Steel Mechanism"],
+    status: "Ready Stock",
+  },
+  {
+    title: "Smart Wi-Fi Video Doorbell",
+    category: "Wireless Solution",
+    description: "Battery or wired Wi-Fi doorbell with PIR human motion detection and instant chime synchronization for modern flats.",
+    specs: ["1080p Crystal HD Optics", "Two-Way Audio Talk-Back", "MicroSD Local Recording"],
+    status: "In Stock",
+  },
+  {
+    title: "Multi-Tenant Digital Entrance Panel",
+    category: "Apartment Societies",
+    description: "Rugged keypad entrance station with RFID keycard reader, guard intercom link, and tenant directory for multi-flat communities.",
+    specs: ["Numeric Keypad & RFID Reader", "Up to 500 Flat Extensions", "Guard Security Cabin Link"],
+    status: "Custom SLA",
+  },
+  {
+    title: "Concealed Conduit Cabling & Power",
+    category: "Installation Finish",
+    description: "Concealed 4-core / CAT6 wiring and dedicated power supply with surge protection preserving home wall aesthetics.",
+    specs: ["100% Concealed Wiring", "Surge-Protected Power Supply", "2-Year On-Site SLA"],
+    status: "Standard SLA",
+  },
+];
 
 const PACKAGES = [
   {
@@ -174,7 +278,7 @@ export default function DoorPhonesPage() {
     <>
       <Header activePage="Security" />
       <main>
-        {/* Hero Section */}
+        {/* 1. Hero Section (Heading + Details on Left, Image + Use Case on Right) */}
         <section className="relative pt-32 pb-20 sm:pb-28 bg-[#0B091E] text-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div
@@ -265,7 +369,7 @@ export default function DoorPhonesPage() {
                 </div>
               </div>
 
-              {/* Right Column: Visual Showcase */}
+              {/* Right Column: Visual Showcase + Use Case Badge */}
               <div className="lg:col-span-5 flex justify-center">
                 <div className="relative w-full max-w-md">
                   <div className="relative bg-[#16143E] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-[#16143E]/60 overflow-hidden">
@@ -292,7 +396,7 @@ export default function DoorPhonesPage() {
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-white/10">
+                      <div className="pt-4 border-t border-white/10 mb-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <div className="text-white font-bold text-base">CP PLUS & Hikvision VDP</div>
@@ -302,6 +406,17 @@ export default function DoorPhonesPage() {
                             Starts ₹3,999
                           </span>
                         </div>
+                      </div>
+
+                      {/* Prominent Use Case Tag */}
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-white/50">
+                          Primary Use Case
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#4E0DBA]/25 text-[#A78BFA] border border-[#4E0DBA]/40 shadow-sm">
+                          <Home size={12} />
+                          Independent Villas & Homes
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -321,8 +436,105 @@ export default function DoorPhonesPage() {
           </div>
         </section>
 
+        {/* 2. "What is it" Section */}
+        <section className="py-20 sm:py-24 bg-white text-[#16143E] relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <span className="w-4 h-px bg-[#EF1313]" /> System Architecture <span className="w-4 h-px bg-[#EF1313]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                What is a Smart Video Door Phone System?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                A video door phone acts as your home&apos;s intelligent front gateway. It synchronizes an exterior camera-equipped calling bell with crystal-clear indoor touchscreens, electronic gate latches, and your mobile device:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHAT_IS_IT_POINTS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/10 hover:border-[#4E0DBA]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center mb-5 group-hover:bg-[#4E0DBA] group-hover:text-white transition-colors shadow-sm">
+                        <Icon size={22} />
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-3 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed font-body">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 3. "Who is it for" Section */}
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-3 font-display">
+                <span className="w-4 h-px bg-[#4E0DBA]" /> Target Scenarios <span className="w-4 h-px bg-[#4E0DBA]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                Who Needs a Video Door Phone?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                From single-family independent villas to multi-floor gated communities, see how video door communication enhances convenience and safety:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHO_IS_IT_FOR.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center">
+                          <Icon size={20} />
+                        </div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#4E0DBA] bg-[#4E0DBA]/10 px-2.5 py-0.5 rounded-md">
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-2 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed mb-6 font-body">{item.desc}</p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#16143E]/8 space-y-2">
+                      {item.benefits.map((b) => (
+                        <div key={b} className="flex items-center gap-2 text-xs text-[#16143E]/80">
+                          <CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0" />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. "Images" Section (Hardware & Installation Gallery) */}
+        <HardwareGallery
+          sectionSubtitle="Hardware Showcase"
+          sectionTitle="Video Door Phone Consoles & Hardware"
+          sectionDescription="Precision-crafted CP PLUS and Hikvision touchscreens, all-weather outdoor bell units, and electromagnetic gate locking assemblies."
+          items={HARDWARE_GALLERY_ITEMS}
+          theme="light"
+        />
+
         {/* Modern Relevance Section */}
-        <section className="py-20 sm:py-24 bg-white text-[#16143E]">
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] text-[#16143E] border-t border-[#16143E]/8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
@@ -371,7 +583,7 @@ export default function DoorPhonesPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/8 hover:border-[#4E0DBA]/30 transition-all duration-300 hover:shadow-lg hover:shadow-[#16143E]/5 group"
+                  className="p-7 rounded-3xl bg-white border border-[#16143E]/8 hover:border-[#4E0DBA]/30 transition-all duration-300 hover:shadow-lg hover:shadow-[#16143E]/5 group"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center mb-5 group-hover:bg-[#4E0DBA] group-hover:text-white transition-colors">
                     <item.icon size={22} />
@@ -384,7 +596,7 @@ export default function DoorPhonesPage() {
           </div>
         </section>
 
-        {/* Packages */}
+        {/* 5. "Price" Section */}
         <section id="packages" className="py-20 sm:py-28 bg-[#0B091E] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -532,7 +744,7 @@ export default function DoorPhonesPage() {
         {/* Complementary Solutions */}
         <RelatedSolutions currentKey="door-phones" />
 
-        {/* Enquiry Section */}
+        {/* 6. "Enquiry" Section */}
         <EnquirySection initialService="Smart Video Door Phone" initialType="security" />
       </main>
       <Footer />

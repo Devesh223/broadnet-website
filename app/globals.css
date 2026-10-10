@@ -99,10 +99,146 @@ h1, h2, h3, h4, h5, h6,
   margin-top: -2.5px;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #fff; }
-::-webkit-scrollbar-thumb { background: #4E0DBA; border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: #EF1313; }
+/* BroadNet Brand Scrollbar System (The "Indian Pixel" Touch) */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #4E0DBA rgba(78, 13, 186, 0.06);
+}
+
+/* Universal WebKit scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #4E0DBA 0%, #6818E0 100%);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #EF1313 0%, #FF3838 100%);
+  box-shadow: 0 0 10px rgba(239, 19, 19, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #EF1313;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Dark Theme / Dark Modal Scrollbars */
+.custom-scrollbar-dark,
+[class*="bg-[#0B091E]"]::-webkit-scrollbar,
+[class*="bg-[#16143E]"]::-webkit-scrollbar,
+[class*="bg-[#0D0B24]"]::-webkit-scrollbar,
+[class*="bg-[#07091E]"]::-webkit-scrollbar,
+[class*="bg-[#120F2E]"]::-webkit-scrollbar,
+[class*="bg-[#16123D]"]::-webkit-scrollbar,
+[class*="from-[#16143E]"]::-webkit-scrollbar,
+.dark-hud-glass::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar-dark,
+[class*="bg-[#0B091E]"],
+[class*="bg-[#16143E]"],
+[class*="bg-[#0D0B24]"],
+[class*="bg-[#07091E]"],
+[class*="bg-[#120F2E]"],
+[class*="bg-[#16123D]"],
+[class*="from-[#16143E]"],
+.dark-hud-glass {
+  scrollbar-width: thin;
+  scrollbar-color: #8B5CF6 rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar-dark::-webkit-scrollbar-track,
+[class*="bg-[#0B091E]"]::-webkit-scrollbar-track,
+[class*="bg-[#16143E]"]::-webkit-scrollbar-track,
+[class*="bg-[#0D0B24]"]::-webkit-scrollbar-track,
+[class*="bg-[#07091E]"]::-webkit-scrollbar-track,
+[class*="bg-[#120F2E]"]::-webkit-scrollbar-track,
+[class*="bg-[#16123D]"]::-webkit-scrollbar-track,
+[class*="from-[#16143E]"]::-webkit-scrollbar-track,
+.dark-hud-glass::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 9999px;
+  margin: 4px;
+}
+
+.custom-scrollbar-dark::-webkit-scrollbar-thumb,
+[class*="bg-[#0B091E]"]::-webkit-scrollbar-thumb,
+[class*="bg-[#16143E]"]::-webkit-scrollbar-thumb,
+[class*="bg-[#0D0B24]"]::-webkit-scrollbar-thumb,
+[class*="bg-[#07091E]"]::-webkit-scrollbar-thumb,
+[class*="bg-[#120F2E]"]::-webkit-scrollbar-thumb,
+[class*="bg-[#16123D]"]::-webkit-scrollbar-thumb,
+[class*="from-[#16143E]"]::-webkit-scrollbar-thumb,
+.dark-hud-glass::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8B5CF6 0%, #4E0DBA 100%);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.custom-scrollbar-dark::-webkit-scrollbar-thumb:hover,
+[class*="bg-[#0B091E]"]::-webkit-scrollbar-thumb:hover,
+[class*="bg-[#16143E]"]::-webkit-scrollbar-thumb:hover,
+[class*="bg-[#0D0B24]"]::-webkit-scrollbar-thumb:hover,
+[class*="bg-[#07091E]"]::-webkit-scrollbar-thumb:hover,
+[class*="bg-[#120F2E]"]::-webkit-scrollbar-thumb:hover,
+[class*="bg-[#16123D]"]::-webkit-scrollbar-thumb:hover,
+[class*="from-[#16143E]"]::-webkit-scrollbar-thumb:hover,
+.dark-hud-glass::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #EF1313 0%, #FF3838 100%);
+  box-shadow: 0 0 10px rgba(239, 19, 19, 0.6);
+}
+
+/* Light Container Scrollbars */
+.custom-scrollbar-light {
+  scrollbar-width: thin;
+  scrollbar-color: #4E0DBA rgba(22, 20, 62, 0.05);
+}
+
+.custom-scrollbar-light::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar-light::-webkit-scrollbar-track {
+  background: rgba(22, 20, 62, 0.04);
+  border-radius: 9999px;
+  margin: 4px;
+}
+
+.custom-scrollbar-light::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #4E0DBA 0%, #6818E0 100%);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar-light::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #EF1313 0%, #FF3838 100%);
+  box-shadow: 0 0 8px rgba(239, 19, 19, 0.4);
+}
+
+/* Utility to hide scrollbars cleanly where desired (e.g. horizontal chips) */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 ::selection { background: #4E0DBA; color: white; }
 
 .glass {

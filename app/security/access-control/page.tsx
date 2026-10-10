@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedSolutions from "@/components/RelatedSolutions";
+import HardwareGallery from "@/components/HardwareGallery";
 import {
   Shield,
   Lock,
@@ -23,6 +25,9 @@ import {
   HelpCircle,
   Building,
   Key,
+  Layers,
+  Cpu,
+  Store,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -47,6 +52,105 @@ export const metadata: Metadata = {
     url: "https://www.broadnet.in/security/access-control",
   },
 };
+
+const WHAT_IS_IT_POINTS = [
+  {
+    icon: Fingerprint,
+    title: "Dual Biometric Sensor Technology",
+    desc: "Sub-second optical fingerprint scanning and AI infrared facial recognition with 3D depth geometry preventing photo spoofing.",
+  },
+  {
+    icon: Lock,
+    title: "Heavy-Duty Electromagnetic (EM) Latches",
+    desc: "Industrial-grade 600lbs holding force magnetic locks and drop-bolts compatible with frameless glass, wooden, and aluminum doors.",
+  },
+  {
+    icon: FileSpreadsheet,
+    title: "Automated Payroll & Shift Software",
+    desc: "Cloud and on-premise software calculating shift times, overtime hours, late penalties, and one-click monthly Excel/CSV exports.",
+  },
+  {
+    icon: Zap,
+    title: "Emergency Power & Safety Failsafe",
+    desc: "Dedicated internal battery backup sustaining lock operations during blackouts, integrated with fire alarms for emergency auto-release.",
+  },
+];
+
+const WHO_IS_IT_FOR = [
+  {
+    icon: Building,
+    title: "Corporate Offices & IT Hubs",
+    tag: "Commercial",
+    desc: "Eliminate unauthorized visitors, restrict sensitive server rooms, and provide employees seamless contactless facial entry.",
+    benefits: ["Touchless AI face recognition", "Restricted server room permissions", "Automated employee attendance sync"],
+  },
+  {
+    icon: Layers,
+    title: "Factories & Manufacturing Plants",
+    tag: "Industrial",
+    desc: "Track multiple shifts, contractor attendance, and overtime hours across rotating worker schedules with 100% biometric authenticity.",
+    benefits: ["Shift & overtime calculation", "Rugged dust-resistant hardware", "Battery backup during grid outages"],
+  },
+  {
+    icon: Users,
+    title: "Clinics, Hospitals & Labs",
+    tag: "Healthcare",
+    desc: "Maintain medical-grade hygiene with contactless access into ICU wards, sterile operation rooms, and pharmaceutical stores.",
+    benefits: ["Zero-touch hygienic face scan", "Pharmacy access authorization", "Timestamped audit trail logs"],
+  },
+  {
+    icon: Store,
+    title: "Retail Showrooms & Stockrooms",
+    tag: "Retail",
+    desc: "Secure inventory stockrooms against unauthorized staff shrinkage and monitor employee opening and closing shifts accurately.",
+    benefits: ["Stockroom door lock enforcement", "Daily opening/closing audit", "Revoke resigned staff access instantly"],
+  },
+];
+
+const HARDWARE_GALLERY_ITEMS = [
+  {
+    title: "eSSL AI Face Recognition Terminal",
+    category: "Contactless Entry",
+    description: "High-speed AI terminal with live-body spoof detection, 3,000 face capacity, and access control relay outputs.",
+    specs: ["0.2s Contactless Verification", "Anti-Spoofing Dual IR Cameras", "3,000 Face & RFID Card Memory"],
+    status: "Ready Stock",
+  },
+  {
+    title: "eSSL Optical Fingerprint Reader",
+    category: "Time & Attendance",
+    description: "Standalone biometric attendance machine with scratch-resistant optical sensor and USB/LAN log download.",
+    specs: ["1,000 Fingerprint Capacity", "100,000 Transaction Logs", "USB & TCP/IP Network Sync"],
+    status: "In Stock",
+  },
+  {
+    title: "600 lbs Electromagnetic (EM) Lock",
+    category: "Access Latches",
+    description: "Heavy-duty electromagnetic lock with frameless glass U-brackets, anodized aluminum casing, and LED lock status indicator.",
+    specs: ["600 lbs (280 kg) Holding Force", "Fail-Safe Safety Design", "Glass / Wooden Door Brackets"],
+    status: "Ready Stock",
+  },
+  {
+    title: "Stainless Steel Push-to-Exit Button",
+    category: "Exit Hardware",
+    description: "Commercial stainless steel exit switch with backlit LED ring engineered for high-frequency daily operation.",
+    specs: ["500,000 Tested Cycles", "Brushed Stainless Steel Finish", "Concealed Wall Mounting"],
+    status: "In Stock",
+  },
+  {
+    title: "Motorized Flap Barrier Turnstile",
+    category: "Enterprise Access",
+    description: "Optical motorized pedestrian turnstiles with integrated face recognition scanners and anti-tailgating sensors for tech parks.",
+    specs: ["High-Throughput Pedestrian Flow", "Anti-Tailgating Sensor Matrix", "Fire Alarm Auto-Drop Wings"],
+    status: "Custom SLA",
+  },
+  {
+    title: "Desktop & Cloud Payroll Sync Software",
+    category: "Software Management",
+    description: "Comprehensive employee management software with shift rosters, leave calculations, and automated monthly Excel export.",
+    specs: ["One-Click Payroll CSV Export", "Multi-Shift Roster Management", "Live Real-Time Cloud Sync"],
+    status: "Included Free",
+  },
+];
 
 const PACKAGES = [
   {
@@ -173,7 +277,7 @@ export default function AccessControlPage() {
     <>
       <Header activePage="Security" />
       <main>
-        {/* Hero Section */}
+        {/* 1. Hero Section (Heading + Details on Left, Image + Use Case on Right) */}
         <section className="relative pt-32 pb-20 sm:pb-28 bg-[#0B091E] text-white overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div
@@ -264,7 +368,7 @@ export default function AccessControlPage() {
                 </div>
               </div>
 
-              {/* Right Column */}
+              {/* Right Column: Visual Card + Use Case Badge */}
               <div className="lg:col-span-5 flex justify-center">
                 <div className="relative w-full max-w-md">
                   <div className="relative bg-[#16143E] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-[#16143E]/60 overflow-hidden">
@@ -290,7 +394,7 @@ export default function AccessControlPage() {
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t border-white/10">
+                      <div className="pt-4 border-t border-white/10 mb-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <div className="text-white font-bold text-base">eSSL Attendance Series</div>
@@ -300,6 +404,17 @@ export default function AccessControlPage() {
                             Starts ₹4,500
                           </span>
                         </div>
+                      </div>
+
+                      {/* Prominent Use Case Tag */}
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-white/50">
+                          Primary Use Case
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EF1313]/20 text-[#EF1313] border border-[#EF1313]/40 shadow-sm">
+                          <Building size={12} />
+                          Offices, Factories & Clinics
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -319,8 +434,105 @@ export default function AccessControlPage() {
           </div>
         </section>
 
+        {/* 2. "What is it" Section */}
+        <section className="py-20 sm:py-24 bg-white text-[#16143E] relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <span className="w-4 h-px bg-[#EF1313]" /> System Architecture <span className="w-4 h-px bg-[#EF1313]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                What is Biometric Access Control & Attendance?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Biometric access replaces vulnerable physical keys and manual attendance books with digital authentication. It combines high-speed biometric scanning with fail-safe electromagnetic locks and automated payroll software:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHAT_IS_IT_POINTS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/10 hover:border-[#EF1313]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-5 group-hover:bg-[#EF1313] group-hover:text-white transition-colors shadow-sm">
+                        <Icon size={22} />
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-3 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed font-body">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 3. "Who is it for" Section */}
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-3 font-display">
+                <span className="w-4 h-px bg-[#4E0DBA]" /> Workplaces & Premises <span className="w-4 h-px bg-[#4E0DBA]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                Who Needs Biometric Access Control?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Explore how various industries eliminate time fraud, automate employee shifts, and restrict sensitive zones:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHO_IS_IT_FOR.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center">
+                          <Icon size={20} />
+                        </div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#4E0DBA] bg-[#4E0DBA]/10 px-2.5 py-0.5 rounded-md">
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-2 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed mb-6 font-body">{item.desc}</p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#16143E]/8 space-y-2">
+                      {item.benefits.map((b) => (
+                        <div key={b} className="flex items-center gap-2 text-xs text-[#16143E]/80">
+                          <CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0" />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. "Images" Section (Hardware & Terminal Gallery) */}
+        <HardwareGallery
+          sectionSubtitle="Hardware Showcase"
+          sectionTitle="Official eSSL Biometric Terminals & Latches"
+          sectionDescription="View our contactless AI facial scanners, precision optical fingerprint readers, and high-holding-force electromagnetic door locks."
+          items={HARDWARE_GALLERY_ITEMS}
+          theme="light"
+        />
+
         {/* Modern Relevance Section */}
-        <section className="py-20 sm:py-24 bg-white text-[#16143E]">
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] text-[#16143E] border-t border-[#16143E]/8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
@@ -369,7 +581,7 @@ export default function AccessControlPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/8 hover:border-[#EF1313]/30 transition-all duration-300 hover:shadow-lg hover:shadow-[#16143E]/5 group"
+                  className="p-7 rounded-3xl bg-white border border-[#16143E]/8 hover:border-[#EF1313]/30 transition-all duration-300 hover:shadow-lg hover:shadow-[#16143E]/5 group"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-5 group-hover:bg-[#EF1313] group-hover:text-white transition-colors">
                     <item.icon size={22} />
@@ -382,7 +594,7 @@ export default function AccessControlPage() {
           </div>
         </section>
 
-        {/* Packages */}
+        {/* 5. "Price" Section */}
         <section id="packages" className="py-20 sm:py-28 bg-[#0B091E] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -530,7 +742,7 @@ export default function AccessControlPage() {
         {/* Complementary Solutions */}
         <RelatedSolutions currentKey="access-control" />
 
-        {/* Dedicated Enquiry Section */}
+        {/* 6. "Enquiry" Section */}
         <EnquirySection initialService="Biometric Access Control" initialType="security" />
       </main>
       <Footer />

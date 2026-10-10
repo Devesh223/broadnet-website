@@ -350,7 +350,7 @@ export default function LocationChecker() {
                   <div className="p-2 text-[11px] font-bold uppercase tracking-wider text-white/40 border-b border-white/8 px-4">
                     Matching Coverage Areas
                   </div>
-                  <div className="max-h-60 overflow-y-auto">
+                  <div className="max-h-60 overflow-y-auto custom-scrollbar-dark">
                     {autocompleteSuggestions.map((loc) => (
                       <button
                         key={loc.name}
@@ -727,7 +727,7 @@ export default function LocationChecker() {
           </div>
 
           {filteredLocations.length > 0 ? (
-            <div className="max-h-[300px] overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+            <div className="max-h-[300px] overflow-y-auto pr-1.5 custom-scrollbar-dark">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 {filteredLocations.map((loc) => {
                   const isSelected = activeResult?.name === loc.name;

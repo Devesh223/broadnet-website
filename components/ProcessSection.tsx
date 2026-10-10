@@ -96,7 +96,7 @@ export default function ProcessSection() {
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
-            {lang === "ta" ? "எங்கள் 6 படிநிலைகள் கொண்ட சேவை முறை" : "How We Deliver Your Security System"}
+            How We Deliver Your Security System
           </h2>
           <p
             className="text-[#16143E]/70 text-sm sm:text-base mt-3 max-w-2xl mx-auto"

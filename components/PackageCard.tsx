@@ -278,7 +278,7 @@ export default function PackageCard({
           <AnimatePresence>
             {isOpen && (
               <div
-                className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+                className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 overflow-y-auto custom-scrollbar-dark"
                 data-lenis-prevent
               >
                 {/* Backdrop Blur */}
@@ -297,7 +297,7 @@ export default function PackageCard({
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.94, y: 16 }}
                   transition={{ type: "spring", damping: 28, stiffness: 360 }}
-                  className="relative w-full max-w-md my-auto rounded-3xl p-6 sm:p-7 bg-gradient-to-b from-[#16143E] via-[#120F2E] to-[#0D0B24] border border-[#4E0DBA]/40 shadow-2xl shadow-black/80 text-white overflow-hidden max-h-[90vh] overflow-y-auto"
+                  className="relative w-full max-w-md my-auto rounded-3xl p-6 sm:p-7 bg-gradient-to-b from-[#16143E] via-[#120F2E] to-[#0D0B24] border border-[#4E0DBA]/40 shadow-2xl shadow-black/80 text-white overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar-dark"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {/* Subtle top border glow */}

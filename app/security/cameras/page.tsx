@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedSolutions from "@/components/RelatedSolutions";
+import HardwareGallery from "@/components/HardwareGallery";
 import {
   Shield,
   Camera,
@@ -26,6 +27,10 @@ import {
   Building,
   Home,
   Store,
+  Layers,
+  Sparkles,
+  Server,
+  Zap,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -53,7 +58,110 @@ export const metadata: Metadata = {
 };
 
 import PackageCard from "@/components/PackageCard";
+import NightVisionComparisonSlider from "@/components/NightVisionComparisonSlider";
 import { CCTV_PACKAGES } from "@/data/site";
+
+const WHAT_IS_IT_POINTS = [
+  {
+    icon: Camera,
+    title: "High-Definition Optical Sensors",
+    desc: "From 2MP Full-HD to 8MP 4K resolution lenses equipped with Wide Dynamic Range (WDR) and ColorVu apertures that capture vivid color in low light.",
+  },
+  {
+    icon: HardDrive,
+    title: "Dedicated Surveillance Storage (DVR/NVR)",
+    desc: "Engineered with Western Digital Purple or Seagate SkyHawk hard drives designed specifically for continuous 24/7/365 read-write video loops.",
+  },
+  {
+    icon: Cpu,
+    title: "AI AcuSense Motion Analytics",
+    desc: "Smart onboard deep-learning algorithms classify human targets and vehicles, eliminating 95% of false alarms caused by rain, wind, or animals.",
+  },
+  {
+    icon: Smartphone,
+    title: "Encrypted Mobile Cloud Streaming",
+    desc: "Secure remote gateways enable sub-second live video feeds and recorded playback on iPhone, Android, and PC software anywhere in the world.",
+  },
+];
+
+const WHO_IS_IT_FOR = [
+  {
+    icon: Home,
+    title: "Independent Villas & Homes",
+    tag: "Residential",
+    desc: "Protect perimeter boundary walls, main entrances, and parking ports. Monitor children playing, senior parents, and courier deliveries with crystal-clear audio.",
+    benefits: ["Main gate & driveway monitoring", "Night-time boundary protection", "Mobile live viewing for working couples"],
+  },
+  {
+    icon: Building,
+    title: "Apartment Complexes & RWAs",
+    tag: "Societies",
+    desc: "Centralized surveillance for staircases, lift lobbies, basements, and entry boom barriers. High-capacity NVRs with long retention loops.",
+    benefits: ["Multi-channel NVR recording racks", "Vehicle number plate tracking", "Shared security guard booth console"],
+  },
+  {
+    icon: Store,
+    title: "Retail Shops & Supermarkets",
+    tag: "Commercial",
+    desc: "Prevent inventory shrinkage, monitor cash billing counters with high-definition optical clarity, and ensure customer satisfaction across all aisles.",
+    benefits: ["Cash counter high-zoom focus", "Shutter break-in deterrence", "Employee shift time oversight"],
+  },
+  {
+    icon: Layers,
+    title: "Factories & Warehouses",
+    tag: "Industrial",
+    desc: "Multi-acre perimeter coverage with optical fiber backhauls, 360° PTZ tracking speed domes, and heavy-duty IP67 weatherproof enclosures.",
+    benefits: ["No upper ceiling camera scaling", "Long-distance fiber optic networking", "Perimeter tripwire breach alarms"],
+  },
+];
+
+const HARDWARE_GALLERY_ITEMS = [
+  {
+    title: "CP PLUS / Hikvision Dome Camera",
+    category: "Indoor Surveillance",
+    description: "Compact, vandal-resistant dome housing ideal for living rooms, retail aisles, and office ceilings with wide-angle coverage.",
+    imageSrc: "/assets/dome_camera_clean.png",
+    specs: ["1080p to 4K Ultra HD", "Built-in Microphone for Audio", "30m Smart Infrared Range"],
+    status: "In Stock",
+  },
+  {
+    title: "Full-Color ColorVu Bullet Camera",
+    category: "Outdoor Perimeter",
+    description: "Heavy-duty metal bullet camera engineered for outdoor boundary walls, driveways, and gates with 24/7 vivid color night vision.",
+    imageSrc: "/assets/colorvu-night-vision.jpg",
+    specs: ["F1.0 Super Aperture", "IP67 Weatherproof Rating", "Active White Light Warning"],
+    status: "In Stock",
+  },
+  {
+    title: "Traditional IR Night Vision",
+    category: "Infrared Comparison",
+    description: "Standard infrared surveillance sensor offering dependable monochrome nighttime coverage for budget-conscious properties.",
+    imageSrc: "/assets/traditional-ir-night-vision.jpg",
+    specs: ["Monochrome Infrared Night Mode", "Smart IR Anti-Overexposure", "Cost-Effective Security"],
+    status: "Available",
+  },
+  {
+    title: "Enterprise 16/32-Channel NVR Rack",
+    category: "Central Storage",
+    description: "Commercial network video recording hub with multi-terabyte surveillance HDDs, HDMI 4K output, and gigabit POE switches.",
+    specs: ["Up to 32TB Storage Capacity", "Continuous 30-Day Backup Loop", "Dual Gigabit LAN Ports"],
+    status: "Ready Stock",
+  },
+  {
+    title: "360° Optical PTZ Speed Dome",
+    category: "Industrial & Campus",
+    description: "Motorized pan-tilt-zoom camera with 25x optical zoom and auto-tracking capabilities for expansive factory yards and parking lots.",
+    specs: ["25x Optical Zoom Precision", "360° Continuous High-Speed Pan", "Smart Auto-Tracking AI"],
+    status: "Custom Order",
+  },
+  {
+    title: "Concealed Conduit Cabling Setup",
+    category: "Installation Finish",
+    description: "Heavy-duty PVC conduit routing preserving building architectural aesthetics with zero exposed or dangling cables.",
+    specs: ["100% Concealed PVC Conduits", "Rodent-Proof & Weather-Shielded", "Clean Aesthetic Handover"],
+    status: "Standard SLA",
+  },
+];
 
 const WORKFLOW = [
   {
@@ -146,7 +254,7 @@ export default function CamerasPage() {
       />
       <Header activePage="Security" />
       <main>
-        {/* Hero Section */}
+        {/* 1. Hero Section (Heading + Details on Left, Image + Use Case on Right) */}
         <section className="relative pt-32 pb-20 sm:pb-28 bg-[#0B091E] text-white overflow-hidden">
           {/* Subtle gradient glow & grid */}
           <div className="absolute inset-0 pointer-events-none">
@@ -174,7 +282,7 @@ export default function CamerasPage() {
             </div>
 
             <div className="grid lg:grid-cols-12 gap-12 items-center">
-              {/* Left Column: Copy & Value Proposition */}
+              {/* Left Column: Heading & Details */}
               <div className="lg:col-span-7">
                 {/* Trust Badges */}
                 <div className="flex flex-wrap items-center gap-2.5 mb-6">
@@ -241,7 +349,7 @@ export default function CamerasPage() {
                 </div>
               </div>
 
-              {/* Right Column: Visual Product Showcase */}
+              {/* Right Column: Visual Showcase + USE CASE Tag */}
               <div className="lg:col-span-5 flex justify-center">
                 <div className="relative w-full max-w-md">
                   {/* Decorative Card Frame */}
@@ -270,7 +378,7 @@ export default function CamerasPage() {
                         />
                       </div>
 
-                      <div className="pt-4 border-t border-white/10">
+                      <div className="pt-4 border-t border-white/10 mb-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <h2 className="text-white font-bold text-lg">CP PLUS & Hikvision Pro</h2>
@@ -280,6 +388,17 @@ export default function CamerasPage() {
                             Starts ₹1,399
                           </span>
                         </div>
+                      </div>
+
+                      {/* Prominent Use Case Tag matching Wireframe */}
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-white/50">
+                          Primary Use Case
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EF1313]/20 text-[#EF1313] border border-[#EF1313]/40 shadow-sm">
+                          <Home size={12} />
+                          Villas, Flats & Commercial
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -300,8 +419,108 @@ export default function CamerasPage() {
           </div>
         </section>
 
-        {/* Relevance to Modern Security Challenges */}
+        {/* 2. "What is it" Section (Architecture & Technology Overview) */}
         <section className="py-20 sm:py-24 bg-white text-[#16143E] relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <span className="w-4 h-px bg-[#EF1313]" /> Architecture & Technology <span className="w-4 h-px bg-[#EF1313]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                What is a Modern CCTV Surveillance System?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Modern electronic video surveillance is far more than a simple camera on the wall. It is an integrated security ecosystem combining precision optics, dedicated continuous storage, edge AI motion filtering, and low-latency cloud gateways:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHAT_IS_IT_POINTS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/10 hover:border-[#EF1313]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-5 group-hover:bg-[#EF1313] group-hover:text-white transition-colors shadow-sm">
+                        <Icon size={22} />
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-3 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed font-body">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 3. "Who is it for" Section (Premises & Target Segments) */}
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-3 font-display">
+                <span className="w-4 h-px bg-[#4E0DBA]" /> Tailored Scenarios <span className="w-4 h-px bg-[#4E0DBA]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                Who is Professional CCTV For?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Whether protecting a single-family home or securing an industrial manufacturing campus, our installations are custom engineered for your specific operational scale:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHO_IS_IT_FOR.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center">
+                          <Icon size={20} />
+                        </div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#4E0DBA] bg-[#4E0DBA]/10 px-2.5 py-0.5 rounded-md">
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-2 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed mb-6 font-body">{item.desc}</p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#16143E]/8 space-y-2">
+                      {item.benefits.map((b) => (
+                        <div key={b} className="flex items-center gap-2 text-xs text-[#16143E]/80">
+                          <CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0" />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. "Images" Section (Hardware Gallery & Visual Demonstrations) */}
+        <HardwareGallery
+          sectionSubtitle="Visual Hardware Gallery"
+          sectionTitle="Official CP PLUS & Hikvision Hardware Showcase"
+          sectionDescription="Take a close look at our high-grade optical cameras, continuous recording NVR racks, and precision conduit installations across Avadi."
+          items={HARDWARE_GALLERY_ITEMS}
+          theme="light"
+        />
+
+        {/* Interactive Night Vision vs ColorVu 4K Split Comparison Slider */}
+        <NightVisionComparisonSlider />
+
+        {/* Relevance to Modern Security Challenges */}
+        <section className="py-20 sm:py-24 bg-white text-[#16143E] relative overflow-hidden border-t border-[#16143E]/8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
@@ -320,7 +539,6 @@ export default function CamerasPage() {
                 {
                   icon: Shield,
                   title: "Active Deterrence of Trespassing",
-                  // TODO: Proof needed for claim: "deters over 85%" [CONFIRM]
                   desc: "Visible, professionally positioned CCTV bullet cameras deter over 85% of opportunistic property trespassing, vehicle tampering, and boundary breaches before they occur.",
                 },
                 {
@@ -346,7 +564,6 @@ export default function CamerasPage() {
                 {
                   icon: HardDrive,
                   title: "Legally Admissible High-Definition Evidence",
-                  // TODO: Proof needed for claim: "legally admissible" [CONFIRM]
                   desc: "Surveillance-grade continuous recording ensures tamper-free timestamped footage, critical for police FIR reports, insurance claims, and legal documentation.",
                 },
               ].map((item) => (
@@ -365,7 +582,7 @@ export default function CamerasPage() {
           </div>
         </section>
 
-        {/* Packages & Pricing Section */}
+        {/* 5. "Price" Section (Packages & Transparent Tiers) */}
         <section id="packages" className="py-20 sm:py-28 bg-[#0B091E] text-white relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -513,7 +730,7 @@ export default function CamerasPage() {
         {/* Complementary Solutions */}
         <RelatedSolutions currentKey="cameras" />
 
-        {/* Dedicated Enquiry Section */}
+        {/* 6. "Enquiry" Section */}
         <div id="quote-form">
           <EnquirySection initialService="CCTV Installation & Services" initialType="security" />
         </div>

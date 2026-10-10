@@ -80,7 +80,7 @@ export default function TopServicesSection() {
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight"
               style={{ fontFamily: "Syne, sans-serif" }}
             >
-              {lang === "ta" ? "முக்கிய பாதுகாப்பு & நெட்வொர்க் சேவைகள்" : "Our Lead Security & Networking Disciplines"}
+              Our Lead Security & Networking Disciplines
             </h2>
             <p className="text-[#16143E]/70 text-sm sm:text-base mt-2">
               Turnkey engineering deployed by certified in-house technicians across Avadi, Ambattur, Pattabiram & Chennai.

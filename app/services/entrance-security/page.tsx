@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnquirySection from "@/components/EnquirySection";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import HardwareGallery from "@/components/HardwareGallery";
 import {
   Car,
   ShieldCheck,
@@ -11,6 +14,18 @@ import {
   Sliders,
   ArrowRight,
   MessageCircle,
+  Phone,
+  Clock,
+  BadgeCheck,
+  Building,
+  Layers,
+  Store,
+  Users,
+  Lock,
+  Zap,
+  HelpCircle,
+  Star,
+  Quote,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -26,104 +41,629 @@ export const metadata: Metadata = {
   ],
 };
 
+const WHAT_IS_IT_POINTS = [
+  {
+    icon: Car,
+    title: "Motorized High-Speed Boom Arms",
+    desc: "3m to 6m telescopic and folding motorized aluminum arms with brushless DC motors, 1.5s opening speed, and anti-smash loop sensors.",
+  },
+  {
+    icon: Zap,
+    title: "Long-Range Windshield RFID Readers",
+    desc: "UHF RFID antennas reading registered resident vehicle windshield tags from 6 meters away, opening gates seamlessly with zero stoppage.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Multi-Zone Metal Detectors (DFMD)",
+    desc: "Multi-zone walk-through doorframe metal detectors with pinpoint LED columns, sensitivity level calibration, and transit passenger counters.",
+  },
+  {
+    icon: Sliders,
+    title: "Optical Flap Turnstiles & Mantrap Gates",
+    desc: "Motorized pedestrian flap barriers and full-height turnstiles preventing tailgating in corporate office reception lobbies and tech parks.",
+  },
+];
+
+const WHO_IS_IT_FOR = [
+  {
+    icon: Building,
+    title: "Gated Apartment Communities & RWAs",
+    tag: "Residential Societies",
+    desc: "Automate resident car and two-wheeler access with RFID tags, while screening visitor and courier delivery vehicles at the main gate.",
+    benefits: ["Zero queue resident vehicle entry", "Anti-smash safety loop detectors", "Guard booth override push button"],
+  },
+  {
+    icon: Layers,
+    title: "Tech Parks & Corporate Campuses",
+    tag: "Commercial Hubs",
+    desc: "Regulate high-frequency employee traffic and prevent pedestrian tailgating with motorized glass flap barriers and biometric readers.",
+    benefits: ["Sub-second pedestrian throughput", "Biometric face & RFID integration", "Fire alarm emergency auto-drop wings"],
+  },
+  {
+    icon: Store,
+    title: "Factories & Logistics Warehouses",
+    tag: "Industrial Logistics",
+    desc: "Heavy-duty boom barriers engineered for continuous heavy truck, tanker, and container movement with boom crash protection.",
+    benefits: ["Heavy truck chassis tolerance", "24/7 continuous duty cycle motors", "Manual clutch release during blackouts"],
+  },
+  {
+    icon: Users,
+    title: "Convention Halls, Malls & Schools",
+    tag: "Public Safety",
+    desc: "Screen large volumes of visitors for concealed weapons and unauthorized metal contraband with high-sensitivity DFMD gates.",
+    benefits: ["Multi-zone pinpoint LED location", "Traffic throughput counter display", "Anti-interference circuit architecture"],
+  },
+];
+
+const HARDWARE_GALLERY_ITEMS = [
+  {
+    title: "Automatic Motorized Boom Barrier",
+    category: "Vehicle Automation",
+    description: "High-speed brushless DC motor barrier with 3-6 meter telescopic aluminum arm and illuminated LED safety strips.",
+    specs: ["1.5s to 3s Fast Arm Cycle", "Brushless DC Motor (5M cycles)", "Anti-Smash Pressure Sensor"],
+    status: "Ready Stock",
+  },
+  {
+    title: "Long-Range UHF RFID Reader",
+    category: "RFID Scanning",
+    description: "Multi-protocol UHF RFID reader reading vehicle windshield tags up to 6 meters away in harsh weather conditions.",
+    specs: ["6-Meter Read Range", "IP65 Weatherproof Enclosure", "Wiegand / RS485 Controller Link"],
+    status: "In Stock",
+  },
+  {
+    title: "Multi-Zone Doorframe Metal Detector",
+    category: "Security Screening",
+    description: "6 to 18-zone walk-through DFMD gate with dual-side LED column alarms and adjustable sensitivity calibration.",
+    specs: ["18 Detection Zones", "Pinpoint LED Location Display", "Passenger & Alarm Counter"],
+    status: "Ready Stock",
+  },
+  {
+    title: "Optical Glass Flap Barrier Turnstile",
+    category: "Pedestrian Access",
+    description: "Stainless steel SUS304 turnstile with tempered glass flaps, infrared anti-tailgating sensors, and biometric face sync.",
+    specs: ["SUS304 Stainless Steel Shell", "Infrared Anti-Tailgating Matrix", "Emergency Auto-Retract Flaps"],
+    status: "Custom SLA",
+  },
+  {
+    title: "Handheld Security Metal Detector Wand",
+    category: "Manual Inspection",
+    description: "Lightweight, high-sensitivity handheld inspection scanner with audio tone and vibration alert for event security.",
+    specs: ["High Ferrous Sensitivity", "Audio & Vibration Modes", "Rechargeable 9V Battery"],
+    status: "In Stock",
+  },
+  {
+    title: "Underground Vehicle Inductive Loop",
+    category: "Safety Loop",
+    description: "Embedded ground detector sensor preventing boom arms from lowering onto vehicles or pedestrians.",
+    specs: ["Teflon-Coated Loop Cable", "Frequency Adjustment Tuning", "Zero-Smash Safety Trigger"],
+    status: "Standard SLA",
+  },
+];
+
+const PACKAGES = [
+  {
+    name: "Automatic Boom Barrier Kit",
+    tagline: "Motorized boom barrier with push button and remote keyfobs for residential gates",
+    price: "₹32,000",
+    unit: "barrier unit + installation",
+    badge: "Entry Automation",
+    popular: false,
+    features: [
+      "4-Meter High-Visibility Aluminum Arm",
+      "Heavy-Duty Motor with 100% Duty Cycle",
+      "2x Wireless Remote Control Keyfobs",
+      "Guard Booth Manual Push-Button Station",
+      "Anti-Smash Optical Safety Photocells",
+      "1-Year On-Site Manufacturer Warranty",
+    ],
+    ctaText: "Order Boom Barrier",
+  },
+  {
+    name: "Complete RFID Tag Society Gate",
+    tagline: "Automated hands-free vehicle entry system for apartment communities",
+    price: "₹48,000",
+    unit: "barrier + RFID reader + tags",
+    badge: "Most Popular",
+    popular: true,
+    features: [
+      "High-Speed Automatic Boom Barrier (3-4m)",
+      "Long-Range UHF Windshield RFID Reader",
+      "50x Pre-Programmed Vehicle RFID Tags",
+      "Underground Anti-Smash Loop Detector",
+      "Guard Booth Master Override Console",
+      "Concealed cabling & foundation civil work",
+      "2-Year On-Site Hardware Warranty",
+    ],
+    ctaText: "Book RFID Gate Kit",
+  },
+  {
+    name: "Walk-Through Metal Detector (DFMD)",
+    tagline: "Multi-zone security screening gate for halls, schools, and offices",
+    price: "₹35,000",
+    unit: "multi-zone DFMD gate",
+    badge: "Security Screening",
+    popular: false,
+    features: [
+      "6 to 18-Zone Pinpoint Detection Architecture",
+      "Dual Side Column Alarm LED Light Strips",
+      "Automated Visitor Transit & Alarm Counters",
+      "Adjustable Sensitivity Calibration for Coins/Keys",
+      "Sound & Visual Warning Strobe",
+      "Priority 2-Hour SLA Local Support",
+    ],
+    ctaText: "Order DFMD Gate",
+  },
+  {
+    name: "Corporate Optical Flap Turnstiles",
+    tagline: "Motorized pedestrian entrance automation for tech parks & tech headquarters",
+    price: "Custom Quote",
+    unit: "Multi-Lane Turnstile Systems",
+    badge: "Enterprise Scale",
+    popular: false,
+    features: [
+      "Single or Multi-Lane Motorized Flap Barriers",
+      "Integrated Face Recognition & RFID Card Scanners",
+      "Infrared Anti-Tailgating Sensor Matrix",
+      "Bi-Directional High-Throughput Passenger Flow",
+      "Integration with Building Fire Alarms",
+      "Quarterly preventive maintenance AMC options",
+      "Dedicated technician support within 90 minutes",
+    ],
+    ctaText: "Request Turnstile Survey",
+  },
+];
+
+const REVIEWS = [
+  {
+    quote:
+      "BroadNet automated the main entry gate for our 80-villa residential community in Avadi. The RFID tags open the boom barrier smoothly without any wait time. Excellent installation and after-sales support.",
+    author: "R. Jayachandran",
+    role: "Secretary, Lakeview Villas RWA",
+    location: "Avadi, Chennai",
+    system: "Automatic Boom Barrier with RFID Tag Reader",
+  },
+  {
+    quote:
+      "We installed BroadNet's DFMD metal detector gates and handheld wands for our convention auditorium in Poonamallee. Reliable detection with zero false alarms from small metallic belts.",
+    author: "M. Soundararajan",
+    role: "Operations Manager, Grand Palace Hall",
+    location: "Poonamallee / Avadi Corridor",
+    system: "Multi-Zone Walk-Through Metal Detector",
+  },
+  {
+    quote:
+      "Our factory entrance in Ambattur needed heavy-duty boom barriers for container trailers. BroadNet fabricated the concrete base and wired safety ground loops. Flawless 24/7 continuous operation.",
+    author: "V. Natarajan",
+    role: "Plant Head, Premier Engineering",
+    location: "Ambattur Industrial Corridor",
+    system: "Heavy-Duty Industrial Boom Barrier Grid",
+  },
+];
+
+const FAQS = [
+  {
+    q: "What happens to the boom barrier during a complete power outage?",
+    a: "All boom barriers installed by BroadNet come with an internal manual clutch release key. If power fails and no generator is running, a quick turn of the key releases the arm, allowing it to be opened manually with zero resistance.",
+  },
+  {
+    q: "How do the vehicle RFID windshield tags work in gated communities?",
+    a: "We mount a long-range UHF antenna near the entrance. When a resident's car approaches within 6 meters, the reader recognizes the windshield tag and automatically opens the boom arm. Once the car passes over the underground safety loop, the arm lowers automatically.",
+  },
+  {
+    q: "Can the boom barrier accidentally drop on a car or pedestrian?",
+    a: "No. Every installation includes two redundant safety systems: an underground inductive loop detector that senses vehicle metal and optical infrared safety photocells that detect pedestrians. The arm will never lower while anything is under it.",
+  },
+  {
+    q: "Do you handle the civil foundation and electrical conduit work?",
+    a: "Yes! BroadNet provides end-to-end turnkey deployment, including RCC concrete foundation pedestal casting, concealed electrical conduit cabling, controller mounting, and software commissioning.",
+  },
+];
+
 export default function EntranceSecurityPage() {
   return (
     <>
       <Header activePage="Services" />
-      <main className="bg-white text-[#16143E]">
-        <section className="relative pt-32 pb-20 bg-gradient-to-b from-[#F7F5FC] via-white to-white border-b border-[#16143E]/8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <main>
+        {/* 1. Hero Section (Heading + Details on Left, Image + Use Case on Right) */}
+        <section className="relative pt-32 pb-20 sm:pb-28 bg-[#0B091E] text-white overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: "radial-gradient(circle, #EF1313 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+              }}
+            />
+            <div className="absolute top-1/4 -right-20 w-[600px] h-[500px] bg-[#EF1313]/20 blur-[160px] rounded-full" />
+            <div className="absolute bottom-10 left-10 w-[500px] h-[400px] bg-[#4E0DBA]/20 blur-[150px] rounded-full" />
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+            {/* Breadcrumb Navigation */}
             <div className="mb-6">
               <Breadcrumbs
                 items={[
                   { label: "Services", href: "/#services" },
                   { label: "Boom Barriers & Entrance Security" },
                 ]}
-                variant="light"
+                variant="dark"
               />
             </div>
 
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EF1313]/10 text-[#EF1313] text-xs font-bold uppercase tracking-wider mb-4">
-                <Sparkles size={13} />
-                <span>Heavy-Duty Commercial Entrance Automation</span>
-              </div>
-              <h1
-                className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#16143E] tracking-tight mb-4"
-                style={{ fontFamily: "Syne, sans-serif" }}
-              >
-                Boom Barriers, Turnstiles & Security Screening
-              </h1>
-              <p className="text-base sm:text-lg text-[#16143E]/75 leading-relaxed mb-8">
-                Regulate unauthorized vehicles and secure pedestrian entry points with motorized automatic boom barriers, long-range windshield RFID tags, multi-zone doorframe metal detectors (DFMD), and optical flap turnstiles.
-              </p>
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              {/* Left Column */}
+              <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center gap-2.5 mb-6">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#EF1313]/15 text-[#EF1313] border border-[#EF1313]/30">
+                    <BadgeCheck size={14} className="text-[#EF1313]" />
+                    Heavy-Duty Commercial Entrance Automation
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-white/10 text-white/90 border border-white/15">
+                    <Clock size={13} className="text-emerald-400" />
+                    2-Hour On-Site Technician Dispatch
+                  </span>
+                </div>
 
-              <div className="flex flex-wrap items-center gap-3">
-                <a
-                  href="#enquiry"
-                  className="btn-crimson min-h-[46px] px-7 text-sm justify-center"
-                >
-                  Request Gate Automation Survey
-                </a>
-                <a
-                  href="https://wa.me/919884344075?text=Hello%20Broadnet%2C%20I%20am%20interested%20in%20Boom%20Barriers%20and%20Entrance%20Security%20systems."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-5 py-2.5 rounded-full bg-[#25D366]/10 text-[#16143E] hover:bg-[#25D366]/20 text-xs sm:text-sm font-bold flex items-center gap-2 transition-colors min-h-[46px]"
-                >
-                  <MessageCircle size={16} className="text-[#25D366]" /> WhatsApp Us
-                </a>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight font-display mb-6">
+                  Secure Every Entry.
+                  <br />
+                  <span className="text-gradient">Boom Barriers & Entrance Automation.</span>
+                </h1>
+
+                <p className="text-white/70 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl font-body">
+                  Regulate unauthorized vehicles and secure pedestrian entry points with motorized automatic boom barriers, long-range windshield RFID tags, multi-zone doorframe metal detectors (DFMD), and optical flap turnstiles in Avadi & Chennai.
+                </p>
+
+                <div className="grid sm:grid-cols-2 gap-3 mb-8">
+                  {[
+                    "1.5s High-Speed Motorized Boom Arms",
+                    "Long-Range RFID Windshield Tag Readers",
+                    "Anti-Smash Ground Loop Safety Detectors",
+                    "Multi-Zone Walk-Through Metal Detectors",
+                  ].map((feat) => (
+                    <div key={feat} className="flex items-center gap-2 text-sm text-white/85">
+                      <CheckCircle2 size={16} className="text-emerald-400 flex-shrink-0" />
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <a
+                    href="#packages"
+                    className="btn-crimson flex items-center gap-2 text-sm font-bold shadow-lg shadow-[#EF1313]/30"
+                  >
+                    <span>View Entrance Packages</span>
+                    <ArrowRight size={16} />
+                  </a>
+                  <a
+                    href="https://wa.me/919884344075?text=Hi%20Broadnet,%20I%20am%20interested%20in%20Boom%20Barriers%20and%20Entrance%20Security%20in%20Avadi.%20Please%20share%20details."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold text-sm transition-colors shadow-md"
+                  >
+                    <MessageCircle size={16} className="fill-white" />
+                    <span>WhatsApp Quote</span>
+                  </a>
+                  <a
+                    href="tel:+919884344075"
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-colors border border-white/15"
+                  >
+                    <Phone size={15} />
+                    <span>Call: 98843 44075</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Column: Visual Showcase + Use Case Badge */}
+              <div className="lg:col-span-5 flex justify-center">
+                <div className="relative w-full max-w-md">
+                  <div className="relative bg-[#16143E] border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-[#16143E]/60 overflow-hidden">
+                    <div className="absolute top-0 right-0 w-36 h-36 bg-[#EF1313]/25 blur-[80px] rounded-full pointer-events-none" />
+
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#EF1313]">
+                          Entrance Security
+                        </span>
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                          Heavy-Duty Motors
+                        </span>
+                      </div>
+
+                      <div className="h-56 sm:h-64 w-full flex flex-col items-center justify-center my-2 bg-gradient-to-br from-white/[0.04] to-white/[0.01] rounded-2xl border border-white/10 p-6 text-center">
+                        <div className="w-16 h-16 rounded-2xl bg-[#EF1313]/20 border border-[#EF1313]/35 flex items-center justify-center text-[#EF1313] mb-4 shadow-lg shadow-[#EF1313]/20">
+                          <Car size={34} />
+                        </div>
+                        <h3 className="text-white font-bold text-lg font-display">Automatic Boom Barrier Hub</h3>
+                        <p className="text-xs text-white/55 mt-1 max-w-xs">
+                          Fast RFID vehicle reader with anti-smash ground loop and pedestrian flap turnstiles
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-white/10 mb-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-white font-bold text-base">Commercial Automation</div>
+                            <p className="text-xs text-white/55">Turnkey Deployment with Civil Work</p>
+                          </div>
+                          <span className="text-sm font-bold text-[#EF1313] bg-[#EF1313]/10 border border-[#EF1313]/25 px-3 py-1.5 rounded-lg">
+                            Starts ₹32,000
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Prominent Use Case Tag */}
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-white/50">
+                          Primary Use Case
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EF1313]/20 text-[#EF1313] border border-[#EF1313]/40 shadow-sm">
+                          <Building size={12} />
+                          Societies, Tech Parks & Tolls
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute -bottom-5 -left-4 sm:-left-6 bg-[#120F2E] border border-white/15 rounded-2xl px-4 py-3 shadow-xl flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#EF1313]/20 flex items-center justify-center text-[#EF1313] flex-shrink-0">
+                      <ShieldCheck size={20} />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-white">Zero-Smash Safety</div>
+                      <div className="text-[11px] text-white/50">Dual ground loop + photocells</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Core Offerings */}
-        <section className="py-20 bg-[#FAFAFE] border-b border-[#16143E]/8">
+        {/* 2. "What is it" Section */}
+        <section className="py-20 sm:py-24 bg-white text-[#16143E] relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="p-7 rounded-2xl bg-white border border-[#16143E]/10">
-                <div className="w-12 h-12 rounded-xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-4">
-                  <Car size={24} />
-                </div>
-                <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
-                  Automatic Boom Barriers
-                </h3>
-                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed mb-4">
-                  High-speed motorized boom arms (3 to 6 meters) with anti-smash loop detectors, optical safety photocells, and RFID windshield FASTag readers for registered residents and fleet vehicles.
-                </p>
-                <div className="text-xs text-[#EF1313] font-semibold">eSSL & Hikvision Heavy-Duty Motors</div>
-              </div>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <span className="w-4 h-px bg-[#EF1313]" /> System Architecture <span className="w-4 h-px bg-[#EF1313]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                What is Entrance Security & Gate Automation?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Entrance security transforms perimeter gates into automated control points. It combines high-speed motorized barrier arms, long-range RFID tag scanning, anti-smash ground safety sensors, and walkthrough metal screening:
+              </p>
+            </div>
 
-              <div className="p-7 rounded-2xl bg-white border border-[#16143E]/10">
-                <div className="w-12 h-12 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center mb-4">
-                  <ShieldCheck size={24} />
-                </div>
-                <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
-                  Metal Detectors & Screening
-                </h3>
-                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed mb-4">
-                  Multi-zone walk-through doorframe metal detectors (DFMD) with pinpoint LED location indicators, sensitivity calibration, and hand-held security inspection wands for event halls and schools.
-                </p>
-                <div className="text-xs text-[#4E0DBA] font-semibold">Anti-Interference Technology</div>
-              </div>
-
-              <div className="p-7 rounded-2xl bg-white border border-[#16143E]/10">
-                <div className="w-12 h-12 rounded-xl bg-[#16143E]/10 text-[#16143E] flex items-center justify-center mb-4">
-                  <Sliders size={24} />
-                </div>
-                <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "Syne, sans-serif" }}>
-                  Flap Barriers & Turnstiles
-                </h3>
-                <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed mb-4">
-                  Architectural glass flap barriers and tripod turnstiles integrated with biometric face scanners or RFID cards to prevent tailgating in corporate office reception lobbies.
-                </p>
-                <div className="text-xs text-[#16143E] font-semibold">Brushless Motor & Anti-Tailgating Sensors</div>
-              </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHAT_IS_IT_POINTS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-[#F8F9FD] border border-[#16143E]/10 hover:border-[#EF1313]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-5 group-hover:bg-[#EF1313] group-hover:text-white transition-colors shadow-sm">
+                        <Icon size={22} />
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-3 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed font-body">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
 
+        {/* 3. "Who is it for" Section */}
+        <section className="py-20 sm:py-24 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-3 font-display">
+                <span className="w-4 h-px bg-[#4E0DBA]" /> Sectors & Premises <span className="w-4 h-px bg-[#4E0DBA]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#16143E] tracking-tight font-display mb-4">
+                Who Needs Entrance Automation?
+              </h2>
+              <p className="text-[#16143E]/65 text-base sm:text-lg leading-relaxed">
+                Explore how various facilities automate vehicular traffic and protect pedestrian entrances:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {WHO_IS_IT_FOR.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="p-7 rounded-3xl bg-white border border-[#16143E]/10 hover:border-[#4E0DBA]/35 transition-all duration-300 hover:shadow-xl hover:shadow-[#16143E]/5 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-[#4E0DBA]/10 text-[#4E0DBA] flex items-center justify-center">
+                          <Icon size={20} />
+                        </div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#4E0DBA] bg-[#4E0DBA]/10 px-2.5 py-0.5 rounded-md">
+                          {item.tag}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-[#16143E] mb-2 font-display">{item.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#16143E]/65 leading-relaxed mb-6 font-body">{item.desc}</p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#16143E]/8 space-y-2">
+                      {item.benefits.map((b) => (
+                        <div key={b} className="flex items-center gap-2 text-xs text-[#16143E]/80">
+                          <CheckCircle2 size={13} className="text-emerald-500 flex-shrink-0" />
+                          <span>{b}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. "Images" Section (Hardware & Gate Automation Gallery) */}
+        <HardwareGallery
+          sectionSubtitle="Hardware Showcase"
+          sectionTitle="Heavy-Duty Barrier Motors & Turnstiles"
+          sectionDescription="View our motorized barrier arms, long-range RFID readers, walk-through DFMD metal detectors, and pedestrian turnstiles."
+          items={HARDWARE_GALLERY_ITEMS}
+          theme="light"
+        />
+
+        {/* 5. "Price" Section */}
+        <section id="packages" className="py-20 sm:py-28 bg-[#0B091E] text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <span className="w-4 h-px bg-[#EF1313]" /> Packages & Pricing <span className="w-4 h-px bg-[#EF1313]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight font-display mb-4">
+                Tailored Entrance Security Packages
+              </h2>
+              <p className="text-white/65 text-base sm:text-lg leading-relaxed">
+                From residential society gate barriers to multi-lane corporate tech park turnstile grids with <strong>no upper ceiling</strong>.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {PACKAGES.map((pkg) => (
+                <div
+                  key={pkg.name}
+                  className={`rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 relative ${
+                    pkg.popular
+                      ? "bg-[#16143E] border-2 border-[#EF1313] shadow-2xl shadow-[#EF1313]/20"
+                      : "bg-[#120F2E] border border-white/10 hover:border-white/25"
+                  }`}
+                >
+                  {pkg.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#EF1313] text-white shadow-md">
+                      {pkg.badge}
+                    </span>
+                  )}
+
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-bold text-[#A78BFA] uppercase tracking-wider">
+                        {pkg.badge}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-white mb-2 font-display">{pkg.name}</h3>
+                    <p className="text-xs text-white/55 mb-6 leading-relaxed">{pkg.tagline}</p>
+
+                    <div className="mb-6 pb-6 border-b border-white/10">
+                      <div className="text-3xl font-bold text-white font-display">{pkg.price}</div>
+                      <div className="text-xs text-white/50 mt-1">{pkg.unit}</div>
+                    </div>
+
+                    <ul className="space-y-3 mb-8">
+                      {pkg.features.map((feat) => (
+                        <li key={feat} className="flex items-start gap-2.5 text-xs text-white/80 leading-relaxed">
+                          <CheckCircle2 size={14} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <a
+                      href={`https://wa.me/919884344075?text=${encodeURIComponent(
+                        `Hi Broadnet, I am interested in the ${pkg.name} (${pkg.price}) for Entrance Automation in Avadi. Please share details.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-full min-h-[44px] px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-colors ${
+                        pkg.popular
+                          ? "bg-[#EF1313] hover:bg-[#d60e0e] text-white"
+                          : "bg-white/10 hover:bg-white/20 text-white"
+                      }`}
+                    >
+                      <span>{pkg.ctaText}</span>
+                      <ArrowRight size={13} />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="py-20 bg-[#F8F9FD] border-t border-[#16143E]/8 text-[#16143E]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4E0DBA] mb-3 font-display">
+                <span className="w-4 h-px bg-[#4E0DBA]" /> Verified Customer Experiences <span className="w-4 h-px bg-[#4E0DBA]" />
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#16143E] font-display mb-4">
+                Trusted by Housing Societies & Facilities in Chennai
+              </h2>
+              <div className="flex items-center justify-center gap-1 text-[#F59E0B]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} className="fill-[#F59E0B]" />
+                ))}
+                <span className="text-xs font-bold text-[#16143E] ml-2">4.9 / 5.0 Rating</span>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {REVIEWS.map((rev) => (
+                <div
+                  key={rev.author}
+                  className="p-7 rounded-3xl bg-white border border-[#16143E]/10 shadow-sm flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-9 h-9 rounded-xl bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center mb-4">
+                      <Quote size={18} />
+                    </div>
+                    <p className="text-sm text-[#16143E]/75 italic leading-relaxed mb-6 font-body">
+                      &ldquo;{rev.quote}&rdquo;
+                    </p>
+                  </div>
+                  <div className="pt-4 border-t border-[#16143E]/8">
+                    <div className="font-bold text-sm text-[#16143E]">{rev.author}</div>
+                    <div className="text-xs text-[#16143E]/55">{rev.role}</div>
+                    <div className="text-xs font-semibold text-[#EF1313] mt-1">{rev.system}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQs */}
+        <section className="py-20 bg-white text-[#16143E]">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#EF1313] mb-3 font-display">
+                <HelpCircle size={14} className="text-[#EF1313]" /> Common Questions
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#16143E] font-display">
+                Boom Barriers & Entrance Security FAQs
+              </h2>
+            </div>
+
+            <div className="space-y-4">
+              {FAQS.map((faq) => (
+                <div key={faq.q} className="p-6 rounded-2xl bg-[#F8F9FD] border border-[#16143E]/8">
+                  <h3 className="font-bold text-base text-[#16143E] mb-2 font-display">{faq.q}</h3>
+                  <p className="text-xs sm:text-sm text-[#16143E]/70 leading-relaxed font-body">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. "Enquiry" Section */}
         <EnquirySection initialService="Boom Barriers & Flap Barriers" initialType="security" />
       </main>
       <Footer />

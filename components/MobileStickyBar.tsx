@@ -6,8 +6,6 @@ import { trackEvent } from "@/lib/analytics";
 import { useLanguage } from "@/lib/i18n";
 
 export default function MobileStickyBar() {
-  const { lang } = useLanguage();
-
   return (
     <aside
       aria-label="Quick Mobile Contact Bar"
@@ -24,7 +22,7 @@ export default function MobileStickyBar() {
         >
           <Phone size={16} className="text-[#EF1313] mb-0.5" />
           <span className="text-[11px] font-bold" style={{ fontFamily: "Syne, sans-serif" }}>
-            {lang === "ta" ? "அழைக்க" : "Call Now"}
+            Call Now
           </span>
         </a>
 
@@ -40,7 +38,7 @@ export default function MobileStickyBar() {
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 absolute top-1.5 right-2 animate-ping" />
           <MessageCircle size={16} className="text-[#25D366] mb-0.5" />
           <span className="text-[11px] font-bold text-[#15803d]" style={{ fontFamily: "Syne, sans-serif" }}>
-            {lang === "ta" ? "வாட்ஸ்அப்" : "WhatsApp"}
+            WhatsApp
           </span>
         </a>
 
@@ -62,7 +60,7 @@ export default function MobileStickyBar() {
         >
           <Send size={15} className="text-white mb-0.5" />
           <span className="text-[11px] font-bold" style={{ fontFamily: "Syne, sans-serif" }}>
-            {lang === "ta" ? "இலவச ஆய்வு" : "Free Quote"}
+            Free Quote
           </span>
         </button>
       </div>

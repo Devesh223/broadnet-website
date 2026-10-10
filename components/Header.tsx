@@ -18,14 +18,25 @@ import {
   Shield,
   Wifi,
   MapPin,
+  Network,
 } from "lucide-react";
 import BroadnetLogo from "./BroadnetLogo";
 import { scrollToWithPhysics } from "@/lib/scrollPhysics";
-import { SERVICES_LIST } from "@/data/services";
-import { useLanguage } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
 
-const SECURITY_SERVICES = SERVICES_LIST.filter((s) => s.id !== "internet");
+const SECURITY_SERVICES = [
+  { id: "cctv", shortTitle: "CCTV Surveillance", href: "/security/cameras" },
+  { id: "door-phones", shortTitle: "Video Door Phones", href: "/security/door-phones" },
+  { id: "access-control", shortTitle: "Biometric Access Control", href: "/security/access-control" },
+  { id: "intrusion-alarms", shortTitle: "Intrusion Alarms", href: "/security/intrusion-alarms" },
+  { id: "entrance-security", shortTitle: "Boom Barriers & Screening", href: "/services/entrance-security" },
+];
+
+const INTERNET_NETWORKING_SERVICES = [
+  { id: "internet", shortTitle: "Fiber Broadband Plans", href: "/internet" },
+  { id: "enterprise-wifi", shortTitle: "Enterprise & Industrial Wi-Fi", href: "/services/enterprise-wifi" },
+  { id: "networking", shortTitle: "Network Infrastructure & Firewalls", href: "/services/networking" },
+];
 
 function WhatsAppIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
   return (
@@ -43,14 +54,14 @@ function WhatsAppIcon({ size = 16, className = "" }: { size?: number; className?
 }
 
 export default function Header({ activePage = "" }: { activePage?: string }) {
-  const { lang, setLang, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileSecurityOpen, setMobileSecurityOpen] = useState(true);
-  const [activeServiceTab, setActiveServiceTab] = useState<"security" | null>("security");
+  const [mobileInternetOpen, setMobileInternetOpen] = useState(false);
+  const [activeServiceTab, setActiveServiceTab] = useState<"security" | "internet">("security");
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
 
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -137,7 +148,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
               <BroadnetLogo />
             </div>
 
-            {/* Desktop Navigation Links (Clean & Smooth 3-Item Layout) */}
+            {/* Desktop Navigation Links */}
             <nav className="hidden md:flex items-center gap-1 bg-[#16143E]/[0.03] p-1 rounded-full border border-[#16143E]/8 backdrop-blur-md">
               <Link
                 href="/"
@@ -203,7 +214,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                             <div className="text-left">
                               <span className="block leading-tight">Security Solutions</span>
                               <span className="text-[10px] text-[#16143E]/50 font-medium block">
-                                8 Systems
+                                5 Systems
                               </span>
                             </div>
                           </div>
@@ -217,30 +228,36 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                           />
                         </div>
 
-                        {/* 2. Internet (Direct link to existing /internet page) */}
-                        <Link
-                          href="/internet"
-                          onClick={() => setDropdownOpen(false)}
-                          onMouseEnter={() => setActiveServiceTab(null)}
-                          className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#16143E]/80 hover:text-[#EF1313] hover:bg-[#EF1313]/[0.06] transition-all duration-150 group"
+                        {/* 2. Internet & Networking (Active / Hoverable tab) */}
+                        <div
+                          onMouseEnter={() => setActiveServiceTab("internet")}
+                          className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-150 cursor-pointer ${
+                            activeServiceTab === "internet"
+                              ? "bg-[#EF1313]/[0.08] text-[#EF1313]"
+                              : "text-[#16143E]/80 hover:text-[#EF1313] hover:bg-[#16143E]/[0.04]"
+                          }`}
                           style={{ fontFamily: "Syne, sans-serif" }}
                         >
                           <div className="flex items-center gap-2.5">
-                            <div className="w-7 h-7 rounded-lg bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                            <div className="w-7 h-7 rounded-lg bg-[#EF1313]/10 text-[#EF1313] flex items-center justify-center flex-shrink-0">
                               <Wifi size={14} />
                             </div>
                             <div className="text-left">
-                              <span className="block leading-tight">Internet</span>
+                              <span className="block leading-tight">Internet & Networks</span>
                               <span className="text-[10px] text-[#16143E]/50 font-medium block">
-                                Fiber Broadband
+                                Fiber, Wi-Fi & Cabling
                               </span>
                             </div>
                           </div>
-                          <ArrowRight
-                            size={12}
-                            className="opacity-0 -translate-x-1 text-[#EF1313] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
+                          <ChevronRight
+                            size={13}
+                            className={`transition-transform duration-150 ${
+                              activeServiceTab === "internet"
+                                ? "translate-x-0.5 text-[#EF1313]"
+                                : "text-[#16143E]/30"
+                            }`}
                           />
-                        </Link>
+                        </div>
 
                         <div className="my-0.5 border-t border-[#16143E]/8" />
 
@@ -248,7 +265,6 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                         <Link
                           href="/service-areas"
                           onClick={() => setDropdownOpen(false)}
-                          onMouseEnter={() => setActiveServiceTab(null)}
                           className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#16143E]/80 hover:text-[#4E0DBA] hover:bg-[#4E0DBA]/[0.06] transition-all duration-150 group"
                           style={{ fontFamily: "Syne, sans-serif" }}
                         >
@@ -270,7 +286,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                         </Link>
                       </div>
 
-                      {/* Right Sub-Panel: Mention all items of Security */}
+                      {/* Right Sub-Panel */}
                       {activeServiceTab === "security" && (
                         <div className="w-64 flex flex-col gap-0.5 pl-1 py-1">
                           <div className="px-3 pb-1.5 mb-1 border-b border-[#16143E]/6 flex items-center justify-between">
@@ -296,6 +312,37 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                               <ArrowRight
                                 size={12}
                                 className="opacity-0 -translate-x-1.5 text-[#4E0DBA] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
+                              />
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+
+                      {activeServiceTab === "internet" && (
+                        <div className="w-64 flex flex-col gap-0.5 pl-1 py-1">
+                          <div className="px-3 pb-1.5 mb-1 border-b border-[#16143E]/6 flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-[#EF1313]">
+                              Internet & Networking
+                            </span>
+                            <span className="text-[10px] text-[#16143E]/40 font-medium">
+                              High-Speed Infrastructure
+                            </span>
+                          </div>
+
+                          {INTERNET_NETWORKING_SERVICES.map((srv) => (
+                            <Link
+                              key={srv.id}
+                              href={srv.href}
+                              onClick={() => setDropdownOpen(false)}
+                              className="group flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-semibold text-[#16143E]/80 hover:text-[#EF1313] hover:bg-[#16143E]/[0.04] transition-all duration-150"
+                              style={{ fontFamily: "Syne, sans-serif" }}
+                            >
+                              <span className="transition-transform duration-150 group-hover:translate-x-1">
+                                {srv.shortTitle}
+                              </span>
+                              <ArrowRight
+                                size={12}
+                                className="opacity-0 -translate-x-1.5 text-[#EF1313] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150"
                               />
                             </Link>
                           ))}
@@ -391,37 +438,6 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
 
             {/* Desktop Quick Actions */}
             <div className="hidden sm:flex items-center gap-2.5">
-              {/* Language Selector */}
-              <div
-                className="flex items-center border border-[#16143E]/15 rounded-full overflow-hidden text-[10.5px] font-bold p-0.5 bg-[#16143E]/[0.03]"
-                aria-label="Language selector"
-              >
-                <button
-                  type="button"
-                  onClick={() => setLang("en")}
-                  className={`px-2 py-0.5 rounded-full transition-colors cursor-pointer ${
-                    lang === "en"
-                      ? "bg-[#EF1313] text-white"
-                      : "text-[#16143E]/70 hover:text-[#16143E]"
-                  }`}
-                  aria-pressed={lang === "en"}
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLang("ta")}
-                  className={`px-2 py-0.5 rounded-full transition-colors cursor-pointer ${
-                    lang === "ta"
-                      ? "bg-[#EF1313] text-white"
-                      : "text-[#16143E]/70 hover:text-[#16143E]"
-                  }`}
-                  aria-pressed={lang === "ta"}
-                >
-                  தமிழ்
-                </button>
-              </div>
-
               <a
                 href="tel:+919884344075"
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-[#16143E] hover:text-[#EF1313] hover:bg-[#16143E]/5 transition-colors"
@@ -468,7 +484,7 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white/98 backdrop-blur-2xl border-t border-[#16143E]/10 max-h-[85vh] overflow-y-auto px-4 py-4 shadow-2xl"
+              className="md:hidden bg-white/98 backdrop-blur-2xl border-t border-[#16143E]/10 max-h-[85vh] overflow-y-auto custom-scrollbar-light px-4 py-4 shadow-2xl"
             >
               <div className="space-y-1.5">
                 <Link
@@ -539,18 +555,41 @@ export default function Header({ activePage = "" }: { activePage?: string }) {
                         )}
                       </div>
 
-                      {/* 2. Internet (Direct Link) */}
-                      <Link
-                        href="/internet"
-                        onClick={() => setMobileOpen(false)}
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-bold text-[#16143E] hover:text-[#EF1313] hover:bg-white transition-all"
-                      >
-                        <span className="flex items-center gap-2">
-                          <Wifi size={14} className="text-[#EF1313]" />
-                          <span>Internet</span>
-                        </span>
-                        <ArrowRight size={12} className="text-[#16143E]/30" />
-                      </Link>
+                      {/* 2. Internet & Networking (Sub-Accordion) */}
+                      <div className="rounded-lg border border-[#16143E]/6 bg-white overflow-hidden">
+                        <button
+                          type="button"
+                          onClick={() => setMobileInternetOpen(!mobileInternetOpen)}
+                          className="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-[#16143E] hover:text-[#EF1313] transition-colors cursor-pointer"
+                        >
+                          <span className="flex items-center gap-2">
+                            <Wifi size={14} className="text-[#EF1313]" />
+                            <span>Internet & Networking</span>
+                          </span>
+                          <ChevronDown
+                            size={13}
+                            className={`transition-transform duration-200 ${
+                              mobileInternetOpen ? "rotate-180 text-[#EF1313]" : "text-[#16143E]/40"
+                            }`}
+                          />
+                        </button>
+
+                        {mobileInternetOpen && (
+                          <div className="px-2 pb-2 space-y-0.5 border-t border-[#16143E]/6 pt-1 bg-[#FAFAFE]">
+                            {INTERNET_NETWORKING_SERVICES.map((srv) => (
+                              <Link
+                                key={srv.id}
+                                href={srv.href}
+                                onClick={() => setMobileOpen(false)}
+                                className="flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-semibold text-[#16143E]/80 hover:text-[#EF1313] hover:bg-white transition-all"
+                              >
+                                <span>{srv.shortTitle}</span>
+                                <ArrowRight size={11} className="text-[#16143E]/30" />
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
 
                       <div className="my-0.5 border-t border-[#16143E]/8" />
 
